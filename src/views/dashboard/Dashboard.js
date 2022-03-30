@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Pool from '../../utils/UserPool'
 import { useNavigate } from 'react-router-dom'
 
@@ -79,7 +79,7 @@ const Dashboard = () => {
                   }
 
                   resolve(results)
-                  console.log(results)
+                  // console.log(results)
                 }
               })
             })

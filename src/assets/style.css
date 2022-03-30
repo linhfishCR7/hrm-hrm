@@ -28,3 +28,13 @@
 .line {
     display: inline-block;
 }
+
+.img {
+    height: 250px;
+    left: 50%;
+    margin-top: -125px;
+    margin-left: -125px;
+    position: absolute;
+    top: 50%;
+    width: 250px;
+ }
