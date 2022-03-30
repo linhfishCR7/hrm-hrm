@@ -12,12 +12,16 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CToast,
+  CToastBody,
+  CToastClose,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked } from '@coreui/icons'
 
 import UserPool from '../../../utils/UserPool'
 import { Auth, Amplify } from 'aws-amplify'
+import '../../../assets/style.css'
 
 const ForgotPassword = () => {
   const navigate = useNavigate()
@@ -34,20 +38,6 @@ const ForgotPassword = () => {
     console.log(error)
   }
 
-  // inputVerificationCode: function(data) {
-  //   console.log('Code sent to: ' + data);
-  //   var code = document.getElementById('code').value
-  //   var newPassword = document.getElementById('new_password').value
-  //   cognitoUser.confirmPassword(code, newPassword, {
-  //     onSuccess() {
-  //       console.log('Password confirmed!')
-  //     },
-  //     onFailure(err) {
-  //       console.log('Password not confirmed!')
-  //     },
-  //   })
-  // },
-
   const user_logged = UserPool.getCurrentUser()
   useEffect(() => {
     if (user_logged) {
@@ -62,6 +52,9 @@ const ForgotPassword = () => {
   const [confirmed, setConfirmed] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const [isSendingCode, setIsSendingCode] = useState(false)
+  const [error, setError] = useState('')
+  const [errorcode, setErrorcode] = useState('')
+  const [success, setSuccess] = useState('')
 
   async function handleSendCodeClick(event) {
     event.preventDefault()
@@ -71,9 +64,9 @@ const ForgotPassword = () => {
     try {
       await Auth.forgotPassword(email)
       setCodeSent(true)
-      alert('Code sent successfully!')
+      setSuccess('Please, get code in your email and use them for confirming')
     } catch (error) {
-      alert(error.message || JSON.stringify(error))
+      setError(error.message || JSON.stringify(error))
       setIsSendingCode(false)
     }
   }
@@ -87,7 +80,7 @@ const ForgotPassword = () => {
       setConfirmed(true)
       navigate('/login')
     } catch (error) {
-      alert(error.message || JSON.stringify(error))
+      setErrorcode(error.message || JSON.stringify(error))
       setIsConfirming(false)
     }
   }
@@ -96,13 +89,31 @@ const ForgotPassword = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
+          <CCol md={5}>
+            <h1 style={{ marginBottom: '100px', fontWight: 'bolder', color: 'light' }}>
+              WELCOME TO HRM SYSTEM
+            </h1>
+          </CCol>
+        </CRow>
+        <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                <CForm onSubmit={handleSendCodeClick}>
+                <CForm onSubmit={handleSendCodeClick} className={success ? 'hide' : ''}>
                   <h1> Forgot Password</h1>{' '}
                   <p className="text-medium-emphasis"> Forgot password your account </p>{' '}
-                  <CInputGroup className="mb-3">
+                  <CToast
+                    autohide={error ? false : true}
+                    visible={error ? true : false}
+                    color="danger"
+                    className="text-white align-items-center"
+                  >
+                    <div className="d-flex">
+                      <CToastBody>{error}</CToastBody>
+                      <CToastClose className="me-2 m-auto" white />
+                    </div>
+                  </CToast>
+                  <CInputGroup className="mb-3 mt-3">
                     <CInputGroupText> @ </CInputGroupText>{' '}
                     <CFormInput
                       placeholder="Email"
@@ -110,18 +121,9 @@ const ForgotPassword = () => {
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       required
+                      type="email"
                     />
                   </CInputGroup>{' '}
-                  {/* <CInputGroup className="mb-4">
-                          <CInputGroupText>
-                            <CIcon icon={cilLockLocked} />
-                          </CInputGroupText>
-                          <CFormInput
-                            type="password"
-                            placeholder="Repeat password"
-                            autoComplete="new-password"
-                          />
-                        </CInputGroup> */}
                   <div className="d-grid">
                     <CButton color="info" type="submit">
                       Submit{' '}
@@ -129,10 +131,32 @@ const ForgotPassword = () => {
                   </div>{' '}
                 </CForm>{' '}
                 <br />
-                <CForm onSubmit={handleConfirmClick}>
+                <CForm onSubmit={handleConfirmClick} className={success ? '' : 'hide'}>
                   <h1> Reset Password </h1>{' '}
                   <p className="text-medium-emphasis"> Reset password your account </p>{' '}
-                  <CInputGroup className="mb-3">
+                  <CToast
+                    autohide={errorcode ? false : true}
+                    visible={errorcode ? true : false}
+                    color="danger"
+                    className="text-white align-items-center"
+                  >
+                    <div className="d-flex">
+                      <CToastBody>{errorcode}</CToastBody>
+                      <CToastClose className="me-2 m-auto" white />
+                    </div>
+                  </CToast>
+                  <CToast
+                    autohide={success ? false : true}
+                    visible={success ? true : false}
+                    color="success"
+                    className="text-white align-items-center mt-3"
+                  >
+                    <div className="d-flex">
+                      <CToastBody>{success}</CToastBody>
+                      <CToastClose className="me-2 m-auto" white />
+                    </div>
+                  </CToast>
+                  <CInputGroup className="mb-3 mt-3">
                     <CInputGroupText> @ </CInputGroupText>{' '}
                     <CFormInput
                       placeholder="Email"
@@ -140,6 +164,7 @@ const ForgotPassword = () => {
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       required
+                      type="email"
                     />
                   </CInputGroup>{' '}
                   <CInputGroup className="mb-3">
@@ -173,15 +198,14 @@ const ForgotPassword = () => {
                       Confirm{' '}
                     </CButton>{' '}
                   </div>{' '}
-                  <br />
-                  <div className="d-grid">
-                    <Link to="/login">
-                      <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                        Back Login{' '}
-                      </CButton>{' '}
-                    </Link>{' '}
-                  </div>{' '}
                 </CForm>{' '}
+                <div className="d-grid">
+                  <Link to="/login">
+                    <CButton color="secondary" className="mt-3" active tabIndex={-1}>
+                      Back Login{' '}
+                    </CButton>{' '}
+                  </Link>{' '}
+                </div>{' '}
               </CCardBody>{' '}
             </CCard>{' '}
           </CCol>{' '}

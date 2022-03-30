@@ -12,12 +12,15 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CToast,
+  CToastBody,
+  CToastClose,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked } from '@coreui/icons'
-
 import UserPool from '../../../utils/UserPool'
 import { Auth, Amplify } from 'aws-amplify'
+import '../../../assets/style.css'
 
 const ChangePassword = () => {
   const navigate = useNavigate()
@@ -33,10 +36,20 @@ const ChangePassword = () => {
   } catch (error) {
     console.log(error)
   }
+
+  const user_logged = UserPool.getCurrentUser()
+  useEffect(() => {
+    if (!user_logged) {
+      navigate('/login')
+      return
+    }
+  }, [])
+
   const [email, setEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [oldPassword, setOldPassword] = useState('')
   const [isChanging, setIsChanging] = useState(false)
+  const [error, setError] = useState('')
 
   async function handleChangeClick(event) {
     event.preventDefault()
@@ -49,7 +62,7 @@ const ChangePassword = () => {
 
       navigate('/dashboard')
     } catch (error) {
-      alert(error.message || JSON.stringify(error))
+      setError(error.message || JSON.stringify(error))
       setIsChanging(false)
     }
   }
@@ -58,13 +71,31 @@ const ChangePassword = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
+          <CCol md={5}>
+            <h1 style={{ marginBottom: '100px', fontWight: 'bolder', color: 'light' }}>
+              WELCOME TO HRM SYSTEM
+            </h1>
+          </CCol>
+        </CRow>
+        <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleChangeClick}>
                   <h1> Change Password </h1>{' '}
                   <p className="text-medium-emphasis"> Change password your account </p>{' '}
-                  <CInputGroup className="mb-3">
+                  <CToast
+                    autohide={error ? false : true}
+                    visible={error ? true : false}
+                    color="danger"
+                    className="text-white align-items-center"
+                  >
+                    <div className="d-flex">
+                      <CToastBody>{error}</CToastBody>
+                      <CToastClose className="me-2 m-auto" white />
+                    </div>
+                  </CToast>
+                  <CInputGroup className="mb-3 mt-3">
                     <CInputGroupText> @ </CInputGroupText>{' '}
                     <CFormInput
                       placeholder="Email"
@@ -72,6 +103,7 @@ const ChangePassword = () => {
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       required
+                      type="email"
                     />
                   </CInputGroup>{' '}
                   <CInputGroup className="mb-4">
@@ -106,6 +138,13 @@ const ChangePassword = () => {
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
+                <div className="d-grid">
+                  <Link to="/dashboard">
+                    <CButton color="secondary" className="mt-3" active tabIndex={-1}>
+                      Back Dashboard{' '}
+                    </CButton>{' '}
+                  </Link>{' '}
+                </div>{' '}
               </CCardBody>{' '}
             </CCard>{' '}
           </CCol>{' '}

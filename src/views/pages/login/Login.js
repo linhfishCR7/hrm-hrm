@@ -12,12 +12,15 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CToast,
+  CToastBody,
+  CToastClose,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import UserPool from '../../../utils/UserPool'
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
-
+import '../../../assets/style.css'
 const Login = () => {
   var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
   let navigate = useNavigate()
@@ -51,7 +54,8 @@ const Login = () => {
         navigate('/dashboard')
       },
       onFailure: (err) => {
-        alert(err.message || JSON.stringify(err))
+        // alert(err.message || JSON.stringify(err))
+        setError(err.message || JSON.stringify(err))
       },
       newPasswordRequired: (data) => {
         console.log('newPasswordRequired: ', data)
@@ -63,6 +67,13 @@ const Login = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
+          <CCol md={5}>
+            <h1 style={{ marginBottom: '100px', fontWight: 'bolder', color: 'light' }}>
+              WELCOME TO HRM SYSTEM
+            </h1>
+          </CCol>
+        </CRow>
+        <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
               <CCard className="p-4">
@@ -70,11 +81,26 @@ const Login = () => {
                   <CForm onSubmit={onSubmit}>
                     <h1> Login </h1>{' '}
                     <p className="text-medium-emphasis"> Sign In to your account </p>{' '}
-                    <CInputGroup className="mb-3">
+                    {/* <CAlert color="danger" className={error ? '' : 'offscreen'}>
+                      {error}
+                    </CAlert> */}
+                    <CToast
+                      autohide={error ? false : true}
+                      visible={error ? true : false}
+                      color="danger"
+                      className="text-white align-items-center"
+                    >
+                      <div className="d-flex">
+                        <CToastBody>{error}</CToastBody>
+                        <CToastClose className="me-2 m-auto" white />
+                      </div>
+                    </CToast>
+                    <CInputGroup className="mb-3 mt-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />{' '}
                       </CInputGroupText>{' '}
                       <CFormInput
+                        type="email"
                         placeholder="Email"
                         autoComplete="email"
                         value={email}
