@@ -90,73 +90,61 @@ const Login = () => {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        const getToken = async () => {
-          const REGISTER_URL = '/auth/login/'
-          return await axios.post(REGISTER_URL, JSON.stringify({ email, password }), {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-          })
-        }
-        getToken().then((results) => {
-          const token = results.data.token
-          localStorage.setItem('token', token)
-          getProfile().then((results) => {
-            if (results.data.is_active === false) {
-              user.signOut()
-              localStorage.removeItem('token')
-              setStatus(false)
-              setLoad(false)
-              navigate('/login')
-              setError('Your account has been suspended. Contact us for more details')
-              setVisible(true)
-            } else if (results.data.is_staff === false) {
-              user.signOut()
-              localStorage.removeItem('token')
-              setStatus(false)
-              setLoad(false)
-              navigate('/login')
-              setError('You do not have permission to access. Contact us for more details')
-              setVisible(true)
-            } else {
-              setLoad(false)
-              const getAuthorization = async () => {
-                const REGISTER_URL = '/auth/authorization/'
-                return await axios.get(REGISTER_URL, {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                  },
-                  withCredentials: true,
-                })
-              }
-              getAuthorization().then((results) => {
-                console.log(company)
-                if (results.data.company === company) {
-                  if (results.data.branch === branch) {
-                    navigate('/dashboard')
-                  } else {
-                    user.signOut()
-                    localStorage.removeItem('token')
-                    setStatus(false)
-                    setLoad(false)
-                    setError(
-                      'You do not have permission to access this branch. Please choose again!',
-                    )
-                    setVisible(true)
-                  }
+        const token = data.idToken.jwtToken
+        localStorage.setItem('token', token)
+
+        getProfile().then((results) => {
+          if (results.data.is_active === false) {
+            user.signOut()
+            localStorage.removeItem('token')
+            setStatus(false)
+            setLoad(false)
+            navigate('/login')
+            setError('Your account has been suspended. Contact us for more details')
+            setVisible(true)
+          } else if (results.data.is_staff === false) {
+            user.signOut()
+            localStorage.removeItem('token')
+            setStatus(false)
+            setLoad(false)
+            navigate('/login')
+            setError('You do not have permission to access. Contact us for more details')
+            setVisible(true)
+          } else {
+            setLoad(false)
+            const getAuthorization = async () => {
+              const REGISTER_URL = '/auth/authorization/'
+              return await axios.get(REGISTER_URL, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+              })
+            }
+            getAuthorization().then((results) => {
+              console.log(company)
+              if (results.data.company === company) {
+                if (results.data.branch === branch) {
+                  navigate('/dashboard')
                 } else {
                   user.signOut()
                   localStorage.removeItem('token')
                   setStatus(false)
                   setLoad(false)
-                  setError(
-                    'You do not have permission to access this company. Please choose again!',
-                  )
+                  setError('You do not have permission to access this branch. Please choose again!')
                   setVisible(true)
                 }
-              })
-            }
-          })
+              } else {
+                user.signOut()
+                localStorage.removeItem('token')
+                setStatus(false)
+                setLoad(false)
+                setError('You do not have permission to access this company. Please choose again!')
+                setVisible(true)
+              }
+            })
+          }
         })
       },
       onFailure: (err) => {

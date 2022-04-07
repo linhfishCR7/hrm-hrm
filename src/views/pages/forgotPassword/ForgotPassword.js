@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { USER_POOL_ID, REGION, CLIENT_ID } from '../../../constants/Config'
 
 import {
   CButton,
@@ -29,9 +30,9 @@ const ForgotPassword = () => {
   try {
     Amplify.configure({
       Auth: {
-        userPoolId: 'ap-southeast-1_8Floj89lt',
-        region: 'ap-southeast-1',
-        userPoolWebClientId: '3tg4c27ft0da820h919g1p3943',
+        userPoolId: USER_POOL_ID,
+        region: REGION,
+        userPoolWebClientId: CLIENT_ID,
       },
     })
   } catch (error) {

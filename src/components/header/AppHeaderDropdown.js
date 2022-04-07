@@ -45,23 +45,36 @@ const AppHeaderDropdown = () => {
     getSession().then(() => {
       setStatus(true)
     })
-    getProfile().then((results) => {
-      if (results.data.is_active === false) {
-        alert('Your account has been suspended. Contact us for more details')
-        setVisible(true)
-        user.signOut()
-        localStorage.removeItem('token')
-        setStatus(false)
-        navigate('/login')
-      } else if (results.data.is_staff === false) {
-        alert('You do not have permission to access. Contact us for more details')
-        setVisible(true)
-        user.signOut()
-        localStorage.removeItem('token')
-        setStatus(false)
-        navigate('/login')
-      }
-    })
+    getProfile()
+      .then((results) => {
+        if (results.data.is_active === false) {
+          alert('Your account has been suspended. Contact us for more details')
+          setVisible(true)
+          user.signOut()
+          localStorage.removeItem('token')
+          setStatus(false)
+          navigate('/login')
+        } else if (results.data.is_staff === false) {
+          alert('You do not have permission to access. Contact us for more details')
+          setVisible(true)
+          user.signOut()
+          localStorage.removeItem('token')
+          setStatus(false)
+          navigate('/login')
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          // console.log(error.response.data.code)
+          // console.log(error.response.status)
+          // console.log(error.response.headers)
+          if (error.response.data.code === 'AUTH_0') {
+            user.signOut()
+            localStorage.removeItem('token')
+            navigate('/login')
+          }
+        }
+      })
   }, [])
   const logout = () => {
     if (user) {
@@ -108,7 +121,7 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem href="/#/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
