@@ -23,46 +23,21 @@ import { cilSearch } from '@coreui/icons'
 
 const Religion = () => {
   let navigate = useNavigate()
-  const [religions, setReligion] = useState([])
+  const [religions, setReligion] = useState([{}])
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [PerPage, setPerPage] = useState(5)
+  const [PerPage, setPerPage] = useState(10)
   const [data, setData] = useState('')
   const [statusdata, setStatusData] = useState(false)
 
   const user = Pool.getCurrentUser()
   ListReligion.propTypes = {
-    religions: PropTypes.string,
-    loading: PropTypes.boolean,
+    religions: PropTypes.array,
+    loading: PropTypes.bool,
   }
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login')
-      return
-    }
-
-    const fetchReligions = async () => {
-      const token = localStorage.getItem('token')
-      const REGISTER_URL = '/hrm/religions/'
-      setLoading(true)
-      const res = await axios.get(REGISTER_URL, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      setReligion(res.data.results)
-      setLoading(false)
-    }
-    fetchReligions()
-  }, [])
-  const handleSearch = async (event) => {
-    let value = event.target.value
-    console.log(typeof event.target.value)
+  const fetchReligions = async () => {
     const token = localStorage.getItem('token')
-    const REGISTER_URL = '/hrm/religions/?search=' + value
+    const REGISTER_URL = '/hrm/religions/?no_pagination=true'
     setLoading(true)
     const res = await axios.get(REGISTER_URL, {
       headers: {
@@ -71,8 +46,34 @@ const Religion = () => {
       },
       withCredentials: true,
     })
-    setReligion(res.data.results)
-    if (res.data.count === 0) {
+    setReligion(res.data)
+    console.log(res.data)
+    setLoading(false)
+  }
+  useEffect(() => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+
+    fetchReligions()
+  }, [])
+  const handleSearch = async (event) => {
+    let value = event.target.value
+    console.log(typeof event.target.value)
+    const token = localStorage.getItem('token')
+    const REGISTER_URL = '/hrm/religions/?no_pagination=true&search=' + value
+    setLoading(true)
+    const res = await axios.get(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+    setReligion(res.data)
+    console.log(res.data)
+    if (res.data.length === 0) {
       setData(
         <>
           <h4>No Data</h4>
@@ -119,7 +120,13 @@ const Religion = () => {
             </CInputGroup>
           </CCol>
         </CRow>
-        <ListReligion religions={current} loading={loading} data={data} status={statusdata} />
+        <ListReligion
+          religions={current}
+          loading={loading}
+          data={data}
+          status={statusdata}
+          fetchapi={fetchReligions}
+        />
         <Pagination PerPage={PerPage} total={religions.length} paginate={paginate} />
       </CCardBody>
       <CCardFooter>

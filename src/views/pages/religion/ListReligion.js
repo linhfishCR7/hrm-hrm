@@ -28,13 +28,29 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 
-export const ListReligion = ({ religions, loading, data = '', status }) => {
+export const ListReligion = ({ religions, loading, data = '', status, fetchapi }) => {
   ListReligion.propTypes = {
     religions: PropTypes.array,
     loading: PropTypes.bool,
     data: PropTypes.string,
     status: PropTypes.bool,
+    fetchapi: PropTypes.func,
   }
+  // const fetchReligions = async () => {
+  //   const token = localStorage.getItem('token')
+  //   const REGISTER_URL = '/hrm/religions/?no_pagination=true'
+  //   setLoading(true)
+  //   const res = await axios.get(REGISTER_URL, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     withCredentials: true,
+  //   })
+  //   setReligion(res.data)
+  //   setLoading(false)
+  // }
+
   const [visible, setVisible] = useState(false)
   const [religiondata, setReligionData] = useState('')
   const [namedata, setNameData] = useState('')
@@ -65,7 +81,7 @@ export const ListReligion = ({ religions, loading, data = '', status }) => {
         setMessage('You Added Data successfully!')
         setIsMesage(true)
         setIsError(false)
-        // #TODO Autoload when added successfully
+        fetchapi()
       })
       .catch(function (error) {
         if (error.response.status === 400) {

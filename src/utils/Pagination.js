@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { CPagination, CPaginationItem, CAlertLink } from '@coreui/react'
 
 const Pagination = ({ PerPage, total, paginate }) => {
   const pageNumbers = []
@@ -10,20 +11,25 @@ const Pagination = ({ PerPage, total, paginate }) => {
   Pagination.propTypes = {
     PerPage: PropTypes.number,
     total: PropTypes.number,
-    paginate: PropTypes.string,
+    paginate: PropTypes.func,
   }
   return (
-    <nav>
-      <ul className="pagination">
-        {pageNumbers.map((number) => (
-          <li key={number} className="page-item">
-            <a onClick={() => paginate(number)} href="!#/religion" className="page-link">
-              {number}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <CPagination aria-label="Page navigation example">
+      <CPaginationItem aria-label="Previous" disabled>
+        <span aria-hidden="true">&laquo;</span>
+      </CPaginationItem>
+      {/* <CPaginationItem active>1</CPaginationItem> */}
+      {pageNumbers.map((number) => (
+        <CPaginationItem key={number}>
+          <CAlertLink onClick={() => paginate(number)} href="!#/religion">
+            {number}
+          </CAlertLink>
+        </CPaginationItem>
+      ))}
+      <CPaginationItem aria-label="Next" {...(pageNumbers + 1)}>
+        <span aria-hidden="true">&raquo;</span>
+      </CPaginationItem>
+    </CPagination>
   )
 }
 
