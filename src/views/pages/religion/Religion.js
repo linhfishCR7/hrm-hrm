@@ -282,7 +282,7 @@ class Religion extends Component {
   render() {
     return (
       <>
-        <h2>Thêm Tôn Giáo</h2>
+        <h2> Tôn Giáo</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>

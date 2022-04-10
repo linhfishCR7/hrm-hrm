@@ -275,7 +275,7 @@ class CertificateType extends Component {
   render() {
     return (
       <>
-        <h2>Thêm Loại Chứng Chỉ</h2>
+        <h2> Loại Chứng Chỉ</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>

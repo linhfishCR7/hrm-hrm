@@ -282,7 +282,7 @@ class Nationality extends Component {
   render() {
     return (
       <>
-        <h2>Thêm Quốc Tịch</h2>
+        <h2> Quốc Tịch</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>

@@ -275,7 +275,7 @@ class DegreeType extends Component {
   render() {
     return (
       <>
-        <h2>Thêm Loại Bằng Cấp</h2>
+        <h2> Loại Bằng Cấp</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>

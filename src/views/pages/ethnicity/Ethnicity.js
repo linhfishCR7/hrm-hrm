@@ -262,10 +262,10 @@ class Ethnicity extends Component {
         }),
       )
   }
-  handleSearch = (event) => {
+  handleSearch = async (event) => {
     let value = event.target.value
     const REGISTER_URL = '/hrm/ethnicities/?no_pagination=true&search=' + value
-    const res = axios.get(REGISTER_URL, {
+    const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
@@ -277,7 +277,7 @@ class Ethnicity extends Component {
   render() {
     return (
       <>
-        <h2>Thêm Dân Tộc</h2>
+        <h2> Dân Tộc</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>

@@ -81,6 +81,21 @@ const _nav = [
         name: 'Ethnicity',
         to: '/ethnicity',
       },
+      {
+        component: CNavItem,
+        name: 'Employment Contract Type',
+        to: '/employment-contract-type',
+      },
+      {
+        component: CNavItem,
+        name: 'Position',
+        to: '/position',
+      },
+      {
+        component: CNavItem,
+        name: 'Literacy',
+        to: '/literacy',
+      },
       // {
       //   component: CNavItem,
       //   name: 'Cards',

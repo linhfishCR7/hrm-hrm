@@ -35,15 +35,15 @@ import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class DayOffType extends Component {
+class Literacy extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dayOffType: [],
+      literacies: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      day_off_types: '',
+      literacy: '',
       name: '',
     }
 
@@ -51,9 +51,9 @@ class DayOffType extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
-    await axios
-      .get('/hrm/day-off-types/?no_pagination=true', {
+  componentDidMount() {
+    axios
+      .get('/hrm/literacy/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -61,9 +61,9 @@ class DayOffType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const dayOffType = res.data
+        const literacies = res.data
         this.setState({
-          dayOffType: dayOffType,
+          literacies: literacies,
         })
       })
       .catch((error) => console.log(error))
@@ -78,16 +78,16 @@ class DayOffType extends Component {
     })
   }
 
-  handleInsertSubmit = async (event) => {
+  handleInsertSubmit = (event) => {
     event.preventDefault()
 
     const newItem = {
-      day_off_types: this.state.day_off_types,
+      literacy: this.state.literacy,
       name: this.state.name,
     }
 
-    await axios
-      .post('/hrm/day-off-types/', newItem, {
+    axios
+      .post('/hrm/literacy/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -95,13 +95,13 @@ class DayOffType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let dayOffType = this.state.dayOffType
-        dayOffType = [newItem, ...dayOffType]
-        this.setState({ dayOffType: dayOffType })
+        let literacies = this.state.literacies
+        literacies = [newItem, ...literacies]
+        this.setState({ literacies: literacies })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -116,7 +116,7 @@ class DayOffType extends Component {
           message.error({
             content: error.response.data.message,
             duration: 5,
-            maxCount: 1,
+            maxCount: 10,
             className: 'custom-class',
             style: {
               marginTop: '20vh',
@@ -126,7 +126,7 @@ class DayOffType extends Component {
           message.error({
             content: error,
             duration: 5,
-            maxCount: 1,
+            maxCount: 10,
             className: 'custom-class',
             style: {
               marginTop: '20vh',
@@ -143,7 +143,7 @@ class DayOffType extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      day_off_types: item.day_off_types,
+      literacy: item.literacy,
       name: item.name,
     })
   }
@@ -168,17 +168,16 @@ class DayOffType extends Component {
     })
   }
 
-  handleEditSubmit = async (event) => {
+  handleEditSubmit = (event) => {
     event.preventDefault()
 
     const newUpdate = {
       //   id: this.state.id,
-      day_off_types: this.state.day_off_types,
+      literacy: this.state.literacy,
       name: this.state.name,
     }
-
-    await axios
-      .put('/hrm/day-off-types/' + this.state.id + '/', newUpdate, {
+    axios
+      .put('/hrm/literacy/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -188,11 +187,11 @@ class DayOffType extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          dayOffType: prevState.dayOffType.map((elm) =>
+          literacies: prevState.literacies.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  day_off_types: this.state.day_off_types,
+                  literacy: this.state.literacy,
                   name: this.state.name,
                 }
               : elm,
@@ -202,7 +201,7 @@ class DayOffType extends Component {
         message.success({
           content: 'Update data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -213,7 +212,7 @@ class DayOffType extends Component {
         message.error({
           content: error,
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -229,7 +228,7 @@ class DayOffType extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/day-off-types/' + this.state.id + '/', {
+      .delete('/hrm/literacy/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -238,12 +237,12 @@ class DayOffType extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          dayOffType: prevState.dayOffType.filter((el) => el.id !== this.state.id),
+          literacies: prevState.literacies.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -255,7 +254,7 @@ class DayOffType extends Component {
         message.error({
           content: error,
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -265,7 +264,7 @@ class DayOffType extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/day-off-types/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/literacy/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -273,12 +272,12 @@ class DayOffType extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ dayOffType: res.data })
+    this.setState({ literacies: res.data })
   }
   render() {
     return (
       <>
-        <h2> Loại Phép Năm</h2>
+        <h2>Trình Độ Học Vấn</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -288,12 +287,11 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
-                  autoComplete="day_off_types"
-                  name="day_off_types"
+                  placeholder="Vị trí làm việc"
+                  autoComplete="literacy"
+                  name="literacy"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -304,7 +302,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên vị trí làm việc"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -330,12 +328,12 @@ class DayOffType extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.dayOffType} bordered scroll={{ y: 240 }}>
-          <Column title="Mã" dataIndex="day_off_types" key="day_off_types" />
+        <Table dataSource={this.state.literacies} bordered scroll={{ y: 240 }}>
+          <Column title="Mã" dataIndex="literacy" key="literacy" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.dayOffType}
+            // key={this.state.literacies}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -370,10 +368,10 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
-                  autoComplete="day_off_types"
-                  name="day_off_types"
-                  value={this.state.day_off_types}
+                  placeholder="Vị trí làm việc"
+                  autoComplete="literacy"
+                  name="literacy"
+                  value={this.state.literacy}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -384,7 +382,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên vị trí làm việc"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -456,4 +454,4 @@ class DayOffType extends Component {
   }
 }
 
-export default DayOffType
+export default Literacy

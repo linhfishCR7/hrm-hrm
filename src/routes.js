@@ -56,6 +56,11 @@ const CertificateType = React.lazy(() => import('./views/pages/certificateType/C
 const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
 const DayOffYear = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
 const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
+const Position = React.lazy(() => import('./views/pages/position/Position'))
+const Literacy = React.lazy(() => import('./views/pages/literacy/Literacy'))
+const EmploymentContractType = React.lazy(() =>
+  import('./views/pages/employmentContractType/EmploymentContractType'),
+)
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -67,6 +72,13 @@ const routes = [
   { path: '/certificate-type', name: 'CertificateType', element: CertificateType },
   { path: '/degree-type', name: 'DegreeType', element: DegreeType },
   { path: '/day-off-year', name: 'DayOffYear', element: DayOffYear },
+  { path: '/position', name: 'Position', element: Position },
+  { path: '/literacy', name: 'Literacy', element: Literacy },
+  {
+    path: '/employment-contract-type',
+    name: 'EmploymentContractType',
+    element: EmploymentContractType,
+  },
   // #################################################################
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
