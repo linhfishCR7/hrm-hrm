@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from '../../../utils/axios'
-
+import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+import { Table, Tag, Space } from 'antd'
 import {
   CTableBody,
   CTableDataCell,
@@ -50,15 +51,18 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
   //   setReligion(res.data)
   //   setLoading(false)
   // }
+  const { Column, ColumnGroup } = Table
 
   const [visible, setVisible] = useState(false)
+  const [visibleUpdate, setVisibleUpdate] = useState(false)
+  const [visibleDelete, setVisibleDelete] = useState(false)
   const [religiondata, setReligionData] = useState('')
   const [namedata, setNameData] = useState('')
   const [message, setMessage] = useState('')
   const [isMesage, setIsMesage] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  const onSubmitUpdate = async (event) => {
+  const onSubmitCreate = async (event) => {
     event.preventDefault()
     const token = localStorage.getItem('token')
     const REGISTER_URL = '/hrm/religions/'
@@ -79,6 +83,76 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
         setReligionData('')
         setNameData('')
         setMessage('You Added Data successfully!')
+        setIsMesage(true)
+        setIsError(false)
+        fetchapi()
+      })
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          setMessage(error.response.data.message)
+          setIsMesage(true)
+          setIsError(true)
+        }
+      })
+  }
+  const onUpdate = async (event) => {
+    const id = event.target.key
+    setVisibleUpdate(true)
+    event.preventDefault()
+    const token = localStorage.getItem('token')
+    const REGISTER_URL = '/hrm/religions/' + id + '/'
+    const data = {
+      religion: religiondata,
+      name: namedata,
+    }
+    const res = await axios
+      .put(REGISTER_URL, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        setVisibleUpdate(false)
+        setReligionData('')
+        setNameData('')
+        setMessage('You Update Data successfully!')
+        setIsMesage(true)
+        setIsError(false)
+        fetchapi()
+      })
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          setMessage(error.response.data.message)
+          setIsMesage(true)
+          setIsError(true)
+        }
+      })
+  }
+  const onDelete = async (event) => {
+    event.preventDefault()
+    const id = event.target.key
+    setVisibleUpdate(true)
+    const token = localStorage.getItem('token')
+    const REGISTER_URL = '/hrm/religions/' + id + '/'
+    const data = {
+      religion: religiondata,
+      name: namedata,
+    }
+    const res = await axios
+      .put(REGISTER_URL, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        setVisibleUpdate(false)
+        setReligionData('')
+        setNameData('')
+        setMessage('You Update Data successfully!')
         setIsMesage(true)
         setIsError(false)
         fetchapi()
@@ -114,8 +188,36 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                 <CIcon icon={cilPlus} />
               </CButton>
             </CTooltip>
+            {/* <Table columns={columns} dataSource={religions} bordered scroll={{ y: 24˝0 }} /> */}
+            <Table dataSource={religions} bordered scroll={{ y: 240 }}>
+              <Column title="Mã" dataIndex="religion" key="religion" />
+              <Column title="Tên" dataIndex="name" key="name" />
+              <Column
+                title="Action"
+                key="action"
+                render={(text, record) => (
+                  <Space size="middle">
+                    <CTooltip content="Edit data" placement="top">
+                      <CButton
+                        color="warning"
+                        style={{ marginRight: '10px' }}
+                        key={record.id}
+                        onClick={onUpdate}
+                      >
+                        <CIcon icon={cilPencil} />
+                      </CButton>
+                    </CTooltip>
+                    <CTooltip content="Remove data" placement="top">
+                      <CButton color="danger" onClick={onDelete} key={text.id}>
+                        <CIcon icon={cilDelete} />
+                      </CButton>
+                    </CTooltip>
+                  </Space>
+                )}
+              />
+            </Table>
 
-            <CTable responsive bordered hover>
+            {/* <CTable responsive bordered hover>
               <CTableHead color="dark">
                 <CTableRow>
                   <CTableHeaderCell scope="col">Region</CTableHeaderCell>
@@ -151,7 +253,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                   </CTableRow>
                 ))}
               </CTableBody>
-            </CTable>
+            </CTable> */}
           </>
         )}
         <CModal visible={visible} onClose={() => setVisible(false)}>
@@ -159,7 +261,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
             <CModalTitle>Religion</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            <CForm onSubmit={onSubmitUpdate}>
+            <CForm onSubmit={onSubmitCreate}>
               <CInputGroup className="mb-3 mt-3">
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -228,6 +330,50 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
               Close
             </CButton>
           </CModalFooter>
+        </CModal>
+
+        <CModal visible={visibleUpdate} onClose={() => setVisibleUpdate(false)}>
+          <CModalHeader>
+            <CModalTitle>Tôn Giáo</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm onSubmit={onUpdate}>
+              <CInputGroup className="mb-3 mt-3">
+                <CInputGroupText>
+                  <CIcon icon={cilCircle} />{' '}
+                </CInputGroupText>{' '}
+                <CFormInput
+                  type="text"
+                  placeholder="Religion"
+                  autoComplete="religion"
+                  value={religiondata}
+                  onChange={(event) => setReligionData(event.target.value)}
+                  required
+                />
+              </CInputGroup>{' '}
+              <CInputGroup className="mb-4">
+                <CInputGroupText>
+                  <CIcon icon={cilCircle} />{' '}
+                </CInputGroupText>{' '}
+                <CFormInput
+                  type="text"
+                  placeholder="Name"
+                  autoComplete="name"
+                  value={namedata}
+                  onChange={(event) => setNameData(event.target.value)}
+                  required
+                />
+              </CInputGroup>{' '}
+              <CModalFooter>
+                <CButton color="secondary" onClick={() => setVisibleUpdate(false)}>
+                  Close
+                </CButton>
+                <CButton color="primary" type="submit">
+                  Save changes
+                </CButton>
+              </CModalFooter>
+            </CForm>{' '}
+          </CModalBody>
         </CModal>
       </>
     )

@@ -32,30 +32,28 @@ import {
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
-import Pool from '../../../utils/UserPool'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class Religion extends Component {
+class DegreeType extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      religions: [],
+      degreeType: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      religion: '',
+      degree_types: '',
       name: '',
     }
 
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
-    const user = Pool.getCurrentUser()
   }
 
   async componentDidMount() {
     await axios
-      .get('/hrm/religions/?no_pagination=true', {
+      .get('/hrm/degree-types/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -63,15 +61,11 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const religions = res.data
+        const degreeType = res.data
         this.setState({
-          religions: religions,
-          //   message: 'Thêm dữ liệu thành công!!!!',
-          //   isSuccess: true,
-          //   isError: false,
+          degreeType: degreeType,
         })
       })
-      //   .catch((error) => this.setState({ message: error, isSuccess: false, isError: true }))
       .catch((error) => console.log(error))
   }
 
@@ -88,12 +82,12 @@ class Religion extends Component {
     event.preventDefault()
 
     const newItem = {
-      religion: this.state.religion,
+      degree_types: this.state.degree_types,
       name: this.state.name,
     }
 
     await axios
-      .post('/hrm/religions/', newItem, {
+      .post('/hrm/degree-types/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -101,9 +95,9 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let religions = this.state.religions
-        religions = [newItem, ...religions]
-        this.setState({ religions: religions })
+        let degreeType = this.state.degreeType
+        degreeType = [newItem, ...degreeType]
+        this.setState({ degreeType: degreeType })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -146,7 +140,7 @@ class Religion extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      religion: item.religion,
+      degree_types: item.degree_types,
       name: item.name,
     })
   }
@@ -173,12 +167,12 @@ class Religion extends Component {
 
     const newUpdate = {
       //   id: this.state.id,
-      religion: this.state.religion,
+      degree_types: this.state.degree_types,
       name: this.state.name,
     }
 
     await axios
-      .put('/hrm/religions/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/degree-types/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -188,11 +182,11 @@ class Religion extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          religions: prevState.religions.map((elm) =>
+          degreeType: prevState.degreeType.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  religion: this.state.religion,
+                  degree_types: this.state.degree_types,
                   name: this.state.name,
                 }
               : elm,
@@ -229,7 +223,7 @@ class Religion extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/religions/' + this.state.id + '/', {
+      .delete('/hrm/degree-types/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -238,7 +232,7 @@ class Religion extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          religions: prevState.religions.filter((el) => el.id !== this.state.id),
+          degreeType: prevState.degreeType.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -265,7 +259,7 @@ class Religion extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/religions/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/degree-types/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -273,12 +267,12 @@ class Religion extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ religions: res.data })
+    this.setState({ degreeType: res.data })
   }
   render() {
     return (
       <>
-        <h2>Thêm Tôn Giáo</h2>
+        <h2>Thêm Loại Bằng Cấp</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -288,9 +282,9 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Mã tôn giáo"
-                  autoComplete="religion"
-                  name="religion"
+                  placeholder="Loại bằng cấp"
+                  autoComplete="degree_types"
+                  name="degree_types"
                   onChange={this.handleInputChange}
                   required
                   allowClear
@@ -304,7 +298,7 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên tôn giáo"
+                  placeholder="Tên loại bằng cấp"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -323,8 +317,6 @@ class Religion extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              //   defaultValue={search}
-              //   onSearch={}
               placeholder="Search..."
               allowClear
               onChange={(event) => this.handleSearch(event)}
@@ -332,18 +324,12 @@ class Religion extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.religions} bordered scroll={{ y: 240 }}>
-          {/* <Column
-            title="#"
-            key="#"
-            render={() => (_, __, index) => (page - 1) * pageSize + (index + 1)}
-            width="70"
-          /> */}
-          <Column title="Mã" dataIndex="religion" key="nationalty" />
+        <Table dataSource={this.state.degreeType} bordered scroll={{ y: 240 }}>
+          <Column title="Mã" dataIndex="degree_types" key="degree_types" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.religions}
+            key={this.state.degreeType}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -378,10 +364,10 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
-                  name="religion"
-                  value={this.state.religion}
+                  placeholder="Loại bằng cấp"
+                  autoComplete="degree_types"
+                  name="degree_types"
+                  value={this.state.degree_types}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -392,7 +378,7 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Name"
+                  placeholder="Tên loại bằng cấp"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -426,8 +412,8 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
+                  placeholder="id"
+                  autoComplete="id"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -464,4 +450,4 @@ class Religion extends Component {
   }
 }
 
-export default Religion
+export default DegreeType

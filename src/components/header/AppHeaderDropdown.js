@@ -3,7 +3,8 @@ import Pool from '../../utils/UserPool'
 import getSession from '../../utils/getSession'
 import getProfile from '../../utils/getProfile'
 import { useNavigate } from 'react-router-dom'
-
+import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+import { message } from 'antd'
 import {
   CAvatar,
   CBadge,
@@ -69,6 +70,15 @@ const AppHeaderDropdown = () => {
           // console.log(error.response.status)
           // console.log(error.response.headers)
           if (error.response.data.code === 'AUTH_0') {
+            message.error({
+              content: 'Bạn đã hết phiên làm việc. Vui lòng đăng nhập lại',
+              duration: 10,
+              maxCount: 1,
+              className: 'custom-class',
+              style: {
+                marginTop: '20vh',
+              },
+            })
             user.signOut()
             localStorage.removeItem('token')
             navigate('/login')
@@ -92,7 +102,7 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
-        <CDropdownItem href="#">
+        {/* <CDropdownItem href="#">
           <CIcon icon={cilBell} className="me-2" />
           Updates
           <CBadge color="info" className="ms-2">
@@ -105,7 +115,7 @@ const AppHeaderDropdown = () => {
           <CBadge color="success" className="ms-2">
             42
           </CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem href="#">
           <CIcon icon={cilTask} className="me-2" />
           Tasks
@@ -113,19 +123,19 @@ const AppHeaderDropdown = () => {
             42
           </CBadge>
         </CDropdownItem>
-        <CDropdownItem href="#">
+        {/* <CDropdownItem href="#">
           <CIcon icon={cilCommentSquare} className="me-2" />
           Comments
           <CBadge color="warning" className="ms-2">
             42
           </CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
         <CDropdownItem href="/#/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="#">
+        {/* <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />
           Settings
         </CDropdownItem>
@@ -135,7 +145,7 @@ const AppHeaderDropdown = () => {
           <CBadge color="secondary" className="ms-2">
             42
           </CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem href="#">
           <CIcon icon={cilFile} className="me-2" />
           Projects

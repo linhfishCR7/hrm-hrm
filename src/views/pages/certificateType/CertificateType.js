@@ -32,30 +32,28 @@ import {
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
-import Pool from '../../../utils/UserPool'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class Religion extends Component {
+class CertificateType extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      religions: [],
+      certificateType: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      religion: '',
+      certificate_types: '',
       name: '',
     }
 
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
-    const user = Pool.getCurrentUser()
   }
 
   async componentDidMount() {
     await axios
-      .get('/hrm/religions/?no_pagination=true', {
+      .get('/hrm/certificate-types/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -63,15 +61,11 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const religions = res.data
+        const certificateType = res.data
         this.setState({
-          religions: religions,
-          //   message: 'Thêm dữ liệu thành công!!!!',
-          //   isSuccess: true,
-          //   isError: false,
+          certificateType: certificateType,
         })
       })
-      //   .catch((error) => this.setState({ message: error, isSuccess: false, isError: true }))
       .catch((error) => console.log(error))
   }
 
@@ -88,12 +82,12 @@ class Religion extends Component {
     event.preventDefault()
 
     const newItem = {
-      religion: this.state.religion,
+      certificate_types: this.state.certificate_types,
       name: this.state.name,
     }
 
     await axios
-      .post('/hrm/religions/', newItem, {
+      .post('/hrm/certificate-types/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -101,9 +95,9 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let religions = this.state.religions
-        religions = [newItem, ...religions]
-        this.setState({ religions: religions })
+        let certificateType = this.state.certificateType
+        certificateType = [newItem, ...certificateType]
+        this.setState({ certificateType: certificateType })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -146,7 +140,7 @@ class Religion extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      religion: item.religion,
+      certificate_types: item.certificate_types,
       name: item.name,
     })
   }
@@ -173,12 +167,12 @@ class Religion extends Component {
 
     const newUpdate = {
       //   id: this.state.id,
-      religion: this.state.religion,
+      certificate_types: this.state.certificate_types,
       name: this.state.name,
     }
 
     await axios
-      .put('/hrm/religions/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/certificate-types/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -188,11 +182,11 @@ class Religion extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          religions: prevState.religions.map((elm) =>
+          certificateType: prevState.certificateType.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  religion: this.state.religion,
+                  certificate_types: this.state.certificate_types,
                   name: this.state.name,
                 }
               : elm,
@@ -229,7 +223,7 @@ class Religion extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/religions/' + this.state.id + '/', {
+      .delete('/hrm/certificate-types/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -238,7 +232,7 @@ class Religion extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          religions: prevState.religions.filter((el) => el.id !== this.state.id),
+          certificateType: prevState.certificateType.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -265,7 +259,7 @@ class Religion extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/religions/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/certificate-types/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -273,12 +267,12 @@ class Religion extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ religions: res.data })
+    this.setState({ certificateType: res.data })
   }
   render() {
     return (
       <>
-        <h2>Thêm Tôn Giáo</h2>
+        <h2>Thêm Loại Chứng Chỉ</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -288,9 +282,9 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Mã tôn giáo"
-                  autoComplete="religion"
-                  name="religion"
+                  placeholder="Loại chứng chỉ"
+                  autoComplete="certificate_types"
+                  name="certificate_types"
                   onChange={this.handleInputChange}
                   required
                   allowClear
@@ -304,7 +298,7 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên tôn giáo"
+                  placeholder="Tên loại chứng chỉ"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -323,8 +317,6 @@ class Religion extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              //   defaultValue={search}
-              //   onSearch={}
               placeholder="Search..."
               allowClear
               onChange={(event) => this.handleSearch(event)}
@@ -332,18 +324,12 @@ class Religion extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.religions} bordered scroll={{ y: 240 }}>
-          {/* <Column
-            title="#"
-            key="#"
-            render={() => (_, __, index) => (page - 1) * pageSize + (index + 1)}
-            width="70"
-          /> */}
-          <Column title="Mã" dataIndex="religion" key="nationalty" />
+        <Table dataSource={this.state.certificateType} bordered scroll={{ y: 240 }}>
+          <Column title="Mã" dataIndex="certificate_types" key="nationalty" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.religions}
+            key={this.state.certificateType}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -378,10 +364,10 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
-                  name="religion"
-                  value={this.state.religion}
+                  placeholder="Loại chứng chỉ"
+                  autoComplete="certificate_types"
+                  name="certificate_types"
+                  value={this.state.certificate_types}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -392,7 +378,7 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Name"
+                  placeholder="Tên loại chứng chỉ"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -426,8 +412,8 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
+                  placeholder="certificate_types"
+                  autoComplete="certificate_types"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -464,4 +450,4 @@ class Religion extends Component {
   }
 }
 
-export default Religion
+export default CertificateType

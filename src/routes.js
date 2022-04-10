@@ -5,7 +5,9 @@ const Profile = React.lazy(() => import('./views/profile/Profile'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
-const PersonList = React.lazy(() => import('./views/pages/religion/Test'))
+const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
+const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
+const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -50,15 +52,16 @@ const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'))
 const Badges = React.lazy(() => import('./views/notifications/badges/Badges'))
 const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
-
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/profile', name: 'Profile', element: Profile },
-  { path: '/test', name: 'PersonList', element: PersonList },
   { path: '/religion', name: 'Religion', element: Religion },
+  { path: '/nationality', name: 'Nationality', element: Nationality },
+  { path: '/certificate-type', name: 'CertificateType', element: CertificateType },
+  { path: '/degree-type', name: 'DegreeType', element: DegreeType },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

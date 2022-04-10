@@ -56,11 +56,21 @@ const _nav = [
         name: 'Religion',
         to: '/religion',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Breadcrumb',
-      //   to: '/base/breadcrumbs',
-      // },
+      {
+        component: CNavItem,
+        name: 'Nationality',
+        to: '/nationality',
+      },
+      {
+        component: CNavItem,
+        name: 'Certificate Type',
+        to: '/certificate-type',
+      },
+      {
+        component: CNavItem,
+        name: 'Degree Type',
+        to: '/degree-type',
+      },
       // {
       //   component: CNavItem,
       //   name: 'Cards',

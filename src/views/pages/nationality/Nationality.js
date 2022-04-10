@@ -32,30 +32,31 @@ import {
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
-import Pool from '../../../utils/UserPool'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class Religion extends Component {
+class Nationality extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      religions: [],
+      nationalities: [],
+      //   message: '',
+      //   isShow: false,
+      //   isSuccess: false,
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      religion: '',
+      nationality: '',
       name: '',
     }
 
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
-    const user = Pool.getCurrentUser()
   }
 
   async componentDidMount() {
     await axios
-      .get('/hrm/religions/?no_pagination=true', {
+      .get('/hrm/nationalities/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -63,9 +64,9 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const religions = res.data
+        const nationalities = res.data
         this.setState({
-          religions: religions,
+          nationalities: nationalities,
           //   message: 'Thêm dữ liệu thành công!!!!',
           //   isSuccess: true,
           //   isError: false,
@@ -88,12 +89,12 @@ class Religion extends Component {
     event.preventDefault()
 
     const newItem = {
-      religion: this.state.religion,
+      nationality: this.state.nationality,
       name: this.state.name,
     }
 
     await axios
-      .post('/hrm/religions/', newItem, {
+      .post('/hrm/nationalities/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -101,9 +102,9 @@ class Religion extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let religions = this.state.religions
-        religions = [newItem, ...religions]
-        this.setState({ religions: religions })
+        let nationalities = this.state.nationalities
+        nationalities = [newItem, ...nationalities]
+        this.setState({ nationalities: nationalities })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -118,7 +119,7 @@ class Religion extends Component {
         if (error.response.status === 400) {
           message.error({
             content: error.response.data.message,
-            duration: 5,
+            duration: 10,
             maxCount: 1,
             className: 'custom-class',
             style: {
@@ -128,7 +129,7 @@ class Religion extends Component {
         } else {
           message.error({
             content: error,
-            duration: 5,
+            duration: 10,
             maxCount: 1,
             className: 'custom-class',
             style: {
@@ -146,7 +147,7 @@ class Religion extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      religion: item.religion,
+      nationality: item.nationality,
       name: item.name,
     })
   }
@@ -173,12 +174,12 @@ class Religion extends Component {
 
     const newUpdate = {
       //   id: this.state.id,
-      religion: this.state.religion,
+      nationality: this.state.nationality,
       name: this.state.name,
     }
 
     await axios
-      .put('/hrm/religions/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/nationalities/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -188,11 +189,11 @@ class Religion extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          religions: prevState.religions.map((elm) =>
+          nationalities: prevState.nationalities.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  religion: this.state.religion,
+                  nationality: this.state.nationality,
                   name: this.state.name,
                 }
               : elm,
@@ -229,7 +230,7 @@ class Religion extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/religions/' + this.state.id + '/', {
+      .delete('/hrm/nationalities/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -238,7 +239,7 @@ class Religion extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          religions: prevState.religions.filter((el) => el.id !== this.state.id),
+          nationalities: prevState.nationalities.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -265,7 +266,7 @@ class Religion extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/religions/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/nationalities/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -273,12 +274,12 @@ class Religion extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ religions: res.data })
+    this.setState({ nationalities: res.data })
   }
   render() {
     return (
       <>
-        <h2>Thêm Tôn Giáo</h2>
+        <h2>Thêm Quốc Tịch</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -288,9 +289,9 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Mã tôn giáo"
-                  autoComplete="religion"
-                  name="religion"
+                  placeholder="Mã quốc tịch"
+                  autoComplete="nationality"
+                  name="nationality"
                   onChange={this.handleInputChange}
                   required
                   allowClear
@@ -304,7 +305,7 @@ class Religion extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên tôn giáo"
+                  placeholder="Tên quốc tịch"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -332,18 +333,18 @@ class Religion extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.religions} bordered scroll={{ y: 240 }}>
+        <Table dataSource={this.state.nationalities} bordered scroll={{ y: 240 }}>
           {/* <Column
             title="#"
             key="#"
             render={() => (_, __, index) => (page - 1) * pageSize + (index + 1)}
             width="70"
           /> */}
-          <Column title="Mã" dataIndex="religion" key="nationalty" />
+          <Column title="Mã" dataIndex="nationality" key="nationalty" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.religions}
+            key={this.state.nationalities}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -380,8 +381,8 @@ class Religion extends Component {
                   type="text"
                   placeholder="Religion"
                   autoComplete="religion"
-                  name="religion"
-                  value={this.state.religion}
+                  name="nationality"
+                  value={this.state.nationality}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -464,4 +465,4 @@ class Religion extends Component {
   }
 }
 
-export default Religion
+export default Nationality
