@@ -35,15 +35,15 @@ import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class DegreeType extends Component {
+class DayOffType extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      degreeType: [],
+      dayOffType: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      degree_types: '',
+      day_off_types: '',
       name: '',
     }
 
@@ -53,7 +53,7 @@ class DegreeType extends Component {
 
   async componentDidMount() {
     await axios
-      .get('/hrm/degree-types/?no_pagination=true', {
+      .get('/hrm/day-off-types/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -61,9 +61,9 @@ class DegreeType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const degreeType = res.data
+        const dayOffType = res.data
         this.setState({
-          degreeType: degreeType,
+          dayOffType: dayOffType,
         })
       })
       .catch((error) => console.log(error))
@@ -82,12 +82,12 @@ class DegreeType extends Component {
     event.preventDefault()
 
     const newItem = {
-      degree_types: this.state.degree_types,
+      day_off_types: this.state.day_off_types,
       name: this.state.name,
     }
 
     await axios
-      .post('/hrm/degree-types/', newItem, {
+      .post('/hrm/day-off-types/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -95,9 +95,9 @@ class DegreeType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let degreeType = this.state.degreeType
-        degreeType = [newItem, ...degreeType]
-        this.setState({ degreeType: degreeType })
+        let dayOffType = this.state.dayOffType
+        dayOffType = [newItem, ...dayOffType]
+        this.setState({ dayOffType: dayOffType })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -143,10 +143,11 @@ class DegreeType extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      degree_types: item.degree_types,
+      day_off_types: item.day_off_types,
       name: item.name,
     })
   }
+
   openDeleteModal = (item) => {
     this.setState({
       modalDeleteIsOpen: true,
@@ -160,22 +161,24 @@ class DegreeType extends Component {
       modalIsOpen: false,
     })
   }
+
   closeDeleteModal = () => {
     this.setState({
       modalDeleteIsOpen: false,
     })
   }
+
   handleEditSubmit = async (event) => {
     event.preventDefault()
 
     const newUpdate = {
       //   id: this.state.id,
-      degree_types: this.state.degree_types,
+      day_off_types: this.state.day_off_types,
       name: this.state.name,
     }
 
     await axios
-      .put('/hrm/degree-types/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/day-off-types/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -185,11 +188,11 @@ class DegreeType extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          degreeType: prevState.degreeType.map((elm) =>
+          dayOffType: prevState.dayOffType.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  degree_types: this.state.degree_types,
+                  day_off_types: this.state.day_off_types,
                   name: this.state.name,
                 }
               : elm,
@@ -226,7 +229,7 @@ class DegreeType extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/degree-types/' + this.state.id + '/', {
+      .delete('/hrm/day-off-types/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -235,7 +238,7 @@ class DegreeType extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          degreeType: prevState.degreeType.filter((el) => el.id !== this.state.id),
+          dayOffType: prevState.dayOffType.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -262,7 +265,7 @@ class DegreeType extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/degree-types/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/day-off-types/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -270,12 +273,12 @@ class DegreeType extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ degreeType: res.data })
+    this.setState({ dayOffType: res.data })
   }
   render() {
     return (
       <>
-        <h2>Thêm Loại Bằng Cấp</h2>
+        <h2>Thêm Loại Phép Năm</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -285,9 +288,9 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại bằng cấp"
-                  autoComplete="degree_types"
-                  name="degree_types"
+                  placeholder="Loại phép năm"
+                  autoComplete="day_off_types"
+                  name="day_off_types"
                   onChange={this.handleInputChange}
                   required
                   allowClear
@@ -301,7 +304,7 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại bằng cấp"
+                  placeholder="Tên loại phép năm"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -327,12 +330,12 @@ class DegreeType extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.degreeType} bordered scroll={{ y: 240 }}>
-          <Column title="Mã" dataIndex="degree_types" key="degree_types" />
+        <Table dataSource={this.state.dayOffType} bordered scroll={{ y: 240 }}>
+          <Column title="Mã" dataIndex="day_off_types" key="day_off_types" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.degreeType}
+            key={this.state.dayOffType}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -367,10 +370,10 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại bằng cấp"
-                  autoComplete="degree_types"
-                  name="degree_types"
-                  value={this.state.degree_types}
+                  placeholder="Loại phép năm"
+                  autoComplete="day_off_types"
+                  name="day_off_types"
+                  value={this.state.day_off_types}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -381,7 +384,7 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại bằng cấp"
+                  placeholder="Tên loại phép năm"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -453,4 +456,4 @@ class DegreeType extends Component {
   }
 }
 
-export default DegreeType
+export default DayOffType

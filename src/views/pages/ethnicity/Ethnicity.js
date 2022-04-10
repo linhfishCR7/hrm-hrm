@@ -35,15 +35,15 @@ import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class DegreeType extends Component {
+class Ethnicity extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      degreeType: [],
+      ethnicities: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      degree_types: '',
+      ethnicity: '',
       name: '',
     }
 
@@ -51,9 +51,9 @@ class DegreeType extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
-    await axios
-      .get('/hrm/degree-types/?no_pagination=true', {
+  componentDidMount() {
+    axios
+      .get('/hrm/ethnicities/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -61,9 +61,9 @@ class DegreeType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const degreeType = res.data
+        const ethnicities = res.data
         this.setState({
-          degreeType: degreeType,
+          ethnicities: ethnicities,
         })
       })
       .catch((error) => console.log(error))
@@ -78,16 +78,16 @@ class DegreeType extends Component {
     })
   }
 
-  handleInsertSubmit = async (event) => {
+  handleInsertSubmit = (event) => {
     event.preventDefault()
 
     const newItem = {
-      degree_types: this.state.degree_types,
+      ethnicity: this.state.ethnicity,
       name: this.state.name,
     }
 
-    await axios
-      .post('/hrm/degree-types/', newItem, {
+    axios
+      .post('/hrm/ethnicities/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -95,13 +95,13 @@ class DegreeType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let degreeType = this.state.degreeType
-        degreeType = [newItem, ...degreeType]
-        this.setState({ degreeType: degreeType })
+        let ethnicities = this.state.ethnicities
+        ethnicities = [newItem, ...ethnicities]
+        this.setState({ ethnicities: ethnicities })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -116,7 +116,7 @@ class DegreeType extends Component {
           message.error({
             content: error.response.data.message,
             duration: 5,
-            maxCount: 1,
+            maxCount: 10,
             className: 'custom-class',
             style: {
               marginTop: '20vh',
@@ -126,7 +126,7 @@ class DegreeType extends Component {
           message.error({
             content: error,
             duration: 5,
-            maxCount: 1,
+            maxCount: 10,
             className: 'custom-class',
             style: {
               marginTop: '20vh',
@@ -143,10 +143,11 @@ class DegreeType extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      degree_types: item.degree_types,
+      ethnicity: item.ethnicity,
       name: item.name,
     })
   }
+
   openDeleteModal = (item) => {
     this.setState({
       modalDeleteIsOpen: true,
@@ -160,22 +161,23 @@ class DegreeType extends Component {
       modalIsOpen: false,
     })
   }
+
   closeDeleteModal = () => {
     this.setState({
       modalDeleteIsOpen: false,
     })
   }
-  handleEditSubmit = async (event) => {
+
+  handleEditSubmit = (event) => {
     event.preventDefault()
 
     const newUpdate = {
       //   id: this.state.id,
-      degree_types: this.state.degree_types,
+      ethnicity: this.state.ethnicity,
       name: this.state.name,
     }
-
-    await axios
-      .put('/hrm/degree-types/' + this.state.id + '/', newUpdate, {
+    axios
+      .put('/hrm/ethnicities/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -185,11 +187,11 @@ class DegreeType extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          degreeType: prevState.degreeType.map((elm) =>
+          ethnicities: prevState.ethnicities.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  degree_types: this.state.degree_types,
+                  ethnicity: this.state.ethnicity,
                   name: this.state.name,
                 }
               : elm,
@@ -199,7 +201,7 @@ class DegreeType extends Component {
         message.success({
           content: 'Update data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -210,7 +212,7 @@ class DegreeType extends Component {
         message.error({
           content: error,
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -226,7 +228,7 @@ class DegreeType extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/degree-types/' + this.state.id + '/', {
+      .delete('/hrm/ethnicities/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -235,12 +237,12 @@ class DegreeType extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          degreeType: prevState.degreeType.filter((el) => el.id !== this.state.id),
+          ethnicities: prevState.ethnicities.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -252,7 +254,7 @@ class DegreeType extends Component {
         message.error({
           content: error,
           duration: 10,
-          maxCount: 1,
+          maxCount: 10,
           className: 'custom-class',
           style: {
             marginTop: '20vh',
@@ -260,22 +262,22 @@ class DegreeType extends Component {
         }),
       )
   }
-  handleSearch = async (event) => {
+  handleSearch = (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/degree-types/?no_pagination=true&search=' + value
-    const res = await axios.get(REGISTER_URL, {
+    const REGISTER_URL = '/hrm/ethnicities/?no_pagination=true&search=' + value
+    const res = axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
       withCredentials: true,
     })
-    this.setState({ degreeType: res.data })
+    this.setState({ ethnicities: res.data })
   }
   render() {
     return (
       <>
-        <h2>Thêm Loại Bằng Cấp</h2>
+        <h2>Thêm Dân Tộc</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -285,12 +287,11 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại bằng cấp"
-                  autoComplete="degree_types"
-                  name="degree_types"
+                  placeholder="Dân tộc"
+                  autoComplete="ethnicity"
+                  name="ethnicity"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -301,7 +302,7 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại bằng cấp"
+                  placeholder="Tên dân tộc"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -327,12 +328,12 @@ class DegreeType extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.degreeType} bordered scroll={{ y: 240 }}>
-          <Column title="Mã" dataIndex="degree_types" key="degree_types" />
+        <Table dataSource={this.state.ethnicities} bordered scroll={{ y: 240 }}>
+          <Column title="Mã" dataIndex="ethnicity" key="ethnicity" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.degreeType}
+            // key={this.state.ethnicities}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -367,10 +368,10 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại bằng cấp"
-                  autoComplete="degree_types"
-                  name="degree_types"
-                  value={this.state.degree_types}
+                  placeholder="Dân tộc"
+                  autoComplete="ethnicity"
+                  name="ethnicity"
+                  value={this.state.ethnicity}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -381,7 +382,7 @@ class DegreeType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại bằng cấp"
+                  placeholder="Tên dân tộc"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -453,4 +454,4 @@ class DegreeType extends Component {
   }
 }
 
-export default DegreeType
+export default Ethnicity

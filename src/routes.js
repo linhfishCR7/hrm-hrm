@@ -1,14 +1,5 @@
 import React from 'react'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Profile = React.lazy(() => import('./views/profile/Profile'))
-const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
-const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
-const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
-const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
-const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
-
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -54,14 +45,30 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+//################################################################
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Profile = React.lazy(() => import('./views/profile/Profile'))
+const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
+const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
+const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
+const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
+const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
+const DayOffYear = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
+const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/religion', name: 'Religion', element: Religion },
   { path: '/nationality', name: 'Nationality', element: Nationality },
+  { path: '/ethnicity', name: 'Ethnicity', element: Ethnicity },
   { path: '/certificate-type', name: 'CertificateType', element: CertificateType },
   { path: '/degree-type', name: 'DegreeType', element: DegreeType },
+  { path: '/day-off-year', name: 'DayOffYear', element: DayOffYear },
+  // #################################################################
+
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

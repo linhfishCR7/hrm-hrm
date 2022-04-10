@@ -104,6 +104,7 @@ class Religion extends Component {
         let religions = this.state.religions
         religions = [newItem, ...religions]
         this.setState({ religions: religions })
+
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -113,6 +114,9 @@ class Religion extends Component {
             marginTop: '20vh',
           },
         })
+        setTimeout(function () {
+          window.location.reload()
+        }, 3000)
       })
       .catch(function (error) {
         if (error.response.status === 400) {

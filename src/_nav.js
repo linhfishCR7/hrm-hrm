@@ -71,6 +71,16 @@ const _nav = [
         name: 'Degree Type',
         to: '/degree-type',
       },
+      {
+        component: CNavItem,
+        name: 'Day Type',
+        to: '/day-off-year',
+      },
+      {
+        component: CNavItem,
+        name: 'Ethnicity',
+        to: '/ethnicity',
+      },
       // {
       //   component: CNavItem,
       //   name: 'Cards',

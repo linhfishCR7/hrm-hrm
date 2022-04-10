@@ -107,6 +107,9 @@ class CertificateType extends Component {
             marginTop: '20vh',
           },
         })
+        setTimeout(function () {
+          window.location.reload()
+        }, 3000)
       })
       .catch(function (error) {
         if (error.response.status === 400) {
