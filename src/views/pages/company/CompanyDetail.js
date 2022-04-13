@@ -105,99 +105,11 @@ const CompanyDetail = () => {
     })
   }
 
-  const handleUpdateSubmit = async (value) => {
-    const newItem = {
-      company: value['company'],
-      name: value['name'],
-      phone: value['phone'],
-      email: value['email'],
-      tax_code: value['tax_code'],
-      fax: value['fax'],
-      website: value['website'],
-      // logo: value['logo'][0]['name'],
-      addresses: [
-        {
-          address: value[0]['address'],
-          country: value[0]['country'],
-          city: value[0]['city'],
-          province: value[0]['province'],
-          district: value[0]['district'],
-          commune: value[0]['commune'],
-          postcode: value[0]['postcode'],
-          lat: value[0]['lat'],
-          lng: value[0]['lng'],
-          type: 'working_office_address',
-        },
-        {
-          address: value[1]['address'],
-          country: value[1]['country'],
-          city: value[1]['city'],
-          province: value[1]['province'],
-          district: value[1]['district'],
-          commune: value[1]['commune'],
-          postcode: value[1]['postcode'],
-          lat: value[1]['lat'],
-          lng: value[1]['lng'],
-          type: 'head_office_address',
-        },
-      ],
-    }
-    console.log(newItem)
-    // await axios
-    //   .put('/hrm/companies/' + id + '/', newItem, {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${TOKEN}`,
-    //     },
-    //     withCredentials: true,
-    //   })
-    //   .then((res) => {
-    //     const companies = res.data
-    //     setData(companies)
-    //     setDataAddress(companies.addresses)
-    //     setDataLogo(companies.logo)
-    //     message.success({
-    //       content: 'Add data Success!!!',
-    //       duration: 10,
-    //       maxCount: 1,
-    //       className: 'custom-class',
-    //       style: {
-    //         marginTop: '20vh',
-    //       },
-    //     })
-    //     // setTimeout(function () {
-    //     //   window.location.reload()
-    //     // }, 3000)
-    //   })
-    //   .catch(function (error) {
-    //     if (error.response.status === 400) {
-    //       message.error({
-    //         content: error.response.data.message,
-    //         duration: 5,
-    //         maxCount: 1,
-    //         className: 'custom-class',
-    //         style: {
-    //           marginTop: '20vh',
-    //         },
-    //       })
-    //     } else {
-    //       message.error({
-    //         content: error,
-    //         duration: 5,
-    //         maxCount: 1,
-    //         className: 'custom-class',
-    //         style: {
-    //           marginTop: '20vh',
-    //         },
-    //       })
-    //     }
-    //   })
-  }
   return (
     <>
       <h2>Công Ty</h2>
-      <Card title="Thêm Công Ty" bordered={false}>
-        <CForm onSubmit={handleUpdateSubmit}>
+      <Card title="Chi Tiết Công Ty" bordered={false}>
+        <CForm>
           <h3>Basic</h3>
           <hr />
           <CContainer>

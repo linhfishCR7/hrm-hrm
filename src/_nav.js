@@ -225,6 +225,24 @@ const _nav = [
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Customer',
+    to: '/customer',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'List Customer',
+        to: '/customer',
+      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Add Company',
+      //   to: '/add-company',
+      // },
+    ],
+  },
   // {
   //   component: CNavGroup,
   //   name: 'Buttons',
