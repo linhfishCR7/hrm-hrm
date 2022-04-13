@@ -72,7 +72,7 @@ const AppHeaderDropdown = () => {
           if (error.response.data.code === 'AUTH_0') {
             message.error({
               content: 'Bạn đã hết phiên làm việc. Vui lòng đăng nhập lại',
-              duration: 10,
+              duration: 5,
               maxCount: 1,
               className: 'custom-class',
               style: {

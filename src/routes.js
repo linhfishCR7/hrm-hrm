@@ -54,13 +54,17 @@ const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
 const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
 const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
 const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
-const DayOffYear = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
+const DayOffType = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
 const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
 const Position = React.lazy(() => import('./views/pages/position/Position'))
 const Literacy = React.lazy(() => import('./views/pages/literacy/Literacy'))
 const EmploymentContractType = React.lazy(() =>
   import('./views/pages/employmentContractType/EmploymentContractType'),
 )
+const KindOffWork = React.lazy(() => import('./views/pages/kindOffWork/KindOffWork'))
+const AddCompany = React.lazy(() => import('./views/pages/company/AddCompany'))
+const Company = React.lazy(() => import('./views/pages/company/Company'))
+const CompanyDetail = React.lazy(() => import('./views/pages/company/CompanyDetail'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -71,7 +75,7 @@ const routes = [
   { path: '/ethnicity', name: 'Ethnicity', element: Ethnicity },
   { path: '/certificate-type', name: 'CertificateType', element: CertificateType },
   { path: '/degree-type', name: 'DegreeType', element: DegreeType },
-  { path: '/day-off-year', name: 'DayOffYear', element: DayOffYear },
+  { path: '/day-off-type', name: 'DayOffType', element: DayOffType },
   { path: '/position', name: 'Position', element: Position },
   { path: '/literacy', name: 'Literacy', element: Literacy },
   {
@@ -79,6 +83,11 @@ const routes = [
     name: 'EmploymentContractType',
     element: EmploymentContractType,
   },
+  { path: '/kind-off-work', name: 'KindOffWork', element: KindOffWork },
+  { path: '/add-company', name: 'AddCompany', element: AddCompany },
+  { path: '/company', name: 'Company', element: Company },
+  { path: '/company/:id', name: 'CompanyDetail', element: CompanyDetail },
+
   // #################################################################
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

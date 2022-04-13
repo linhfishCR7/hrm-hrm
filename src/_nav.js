@@ -48,7 +48,7 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Base',
-    to: '/base',
+    to: '/dashboard',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
@@ -63,28 +63,8 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Certificate Type',
-        to: '/certificate-type',
-      },
-      {
-        component: CNavItem,
-        name: 'Degree Type',
-        to: '/degree-type',
-      },
-      {
-        component: CNavItem,
-        name: 'Day Type',
-        to: '/day-off-year',
-      },
-      {
-        component: CNavItem,
         name: 'Ethnicity',
         to: '/ethnicity',
-      },
-      {
-        component: CNavItem,
-        name: 'Employment Contract Type',
-        to: '/employment-contract-type',
       },
       {
         component: CNavItem,
@@ -156,6 +136,93 @@ const _nav = [
       //   name: 'Tooltips',
       //   to: '/base/tooltips',
       // },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Components',
+  },
+  {
+    component: CNavGroup,
+    name: 'Certificate',
+    to: '/certificate-type',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Certificate Type',
+        to: '/certificate-type',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Degree',
+    to: '/degree-type',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Degree Type',
+        to: '/degree-type',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Day Off',
+    to: '/day-off-type',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Day Off Type',
+        to: '/day-off-type',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Employment Contract',
+    to: '/employment-contract-type',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Contract Type',
+        to: '/employment-contract-type',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Kind Off Work',
+    to: '/kind-off-work',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Kind Off Work',
+        to: '/kind-off-work',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Company',
+    to: '/company',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'List Company',
+        to: '/company',
+      },
+      {
+        component: CNavItem,
+        name: 'Add Company',
+        to: '/add-company',
+      },
     ],
   },
   // {

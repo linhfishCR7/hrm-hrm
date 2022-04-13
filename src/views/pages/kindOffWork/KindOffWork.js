@@ -32,28 +32,30 @@ import {
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import Pool from '../../../utils/UserPool'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class DayOffType extends Component {
+class KindOffworks extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dayOffType: [],
+      works: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      day_off_types: '',
+      work: '',
       name: '',
     }
 
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
+    const user = Pool.getCurrentUser()
   }
 
   async componentDidMount() {
     await axios
-      .get('/hrm/day-off-types/?no_pagination=true', {
+      .get('/hrm/kinds-of-work/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -61,11 +63,15 @@ class DayOffType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const dayOffType = res.data
+        const works = res.data
         this.setState({
-          dayOffType: dayOffType,
+          works: works,
+          //   message: 'Thêm dữ liệu thành công!!!!',
+          //   isSuccess: true,
+          //   isError: false,
         })
       })
+      //   .catch((error) => this.setState({ message: error, isSuccess: false, isError: true }))
       .catch((error) => console.log(error))
   }
 
@@ -76,21 +82,18 @@ class DayOffType extends Component {
     this.setState({
       [name]: value,
     })
-    console.log({
-      [name]: value,
-    })
   }
 
   handleInsertSubmit = async (event) => {
     event.preventDefault()
 
     const newItem = {
-      day_off_types: this.state.day_off_types,
+      work: this.state.work,
       name: this.state.name,
     }
 
     await axios
-      .post('/hrm/day-off-types/', newItem, {
+      .post('/hrm/kinds-of-work/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -98,9 +101,10 @@ class DayOffType extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let dayOffType = this.state.dayOffType
-        dayOffType = [newItem, ...dayOffType]
-        this.setState({ dayOffType: dayOffType })
+        let works = this.state.works
+        works = [newItem, ...works]
+        this.setState({ works: works })
+
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -146,11 +150,10 @@ class DayOffType extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      day_off_types: item.day_off_types,
+      work: item.work,
       name: item.name,
     })
   }
-
   openDeleteModal = (item) => {
     this.setState({
       modalDeleteIsOpen: true,
@@ -164,24 +167,22 @@ class DayOffType extends Component {
       modalIsOpen: false,
     })
   }
-
   closeDeleteModal = () => {
     this.setState({
       modalDeleteIsOpen: false,
     })
   }
-
   handleEditSubmit = async (event) => {
     event.preventDefault()
 
     const newUpdate = {
       //   id: this.state.id,
-      day_off_types: this.state.day_off_types,
+      work: this.state.work,
       name: this.state.name,
     }
 
     await axios
-      .put('/hrm/day-off-types/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/kinds-of-work/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -191,11 +192,11 @@ class DayOffType extends Component {
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          dayOffType: prevState.dayOffType.map((elm) =>
+          works: prevState.works.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  day_off_types: this.state.day_off_types,
+                  work: this.state.work,
                   name: this.state.name,
                 }
               : elm,
@@ -232,7 +233,7 @@ class DayOffType extends Component {
       id: this.state.id,
     }
     axios
-      .delete('/hrm/day-off-types/' + this.state.id + '/', {
+      .delete('/hrm/kinds-of-work/' + this.state.id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -241,7 +242,7 @@ class DayOffType extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          dayOffType: prevState.dayOffType.filter((el) => el.id !== this.state.id),
+          works: prevState.works.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -268,7 +269,7 @@ class DayOffType extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/day-off-types/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/kinds-of-work/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
@@ -276,12 +277,12 @@ class DayOffType extends Component {
       },
       withCredentials: true,
     })
-    this.setState({ dayOffType: res.data })
+    this.setState({ works: res.data })
   }
   render() {
     return (
       <>
-        <h2> Loại Phép Năm</h2>
+        <h2>Loại Chấm Công</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -291,9 +292,9 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
-                  autoComplete="day_off_types"
-                  name="day_off_types"
+                  placeholder="Mã chấm công"
+                  autoComplete="work"
+                  name="work"
                   onChange={this.handleInputChange}
                   required
                   allowClear
@@ -307,7 +308,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên chấm công"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -326,6 +327,8 @@ class DayOffType extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
+              //   defaultValue={search}
+              //   onSearch={}
               placeholder="Search..."
               allowClear
               onChange={(event) => this.handleSearch(event)}
@@ -333,12 +336,18 @@ class DayOffType extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.dayOffType} bordered scroll={{ y: 240 }}>
-          <Column title="Mã" dataIndex="day_off_types" key="day_off_types" />
+        <Table dataSource={this.state.works} bordered scroll={{ y: 240 }}>
+          {/* <Column
+            title="#"
+            key="#"
+            render={() => (_, __, index) => (page - 1) * pageSize + (index + 1)}
+            width="70"
+          /> */}
+          <Column title="Mã" dataIndex="work" key="work" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"
-            key={this.state.dayOffType}
+            key={this.state.works}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
@@ -373,10 +382,10 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
-                  autoComplete="day_off_types"
-                  name="day_off_types"
-                  value={this.state.day_off_types}
+                  placeholder="Loại chấm công"
+                  autoComplete="work"
+                  name="work"
+                  value={this.state.work}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -387,7 +396,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên chấm công"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -421,8 +430,8 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="id"
-                  autoComplete="id"
+                  placeholder="work"
+                  autoComplete="work"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -459,4 +468,4 @@ class DayOffType extends Component {
   }
 }
 
-export default DayOffType
+export default KindOffworks

@@ -44,7 +44,7 @@ const Login = () => {
   const [companydata, setCompanyData] = useState([{}])
 
   const getCompany = async () => {
-    const REGISTER_URL = '/hrm/companies/'
+    const REGISTER_URL = '/hrm/companies/list/'
     return await axios.get(REGISTER_URL, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
@@ -68,7 +68,7 @@ const Login = () => {
   }, [company])
 
   const getBranch = async (company) => {
-    const REGISTER_URL = '/hrm/branchs/?company__id=' + company
+    const REGISTER_URL = '/hrm/branchs/list/?company__id=' + company
     return await axios.get(REGISTER_URL, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
