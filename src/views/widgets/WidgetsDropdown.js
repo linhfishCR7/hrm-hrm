@@ -45,7 +45,7 @@ const WidgetsDropdown = () => {
       })
       .then((res) => {
         setDataProject(res.data)
-        console.log(res.data[0].month)
+        // console.log(res.data[0].month)
       })
       .catch((error) => console.log(error))
   }

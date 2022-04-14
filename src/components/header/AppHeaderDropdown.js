@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Pool from '../../utils/UserPool'
 import getSession from '../../utils/getSession'
 import getProfile from '../../utils/getProfile'
+import getTokenFCM from '../../utils/firebase'
+
 import { useNavigate } from 'react-router-dom'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { message } from 'antd'
@@ -41,8 +43,11 @@ const AppHeaderDropdown = () => {
   const [visible, setVisible] = useState(false)
   const [error, setError] = useState('')
   const [status, setStatus] = useState(false)
+  const [isTokenFound, setTokenFound] = useState(false)
 
   useEffect(() => {
+    getTokenFCM(setTokenFound)
+
     getSession().then(() => {
       setStatus(true)
     })
@@ -85,7 +90,8 @@ const AppHeaderDropdown = () => {
           }
         }
       })
-  }, [])
+  }, [setTokenFound])
+
   const logout = () => {
     if (user) {
       user.signOut()

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
-import axios1 from 'axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import {
   Table,
