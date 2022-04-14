@@ -3,6 +3,7 @@ import Pool from '../../utils/UserPool'
 import { useNavigate } from 'react-router-dom'
 import getProfile from '../../utils/getProfile'
 import axios from '../../utils/axios'
+import { TOKEN } from '../../constants/Config'
 
 import {
   CButton,
@@ -25,6 +26,9 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilCloudUpload, cilUser } from '@coreui/icons'
+import { UploadOutlined } from '@ant-design/icons'
+import { Button, message, Upload } from 'antd'
+
 import '../../assets/style.css'
 
 const Profile = () => {
@@ -33,9 +37,9 @@ const Profile = () => {
   const [firstname, setFirstName] = useState('')
   const [lastname, setLastName] = useState('')
   const [phone, setPhone] = useState('')
-  const [image, setImage] = useState('')
   const [dayofbirth, setDayOfBirth] = useState('')
-  const [imagenew, setImageNew] = useState('')
+  const [image, setImage] = useState('')
+
   const user = Pool.getCurrentUser()
   useEffect(() => {
     if (!user) {
@@ -53,9 +57,9 @@ const Profile = () => {
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response.data.code)
-          console.log(error.response.status)
-          console.log(error.response.headers)
+          // console.log(error.response.data.code)
+          // console.log(error.response.status)
+          // console.log(error.response.headers)
           if (error.response.data.code === 'AUTH_0') {
             user.signOut()
             localStorage.removeItem('token')
@@ -64,109 +68,161 @@ const Profile = () => {
         }
       })
   }, [])
-  const [field, setField] = useState({})
-  const [visible, setVisible] = useState(false)
-  // const [policy, setPolicy] = useState('')
-  // const [algorithm, setAlgorithm] = useState('')
-  // const [credential, setCredential] = useState('')
-  // const [date, setDate] = useState('')
-  // const [signature, setSignature] = useState('')
-  // const [url, setUrl] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [key, setKey] = useState('')
+  const [logo, setLogo] = useState('')
+  const [logo_url, setLogoUrl] = useState('')
 
-  // const submitForm = (event) => {
-  //   event.preventDefault()
-
-  //   const REGISTER_URL = '/common/upload/policy/'
-  //   axios
-  //     .post(REGISTER_URL, {
-  //       file_name: imagenew,
-  //     })
-  //     .then((response) => {
-  //       return setField(response.data.fields)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-
-  //   axios
-  //     .post('https://hrm-s3.s3.amazonaws.com/', {
-  //       file: imagenew,
-  //       // type: field.Content-Type,
-  //       // key: field.key,
-  //       // algorithm: field.x-amz-algorithm,
-  //       // credential: field.x-amz-credential,
-  //       // date: field.x-amz-date,
-  //       // policy: field.policy,
-  //       // signature: field.x-amz-signature,
-  //     })
-  //     .then((response) => {
-  //       console.log(response)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-  // }
-
+  const updateProfile = async (key) => {
+    await axios.put('/auth/profile/', key, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      withCredentials: true,
+    })
+  }
+  const onSubmit = () => {
+    const data = {
+      email: email,
+      first_name: firstname,
+      last_name: lastname,
+      phone: phone,
+      date_of_birth: dayofbirth,
+    }
+    updateProfile(data)
+      .then((res) => {
+        message.success({
+          content: 'Cập Nhật profile thành công!!!',
+          duration: 5,
+          maxCount: 1,
+          className: 'custom-class',
+          style: {
+            marginTop: '20vh',
+          },
+        })
+      })
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          message.error({
+            content: error.response.data.message,
+            duration: 5,
+            maxCount: 1,
+            className: 'custom-class',
+            style: {
+              marginTop: '20vh',
+            },
+          })
+        } else {
+          message.error({
+            content: error,
+            duration: 10,
+            maxCount: 1,
+            className: 'custom-class',
+            style: {
+              marginTop: '20vh',
+            },
+          })
+        }
+      })
+  }
   return (
     <>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
-        <CModalHeader>
-          <CModalTitle>Modal title</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          {/* <CImage fluid src={key} /> */}
-          <CForm>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                type="file"
-                id="inputGroupFile02"
-                value={imagenew}
-                onChange={(event) => setImageNew(event.target.value)}
-              />
-              <CInputGroupText component="label" htmlFor="inputGroupFile02">
-                UPLOAD
-              </CInputGroupText>
-            </CInputGroup>
-          </CForm>
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-          <CButton color="primary">Save changes</CButton>
-        </CModalFooter>
-      </CModal>
       <CCard className="mb-4">
         <CCardBody>
           <h1> My Profile </h1> <p className="text-medium-emphasis"></p>{' '}
-          {/* <CForm onSubmit={onSubmit} className={success ? 'hide' : ''}> */}
-          <CForm>
-            <CRow>
-              <CCol>
-                <CInputGroup className="mb-3">
-                  {/* <CImage src={image} width={160} height={160} className="mb-3 rounded-circle" /> */}
-                  <CButton
-                    color="white"
-                    className="rounded-circle"
-                    onClick={() => setVisible(!visible)}
-                  >
-                    {image ? (
-                      <CImage src={image} width={160} height={160} className="rounded-circle" />
-                    ) : (
-                      <CImage
-                        src="https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png"
-                        width={160}
-                        height={160}
-                        className="rounded-circle"
-                      />
-                    )}
-                  </CButton>{' '}
-                </CInputGroup>{' '}
-              </CCol>
-            </CRow>
-          </CForm>{' '}
+          {image ? (
+            <CImage src={image} width={160} height={160} className="rounded-circle mb-5" />
+          ) : (
+            <CImage
+              src="https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png"
+              width={160}
+              height={160}
+              className="rounded-circle"
+            />
+          )}
+          <Upload
+            disabled={loading}
+            accept="image/*"
+            customRequest={({ file, onError, onSuccess, onProgress }) => {
+              const fileType = file.type
+              const file_name = file.name
+              setLoading(true)
+              setKey(file.name)
+
+              axios
+                .post('/common/upload/policy/', {
+                  file_name,
+                })
+                .then((results) => {
+                  var returnData = results.data
+                  var signedRequest = returnData.url
+                  var content = returnData.fields
+                  var key = content.key
+                  var formData = new FormData()
+                  Object.keys(returnData.fields).forEach((key) =>
+                    formData.append(key, returnData.fields[key]),
+                  )
+                  formData.append('file', file)
+
+                  fetch(signedRequest, {
+                    method: 'POST',
+                    body: formData,
+                  })
+                    .then(async (result) => {
+                      setLoading(false)
+                      setLogo(key)
+                      setLogoUrl(signedRequest + key)
+                      setImage(signedRequest + key)
+                      const key_data = { image: key }
+                      updateProfile(key_data)
+                      onSuccess(result, file)
+                      message.success({
+                        content: 'Upload ảnh thành công!!!',
+                        duration: 10,
+                        maxCount: 1,
+                        className: 'custom-class',
+                        style: {
+                          marginTop: '20vh',
+                        },
+                      })
+                    })
+                    .catch((error) => {
+                      setLoading(false)
+
+                      onError(error)
+                      message.error({
+                        content: JSON.stringify(error),
+                        duration: 5,
+                        maxCount: 1,
+                        className: 'custom-class',
+                        style: {
+                          marginTop: '20vh',
+                        },
+                      })
+                    })
+                })
+                .catch((error) => {
+                  setLoading(false)
+
+                  message.error({
+                    content: 'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
+                    duration: 10,
+                    maxCount: 1,
+                    className: 'custom-class',
+                    style: {
+                      marginTop: '20vh',
+                    },
+                  })
+                })
+            }}
+          >
+            <Button loading={loading}>
+              <UploadOutlined />
+            </Button>
+          </Upload>
           <br />
-          <CForm>
+          <CForm onSubmit={onSubmit}>
             <CRow>
               <CCol>
                 {' '}
@@ -232,7 +288,7 @@ const Profile = () => {
               </CCol>
             </CRow>
             <CRow>
-              <CCol>
+              <CCol md={6}>
                 <CInputGroup className="mb-3">
                   <CInputGroupText>
                     <CIcon icon={cilLockLocked} />{' '}
@@ -252,9 +308,9 @@ const Profile = () => {
             </CRow>
             <CRow>
               <CCol>
-                <div className="d-grid">
+                <div>
                   <CButton color="info" type="submit">
-                    Create Account{' '}
+                    Lưu{' '}
                   </CButton>{' '}
                 </div>{' '}
               </CCol>

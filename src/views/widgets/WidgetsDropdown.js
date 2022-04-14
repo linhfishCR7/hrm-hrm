@@ -19,6 +19,8 @@ import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 const WidgetsDropdown = () => {
   const [data, setData] = useState({})
   const [dataProject, setDataProject] = useState([{}])
+  const [dataStaff, setDataStaff] = useState([{}])
+  const [dataCustomer, setDataCustomer] = useState([{}])
 
   const fetchDashboardAPI = async () => {
     await axios
@@ -49,9 +51,41 @@ const WidgetsDropdown = () => {
       })
       .catch((error) => console.log(error))
   }
+  const fetchStaffAPI = async () => {
+    await axios
+      .get('/hrm/dashboard/staff-by-time/', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        setDataStaff(res.data)
+        // console.log(res.data[0].month)
+      })
+      .catch((error) => console.log(error))
+  }
+  const fetchCustomerAPI = async () => {
+    await axios
+      .get('/hrm/dashboard/staff-by-time/', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        setDataCustomer(res.data)
+        // console.log(res.data[0].month)
+      })
+      .catch((error) => console.log(error))
+  }
   useEffect(() => {
     fetchDashboardAPI()
     fetchProjectAPI()
+    fetchStaffAPI()
+    fetchCustomerAPI()
   }, [])
   return (
     <CRow>
@@ -75,71 +109,68 @@ const WidgetsDropdown = () => {
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
           }
-          // chart={
-          //   <CChartLine
-          //     className="mt-3 mx-3"
-          //     style={{ height: '70px' }}
-          //     data={{
-          //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          //       datasets: [
-          //         {
-          //           label: 'My First dataset',
-          //           backgroundColor: 'transparent',
-          //           borderColor: 'rgba(255,255,255,.55)',
-          //           pointBackgroundColor: getStyle('--cui-primary'),
-          //           data: [65, 59, 84, 84, 51, 55, 40],
-          //         },
-          //       ],
-          //     }}
-          //     options={{
-          //       plugins: {
-          //         legend: {
-          //           display: false,
-          //         },
-          //       },
-          //       maintainAspectRatio: false,
-          //       scales: {
-          //         x: {
-          //           grid: {
-          //             display: false,
-          //             drawBorder: false,
-          //           },
-          //           ticks: {
-          //             display: false,
-          //           },
-          //         },
-          //         y: {
-          //           min: 30,
-          //           max: 89,
-          //           display: false,
-          //           grid: {
-          //             display: false,
-          //           },
-          //           ticks: {
-          //             display: false,
-          //           },
-          //         },
-          //       },
-          //       elements: {
-          //         line: {
-          //           borderWidth: 1,
-          //           tension: 0.4,
-          //         },
-          //         point: {
-          //           radius: 4,
-          //           hitRadius: 10,
-          //           hoverRadius: 4,
-          //         },
-          //       },
-          //     }}
-          //   />
-          // }
+          chart={
+            <CChartLine
+              className="mt-3 mx-3"
+              style={{ height: '70px' }}
+              data={{
+                labels: dataStaff.map((item) => 'Tháng ' + item.month),
+                datasets: [
+                  {
+                    label: 'Nhân Viên Theo Tháng',
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(255,255,255,.55)',
+                    pointBackgroundColor: getStyle('--cui-primary'),
+                    data: dataStaff.map((item) => item.sum_amount),
+                  },
+                ],
+              }}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                      drawBorder: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                  },
+                  y: {
+                    min: 30,
+                    max: 89,
+                    display: false,
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                  },
+                },
+                elements: {
+                  line: {
+                    borderWidth: 1,
+                    tension: 0.4,
+                  },
+                  point: {
+                    radius: 4,
+                    hitRadius: 10,
+                    hoverRadius: 4,
+                  },
+                },
+              }}
+            />
+          }
         />
       </CCol>
       <CCol sm={6} lg={3}>
@@ -162,70 +193,67 @@ const WidgetsDropdown = () => {
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
           }
-          // chart={
-          //   <CChartLine
-          //     className="mt-3 mx-3"
-          //     style={{ height: '70px' }}
-          //     data={{
-          //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          //       datasets: [
-          //         {
-          //           label: 'My First dataset',
-          //           backgroundColor: 'transparent',
-          //           borderColor: 'rgba(255,255,255,.55)',
-          //           pointBackgroundColor: getStyle('--cui-info'),
-          //           data: [1, 18, 9, 17, 34, 22, 11],
-          //         },
-          //       ],
-          //     }}
-          //     options={{
-          //       plugins: {
-          //         legend: {
-          //           display: false,
-          //         },
-          //       },
-          //       maintainAspectRatio: false,
-          //       scales: {
-          //         x: {
-          //           grid: {
-          //             display: false,
-          //             drawBorder: false,
-          //           },
-          //           ticks: {
-          //             display: false,
-          //           },
-          //         },
-          //         y: {
-          //           min: -9,
-          //           max: 39,
-          //           display: false,
-          //           grid: {
-          //             display: false,
-          //           },
-          //           ticks: {
-          //             display: false,
-          //           },
-          //         },
-          //       },
-          //       elements: {
-          //         line: {
-          //           borderWidth: 1,
-          //         },
-          //         point: {
-          //           radius: 4,
-          //           hitRadius: 10,
-          //           hoverRadius: 4,
-          //         },
-          //       },
-          //     }}
-          //   />
-          // }
+          chart={
+            <CChartLine
+              className="mt-3 mx-3"
+              style={{ height: '70px' }}
+              data={{
+                labels: dataCustomer.map((item) => 'Tháng ' + item.month),
+                datasets: [
+                  {
+                    label: 'Khách Hàng Theo Tháng',
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(255,255,255,.55)',
+                    pointBackgroundColor: getStyle('--cui-info'),
+                    data: dataCustomer.map((item) => item.sum_amount),
+                  },
+                ],
+              }}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                      drawBorder: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                  },
+                  y: {
+                    min: -9,
+                    max: 39,
+                    display: false,
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                  },
+                },
+                elements: {
+                  line: {
+                    borderWidth: 1,
+                  },
+                  point: {
+                    radius: 4,
+                    hitRadius: 10,
+                    hoverRadius: 4,
+                  },
+                },
+              }}
+            />
+          }
         />
       </CCol>
       <CCol sm={6} lg={3}>
@@ -240,7 +268,7 @@ const WidgetsDropdown = () => {
               </span> */}
             </>
           }
-          title="Bộ Phận"
+          title="Test"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -248,57 +276,54 @@ const WidgetsDropdown = () => {
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
           }
-          // chart={
-          //   <CChartLine
-          //     className="mt-3"
-          //     style={{ height: '70px' }}
-          //     data={{
-          //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          //       datasets: [
-          //         {
-          //           label: 'My First dataset',
-          //           backgroundColor: 'rgba(255,255,255,.2)',
-          //           borderColor: 'rgba(255,255,255,.55)',
-          //           data: [78, 81, 80, 45, 34, 12, 40],
-          //           fill: true,
-          //         },
-          //       ],
-          //     }}
-          //     options={{
-          //       plugins: {
-          //         legend: {
-          //           display: false,
-          //         },
-          //       },
-          //       maintainAspectRatio: false,
-          //       scales: {
-          //         x: {
-          //           display: false,
-          //         },
-          //         y: {
-          //           display: false,
-          //         },
-          //       },
-          //       elements: {
-          //         line: {
-          //           borderWidth: 2,
-          //           tension: 0.4,
-          //         },
-          //         point: {
-          //           radius: 0,
-          //           hitRadius: 10,
-          //           hoverRadius: 4,
-          //         },
-          //       },
-          //     }}
-          //   />
-          // }
+          chart={
+            <CChartLine
+              className="mt-3"
+              style={{ height: '70px' }}
+              data={{
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [
+                  {
+                    label: 'Test',
+                    backgroundColor: 'rgba(255,255,255,.2)',
+                    borderColor: 'rgba(255,255,255,.55)',
+                    data: [78, 81, 80, 45, 34, 12, 40],
+                    fill: true,
+                  },
+                ],
+              }}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
+                },
+                elements: {
+                  line: {
+                    borderWidth: 2,
+                    tension: 0.4,
+                  },
+                  point: {
+                    radius: 0,
+                    hitRadius: 10,
+                    hoverRadius: 4,
+                  },
+                },
+              }}
+            />
+          }
         />
       </CCol>
       <CCol sm={6} lg={3}>
@@ -321,9 +346,7 @@ const WidgetsDropdown = () => {
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
+                {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
               </CDropdownMenu>
             </CDropdown>
           }
@@ -332,11 +355,6 @@ const WidgetsDropdown = () => {
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{
-                // labels: {dataProject.map((item) => (
-                //   <option key={item.id} value={item.id}>
-                //     {item.name}
-                //   </option>
-                // ))},
                 labels: dataProject.map((item) => 'Tháng ' + item.month),
                 datasets: [
                   {

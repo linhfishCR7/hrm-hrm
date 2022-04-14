@@ -42,6 +42,7 @@ const AppHeaderDropdown = () => {
   const user = Pool.getCurrentUser()
   const [visible, setVisible] = useState(false)
   const [error, setError] = useState('')
+  const [data, setData] = useState()
   const [status, setStatus] = useState(false)
   const [isTokenFound, setTokenFound] = useState(false)
 
@@ -53,6 +54,7 @@ const AppHeaderDropdown = () => {
     })
     getProfile()
       .then((results) => {
+        setData(results.data.image.image_s3_url)
         if (results.data.is_active === false) {
           alert('Your account has been suspended. Contact us for more details')
           setVisible(true)
@@ -104,7 +106,7 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={data} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
