@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input } from 'antd'
+import { Table, Tag, Space, Button, message, Input, Upload } from 'antd'
 import { TOKEN } from '../../../constants/Config'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined, UploadOutlined, InboxOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 import {
@@ -521,8 +521,8 @@ class Company extends Component {
                     </CFormText> */}
                   </CCol>
                 </CRow>
-                <CRow className="mb-3">
-                  <CCol>
+                <CRow className="mb-5">
+                  <CCol md={6}>
                     <CFormLabel htmlFor="exampleFormControlInput1">Website</CFormLabel>
                     <CFormInput
                       type="text"
@@ -538,24 +538,117 @@ class Company extends Component {
                       Nhập đúng dịnh dạng Email
                     </CFormText> */}
                   </CCol>
-                  <CCol>
+                  <CCol md={6}>
                     <CFormLabel htmlFor="exampleFormControlInput1">Logo</CFormLabel>
+                    <br />
+                    <Upload.Dragger
+                      disabled={this.state.loading}
+                      accept="image/*"
+                      customRequest={({ file, onError, onSuccess, onProgress }) => {
+                        const fileType = file.type
+                        const file_name = file.name
+                        console.log('Preparing the upload')
+                        console.log('fileType', fileType)
 
-                    <CFormInput
-                      type="file"
-                      placeholder="Logo"
-                      autoComplete="logo"
-                      name="logo"
-                      value=""
-                      onChange={this.handleInputChange}
-                      // required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                      className="mb-3"
-                    />
-                    {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập đúng dịnh dạng SDT
-                    </CFormText> */}
-                    <CImage rounded thumbnail src={this.state.logo_url} width={200} height={200} />
+                        // const key = `videos/${generateDateForFileName()}_${fileName}`
+                        // const file_name = { fileName }
+
+                        this.setState({
+                          key: file.name,
+                          loading: true,
+                        })
+
+                        axios
+                          .post('/common/upload/policy/', {
+                            file_name,
+                          })
+                          .then((results) => {
+                            var returnData = results.data
+                            var signedRequest = returnData.url
+                            var content = returnData.fields
+                            var formData = new FormData()
+                            Object.keys(returnData.fields).forEach((key) =>
+                              formData.append(key, returnData.fields[key]),
+                            )
+                            formData.append('file', file)
+
+                            // var t0 = performance.now()
+                            fetch(signedRequest, {
+                              method: 'POST',
+                              body: formData,
+                            })
+                              .then((result) => {
+                                var t1 = performance.now()
+                                // console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
+                                this.setState({
+                                  loading: false,
+                                  logo: content.key,
+                                  logo_url: signedRequest + content.key,
+                                })
+                                onSuccess(result, file)
+                                message.success({
+                                  content: 'Upload ảnh thành công!!!',
+                                  duration: 10,
+                                  maxCount: 1,
+                                  className: 'custom-class',
+                                  style: {
+                                    marginTop: '20vh',
+                                  },
+                                })
+                              })
+                              .catch((error) => {
+                                this.setState({
+                                  loading: false,
+                                })
+                                onError(error)
+                                message.error({
+                                  content: JSON.stringify(error),
+                                  duration: 5,
+                                  maxCount: 1,
+                                  className: 'custom-class',
+                                  style: {
+                                    marginTop: '20vh',
+                                  },
+                                })
+                              })
+                          })
+                          .catch((error) => {
+                            this.setState({
+                              loading: false,
+                            })
+                            message.error({
+                              content:
+                                'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
+                              duration: 10,
+                              maxCount: 1,
+                              className: 'custom-class',
+                              style: {
+                                marginTop: '20vh',
+                              },
+                            })
+                          })
+                      }}
+                    >
+                      <Button loading={this.state.loading}>
+                        <UploadOutlined /> Click to Upload
+                      </Button>
+                    </Upload.Dragger>
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol md={8}></CCol>
+                  <CCol md={4}>
+                    {this.state.logo_url ? (
+                      <CImage
+                        rounded
+                        thumbnail
+                        src={this.state.logo_url}
+                        width={200}
+                        height={200}
+                      />
+                    ) : (
+                      ''
+                    )}
                   </CCol>
                 </CRow>
               </CContainer>

@@ -29,6 +29,7 @@ import {
   CInputGroup,
   CInputGroupText,
   CContainer,
+  CImage,
 } from '@coreui/react'
 import { TOKEN } from '../../../constants/Config'
 import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
@@ -82,6 +83,7 @@ class AddCompany extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      data: {},
       companies: [],
       loading: false,
       key: '',
@@ -96,6 +98,7 @@ class AddCompany extends Component {
       fax: '',
       website: '',
       logo: '',
+      logo_url: '',
       addresses: [
         {
           address: '',
@@ -125,21 +128,21 @@ class AddCompany extends Component {
     }
   }
 
-  //   handleChange = (info) => {
-  //     if (info.file.status === 'uploading') {
-  //       this.setState({ loading: true })
-  //       return
-  //     }
-  //     if (info.file.status === 'done') {
-  //       // Get this url from response in real world.
-  //       getBase64(info.file.originFileObj, (imageUrl) =>
-  //         this.setState({
-  //           imageUrl,
-  //           loading: false,
-  //         }),
-  //       )
-  //     }
+  // handleChange = (info) => {
+  //   if (info.file.status === 'uploading') {
+  //     this.setState({ loading: true })
+  //     return
   //   }
+  //   if (info.file.status === 'done') {
+  //     // Get this url from response in real world.
+  //     getBase64(info.file.originFileObj, (imageUrl) =>
+  //       this.setState({
+  //         imageUrl,
+  //         loading: false,
+  //       }),
+  //     )
+  //   }
+  // }
 
   handleInputChange = (event) => {
     const target = event.target
@@ -159,7 +162,7 @@ class AddCompany extends Component {
       tax_code: value['tax_code'],
       fax: value['fax'],
       website: value['website'],
-      logo: value['logo'][0]['name'],
+      logo: this.state.logo,
       addresses: [
         {
           address: this.state.address,
@@ -187,7 +190,6 @@ class AddCompany extends Component {
         },
       ],
     }
-    console.log(newItem)
     await axios
       .post('/hrm/companies/', newItem, {
         headers: {
@@ -197,9 +199,6 @@ class AddCompany extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        // let companies = this.state.companies
-        // companies = [newItem, ...companies]
-        // this.setState({ companies: companies })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -349,114 +348,105 @@ class AddCompany extends Component {
               <Input placeholder="Vui lòng nhập fax" />
             </Form.Item>
             <Form.Item label="Logo">
-              <Form.Item
-                name="logo"
-                valuePropName="fileList"
-                getValueFromEvent={normFile}
-                noStyle
-                onChange={this.handleInputChange}
-              >
-                <Upload.Dragger name="files" action={this.s3}>
-                  <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                  </p>
-                  <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                  <p className="ant-upload-hint">Support for a single or bulk upload.</p>
-                </Upload.Dragger>
-              </Form.Item>
-            </Form.Item>
-            {/* <Upload
-              name="logo"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="http://localhost:8000/api/common/upload/policy/"
-              beforeUpload={beforeUpload}
-              onChange={this.handleChange}
-            >
-              {imageUrl ? (
-                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-              ) : (
-                uploadButton
-              )}
-            </Upload> */}
-            {/* <Upload
-              disabled={this.state.loading}
-              accept="image/*"
-              customRequest={({ file, onError, onSuccess, onProgress }) => {
-                const fileType = file.type
-                const file_name = file.name
-                console.log('Preparing the upload')
-                console.log('fileType', fileType)
+              <Upload
+                disabled={this.state.loading}
+                accept="image/*"
+                customRequest={({ file, onError, onSuccess, onProgress }) => {
+                  const fileType = file.type
+                  const file_name = file.name
+                  console.log('Preparing the upload')
+                  console.log('fileType', fileType)
 
-                // const key = `videos/${generateDateForFileName()}_${fileName}`
-                // const file_name = { fileName }
+                  // const key = `videos/${generateDateForFileName()}_${fileName}`
+                  // const file_name = { fileName }
 
-                console.log('key', file_name)
-                this.setState({
-                  key: file.name,
-                  loading: true,
-                })
-
-                axios
-                  .post('/common/upload/policy/', {
-                    file_name,
-                    // fileType,
+                  this.setState({
+                    key: file.name,
+                    loading: true,
                   })
-                  .then((results) => {
-                    var returnData = results.data
-                    var signedRequest = returnData.url
-                    var content = returnData.fields
 
-                    console.log('Recieved a signed request ' + signedRequest)
-                    console.log('Respone ' + content.key)
+                  axios
+                    .post('/common/upload/policy/', {
+                      file_name,
+                    })
+                    .then((results) => {
+                      var returnData = results.data
+                      var signedRequest = returnData.url
+                      var content = returnData.fields
+                      var formData = new FormData()
+                      Object.keys(returnData.fields).forEach((key) =>
+                        formData.append(key, returnData.fields[key]),
+                      )
+                      formData.append('file', file)
 
-                    // Put the fileType in the headers for the upload
-                    var options = {
-                      onUploadProgress: function (event) {
-                        var loaded = event.loaded,
-                          total = event.total
-                        onProgress(
-                          {
-                            percent: Math.round((loaded / total) * 100),
-                          },
-                          file,
-                        )
-                      },
-                      headers: {
-                        content,
-                      },
-                    }
-
-                    var t0 = performance.now()
-
-                    axios1
-                      .post(signedRequest, file, options)
-                      .then((result) => {
-                        var t1 = performance.now()
-                        console.log('Response from s3')
-                        console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
-                        this.setState({
-                          loading: false,
+                      // var t0 = performance.now()
+                      fetch(signedRequest, {
+                        method: 'POST',
+                        body: formData,
+                      })
+                        .then((result) => {
+                          var t1 = performance.now()
+                          // console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
+                          this.setState({
+                            loading: false,
+                            logo: content.key,
+                            logo_url: signedRequest + content.key,
+                          })
+                          onSuccess(result, file)
+                          message.success({
+                            content: 'Upload ảnh thành công!!!',
+                            duration: 10,
+                            maxCount: 1,
+                            className: 'custom-class',
+                            style: {
+                              marginTop: '20vh',
+                            },
+                          })
                         })
-                        onSuccess(result, file)
-                        message.success('Successfully Upload!')
+                        .catch((error) => {
+                          this.setState({
+                            loading: false,
+                          })
+                          onError(error)
+                          message.error({
+                            content: JSON.stringify(error),
+                            duration: 5,
+                            maxCount: 1,
+                            className: 'custom-class',
+                            style: {
+                              marginTop: '20vh',
+                            },
+                          })
+                        })
+                    })
+                    .catch((error) => {
+                      this.setState({
+                        loading: false,
                       })
-                      .catch((error) => {
-                        onError(error)
-                        console.log(file)
-                        console.error('ERROR ' + JSON.stringify(error))
+                      message.error({
+                        content:
+                          'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
+                        duration: 10,
+                        maxCount: 1,
+                        className: 'custom-class',
+                        style: {
+                          marginTop: '20vh',
+                        },
                       })
-                  })
-                  .catch((error) => {
-                    alert(JSON.stringify(error))
-                  })
-              }}
-            >
-              <Button loading={this.state.loading}>
-                <UploadOutlined /> Click to Upload
-              </Button>
-            </Upload> */}
+                    })
+                }}
+              >
+                <Button loading={this.state.loading}>
+                  <UploadOutlined /> Click to Upload
+                </Button>
+              </Upload>
+              {this.state.logo_url ? (
+                <CImage rounded thumbnail src={this.state.logo_url} width={200} height={200} />
+              ) : (
+                ''
+              )}
+            </Form.Item>
+
             <Form.Item
               wrapperCol={{
                 span: 12,

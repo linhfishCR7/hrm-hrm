@@ -1,6 +1,5 @@
 import React, { Component, useEffect, useState } from 'react'
 import axios from '../../../utils/axios'
-import axios1 from 'axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -247,7 +246,7 @@ const CompanyDetail = () => {
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Logo</CFormLabel>
-                <CFormInput
+                {/* <CFormInput
                   type="file"
                   label="Số Fax"
                   // //placeholder="034266666"
@@ -257,7 +256,7 @@ const CompanyDetail = () => {
                   defaultValue={dataLogo.image_key}
                   onChange={handleInputChange}
                   className="mb-3"
-                />
+                /> */}
                 {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
                   Nhập đúng dịnh dạng SDT
                 </CFormText> */}

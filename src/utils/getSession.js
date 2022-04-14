@@ -18,7 +18,6 @@ const GetSession = async () => {
                 for (let attribute of attributes) {
                   const { Name, Value } = attribute
                   results[Name] = Value
-                  console.log(results)
                 }
 
                 resolve(results)
