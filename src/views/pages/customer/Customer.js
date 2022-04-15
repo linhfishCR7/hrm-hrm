@@ -269,7 +269,7 @@ class Company extends Component {
       })
       .then((res) => {
         this.setState((prevState) => ({
-          companies: prevState.companies.filter((el) => el.id !== this.state.id),
+          customers: prevState.customers.filter((el) => el.id !== this.state.id),
         }))
         message.success({
           content: 'Delete data Success!!!',
@@ -313,7 +313,7 @@ class Company extends Component {
         <CRow>
           <CCol md={4}>
             <CTooltip content="Create data" placement="top">
-              <Link to="/add-company">
+              <Link to="/add-customer">
                 <CButton color="primary">
                   <CIcon icon={cilPlus} />
                 </CButton>
@@ -340,21 +340,6 @@ class Company extends Component {
             title="Hành động"
             key={this.state.companies}
             render={(text, record) => (
-              // <Space size="middle">
-              //   <CTooltip content="Edit data" placement="top">
-              //     <Link to={'/company/' + record.id}>
-              //       <CButton color="warning" style={{ marginRight: '10px' }}>
-              //         <EditOutlined />
-              //       </CButton>
-              //     </Link>
-              //   </CTooltip>
-              //   <CTooltip content="Remove data" placement="top">
-              //     <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-              //       {/* <CIcon icon={cilDelete} /> */}
-              //       <DeleteOutlined />
-              //     </CButton>
-              //   </CTooltip>
-              // </Space>
               <Space size="middle">
                 <CTooltip content="Edit data" placement="top">
                   <CButton

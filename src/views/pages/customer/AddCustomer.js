@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
-import axios1 from 'axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import {
   Table,
@@ -29,59 +28,21 @@ import {
   CInputGroup,
   CInputGroupText,
   CContainer,
+  CForm,
+  CFormLabel,
+  CFormSelect,
+  CFormText,
 } from '@coreui/react'
 import { TOKEN } from '../../../constants/Config'
 import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 
-const { Option } = Select
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
-
-const normFile = (e) => {
-  console.log('Upload event:', e)
-
-  if (Array.isArray(e)) {
-    console.log('Upload event1:', e)
-    return e
-  }
-
-  return e && e.fileList
-}
-
-// const onFinish = (values) => {
-//   console.log('Received values of form: ', values)
-// }
-
-// function getBase64(img, callback) {
-//   const reader = new FileReader()
-//   reader.addEventListener('load', () => callback(reader.result))
-//   reader.readAsDataURL(img)
-// }
-
-// function beforeUpload(file) {
-//   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-//   if (!isJpgOrPng) {
-//     message.error('You can only upload JPG/PNG file!')
-//   }
-//   const isLt2M = file.size / 1024 / 1024 < 2
-//   if (!isLt2M) {
-//     message.error('Image must smaller than 2MB!')
-//   }
-//   return isJpgOrPng && isLt2M
-// }
-
-class AddCompany extends Component {
+class AddCustomer extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      customers: [],
       companies: [],
       loading: false,
       key: '',
@@ -90,12 +51,10 @@ class AddCompany extends Component {
       id: '',
       company: '',
       name: '',
-      tax_code: '',
       phone: '',
       email: '',
-      fax: '',
+      file: '',
       website: '',
-      logo: '',
       addresses: [
         {
           address: '',
@@ -109,37 +68,26 @@ class AddCompany extends Component {
           lng: '',
           type: '',
         },
-        {
-          address2: '',
-          country2: '',
-          city2: '',
-          province2: '',
-          district2: '',
-          commune2: '',
-          postcode2: '',
-          lat2: '',
-          lng2: '',
-          type2: '',
-        },
       ],
     }
   }
-
-  //   handleChange = (info) => {
-  //     if (info.file.status === 'uploading') {
-  //       this.setState({ loading: true })
-  //       return
-  //     }
-  //     if (info.file.status === 'done') {
-  //       // Get this url from response in real world.
-  //       getBase64(info.file.originFileObj, (imageUrl) =>
-  //         this.setState({
-  //           imageUrl,
-  //           loading: false,
-  //         }),
-  //       )
-  //     }
-  //   }
+  async componentDidMount() {
+    await axios
+      .get('/hrm/companies/?no_pagination=true', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const companies = res.data
+        this.setState({
+          companies: companies,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
 
   handleInputChange = (event) => {
     const target = event.target
@@ -150,16 +98,16 @@ class AddCompany extends Component {
     })
   }
 
-  handleInsertSubmit = async (value) => {
+  handleInsertSubmit = async (event) => {
+    event.preventDefault()
+
     const newItem = {
-      company: value['company'],
-      name: value['name'],
-      phone: value['phone'],
-      email: value['email'],
-      tax_code: value['tax_code'],
-      fax: value['fax'],
-      website: value['website'],
-      logo: value['logo'][0]['name'],
+      company: this.state.company,
+      name: this.state.name,
+      phone: this.state.phone,
+      email: this.state.email,
+      file: this.state.file,
+      website: this.state.website,
       addresses: [
         {
           address: this.state.address,
@@ -171,25 +119,12 @@ class AddCompany extends Component {
           postcode: this.state.postcode,
           lat: this.state.lat,
           lng: this.state.lng,
-          type: 'working_office_address',
-        },
-        {
-          address: this.state.address2,
-          country: this.state.country2,
-          city: this.state.city2,
-          province: this.state.province2,
-          district: this.state.district2,
-          commune: this.state.commune2,
-          postcode: this.state.postcode2,
-          lat: this.state.lat2,
-          lng: this.state.lng2,
           type: 'head_office_address',
         },
       ],
     }
-    console.log(newItem)
     await axios
-      .post('/hrm/companies/', newItem, {
+      .post('/hrm/customers/', newItem, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -197,9 +132,6 @@ class AddCompany extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        // let companies = this.state.companies
-        // companies = [newItem, ...companies]
-        // this.setState({ companies: companies })
         message.success({
           content: 'Add data Success!!!',
           duration: 10,
@@ -209,9 +141,6 @@ class AddCompany extends Component {
             marginTop: '20vh',
           },
         })
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
       })
       .catch(function (error) {
         if (error.response.status === 400) {
@@ -248,227 +177,109 @@ class AddCompany extends Component {
     )
     return (
       <>
-        <h2>Công Ty</h2>
-        <Card title="Thêm Công Ty" bordered={false}>
-          <Form name="validate_other" {...formItemLayout} onFinish={this.handleInsertSubmit}>
+        <h2>Khách Hàng</h2>
+        <Card title="Thêm Khách Hàng" bordered={false}>
+          <CForm onSubmit={this.handleInsertSubmit}>
             <h3>Basic</h3>
             <hr />
-            <Form.Item
-              name="company"
-              label="Company"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập company!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập company" />
-            </Form.Item>
-            <Form.Item
-              name="name"
-              label="Tên công ty"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập tên công ty!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập tên công ty" />
-            </Form.Item>
-            <Form.Item
-              name="tax_code"
-              label="Mã số thuế"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập mã số thuế!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập mã số thuế" />
-            </Form.Item>
-            <Form.Item
-              name="phone"
-              label="SĐT"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập SDT!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập SDT" type="tel" />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                {
-                  type: 'email',
-                  message: 'Vui lòng nhập đúng định dạng email!',
-                },
-                {
-                  required: true,
-                  message: 'Vui lòng nhập Email!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập Email" />
-            </Form.Item>
-            <Form.Item
-              name="website"
-              label="Website"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập website!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập website" />
-            </Form.Item>
-            <Form.Item
-              name="fax"
-              label="Số Fax"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập fax!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập fax" />
-            </Form.Item>
-            <Form.Item label="Logo">
-              <Form.Item
-                name="logo"
-                valuePropName="fileList"
-                getValueFromEvent={normFile}
-                noStyle
-                onChange={this.handleInputChange}
-              >
-                <Upload.Dragger name="files" action={this.s3}>
-                  <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                  </p>
-                  <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                  <p className="ant-upload-hint">Support for a single or bulk upload.</p>
-                </Upload.Dragger>
-              </Form.Item>
-            </Form.Item>
-            {/* <Upload
-              name="logo"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="http://localhost:8000/api/common/upload/policy/"
-              beforeUpload={beforeUpload}
-              onChange={this.handleChange}
-            >
-              {imageUrl ? (
-                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-              ) : (
-                uploadButton
-              )}
-            </Upload> */}
-            {/* <Upload
-              disabled={this.state.loading}
-              accept="image/*"
-              customRequest={({ file, onError, onSuccess, onProgress }) => {
-                const fileType = file.type
-                const file_name = file.name
-                console.log('Preparing the upload')
-                console.log('fileType', fileType)
+            <CContainer>
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Mã Công Ty</CFormLabel>
+                  <CFormSelect
+                    // value={this.state.company}
+                    name="company"
+                    aria-label="Please choose your company"
+                    onChange={this.handleInputChange}
+                  >
+                    {this.state.companies.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CCol>
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Tên Khách Hàng</CFormLabel>
 
-                // const key = `videos/${generateDateForFileName()}_${fileName}`
-                // const file_name = { fileName }
+                  <CFormInput
+                    type="text"
+                    placeholder="Tên Khách Hàng"
+                    autoComplete="name"
+                    name="name"
+                    // value={this.state.name}
+                    onChange={this.handleInputChange}
+                    required
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
+                </CCol>
+              </CRow>
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Email</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    placeholder="Email"
+                    autoComplete="email"
+                    name="email"
+                    // value={this.state.email}
+                    onChange={this.handleInputChange}
+                    required
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
+                  <CFormText component="span" id="exampleFormControlInputHelpInline">
+                    Nhập đúng dịnh dạng Email
+                  </CFormText>
+                </CCol>
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Số Điện Thoại</CFormLabel>
 
-                console.log('key', file_name)
-                this.setState({
-                  key: file.name,
-                  loading: true,
-                })
-
-                axios
-                  .post('/common/upload/policy/', {
-                    file_name,
-                    // fileType,
-                  })
-                  .then((results) => {
-                    var returnData = results.data
-                    var signedRequest = returnData.url
-                    var content = returnData.fields
-
-                    console.log('Recieved a signed request ' + signedRequest)
-                    console.log('Respone ' + content.key)
-
-                    // Put the fileType in the headers for the upload
-                    var options = {
-                      onUploadProgress: function (event) {
-                        var loaded = event.loaded,
-                          total = event.total
-                        onProgress(
-                          {
-                            percent: Math.round((loaded / total) * 100),
-                          },
-                          file,
-                        )
-                      },
-                      headers: {
-                        content,
-                      },
-                    }
-
-                    var t0 = performance.now()
-
-                    axios1
-                      .post(signedRequest, file, options)
-                      .then((result) => {
-                        var t1 = performance.now()
-                        console.log('Response from s3')
-                        console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
-                        this.setState({
-                          loading: false,
-                        })
-                        onSuccess(result, file)
-                        message.success('Successfully Upload!')
-                      })
-                      .catch((error) => {
-                        onError(error)
-                        console.log(file)
-                        console.error('ERROR ' + JSON.stringify(error))
-                      })
-                  })
-                  .catch((error) => {
-                    alert(JSON.stringify(error))
-                  })
-              }}
-            >
-              <Button loading={this.state.loading}>
-                <UploadOutlined /> Click to Upload
-              </Button>
-            </Upload> */}
-            <Form.Item
-              wrapperCol={{
-                span: 12,
-                offset: 6,
-              }}
-            >
-              {' '}
-            </Form.Item>
+                  <CFormInput
+                    type="text"
+                    placeholder="Số Điện Thoại"
+                    autoComplete="phone"
+                    name="phone"
+                    // value={this.state.phone}
+                    onChange={this.handleInputChange}
+                    required
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
+                  <CFormText component="span" id="exampleFormControlInputHelpInline">
+                    Nhập đúng dịnh dạng SDT
+                  </CFormText>
+                </CCol>
+              </CRow>
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Đường dẫn file</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    placeholder="Đường dẫn file"
+                    autoComplete="file"
+                    name="file"
+                    // value={this.state.file}
+                    onChange={this.handleInputChange}
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
+                </CCol>
+                <CCol>
+                  <CFormLabel htmlFor="exampleFormControlInput1">Website</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    placeholder="Website"
+                    autoComplete="website"
+                    name="website"
+                    // value={this.state.website}
+                    onChange={this.handleInputChange}
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
+                </CCol>
+              </CRow>
+            </CContainer>
             <h3>Địa chỉ</h3>
 
             <hr />
-            <h4>Địa Chỉ Văn Phòng Làm Việc</h4>
+            <h4>Địa Chỉ Trụ Sở Chính</h4>
             <CContainer>
               {' '}
               <CRow>
@@ -596,141 +407,13 @@ class AddCompany extends Component {
                 </CCol>
               </CRow>
             </CContainer>
-            <CContainer>
-              {' '}
-              <h4>Địa Chỉ Trụ Sở Chính</h4>
-              <CRow>
-                <CCol md={12}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Địa chỉ"
-                      autoComplete="company"
-                      name="address2"
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Quốc gia"
-                      autoComplete="country"
-                      name="country2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Thành phố"
-                      autoComplete="city"
-                      name="city2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Tỉnh"
-                      autoComplete="province"
-                      name="province2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Huyện"
-                      autoComplete="district"
-                      name="district2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Xã"
-                      autoComplete="commune"
-                      name="commune2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Mã Zip"
-                      autoComplete="postcode"
-                      name="postcode2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow style={{ display: 'none' }}>
-                <CCol md={6} style={{ display: 'none' }}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Loại"
-                      autoComplete="type"
-                      name="type2"
-                      value="working_office_address"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-            </CContainer>
-            <Button type="primary" htmlType="submit">
+            <CButton color="primary" type="submit">
               Submit
-            </Button>
-          </Form>
+            </CButton>
+          </CForm>
         </Card>
       </>
     )
   }
 }
-export default AddCompany
+export default AddCustomer

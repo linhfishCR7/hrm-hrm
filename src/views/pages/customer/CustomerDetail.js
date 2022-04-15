@@ -133,7 +133,12 @@ const CompanyDetail = () => {
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">File</CFormLabel>
 
-                <CFormInput type="text" label="File" name="file" value={data.tax_code} />
+                <CFormInput type="text" label="File" name="file" value={data.file} />
+              </CCol>
+              <CCol>
+                <CFormLabel htmlFor="exampleFormControlInput1">Name</CFormLabel>
+
+                <CFormInput type="text" label="name" name="name" value={data.name} />
               </CCol>
             </CRow>
             <CRow className="mb-3">
