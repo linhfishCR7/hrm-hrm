@@ -107,7 +107,7 @@ class KindOffworks extends Component {
 
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -205,7 +205,7 @@ class KindOffworks extends Component {
         this.closeModal()
         message.success({
           content: 'Update data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -216,7 +216,7 @@ class KindOffworks extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -246,7 +246,7 @@ class KindOffworks extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -258,7 +258,7 @@ class KindOffworks extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -297,7 +297,6 @@ class KindOffworks extends Component {
                   name="work"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -330,7 +329,6 @@ class KindOffworks extends Component {
               //   defaultValue={search}
               //   onSearch={}
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

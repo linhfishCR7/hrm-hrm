@@ -116,7 +116,7 @@ const Profile = () => {
         } else {
           message.error({
             content: error,
-            duration: 10,
+            duration: 5,
             maxCount: 1,
             className: 'custom-class',
             style: {
@@ -179,7 +179,7 @@ const Profile = () => {
                       onSuccess(result, file)
                       message.success({
                         content: 'Upload ảnh thành công!!!',
-                        duration: 10,
+                        duration: 5,
                         maxCount: 1,
                         className: 'custom-class',
                         style: {
@@ -207,7 +207,7 @@ const Profile = () => {
 
                   message.error({
                     content: 'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                    duration: 10,
+                    duration: 5,
                     maxCount: 1,
                     className: 'custom-class',
                     style: {

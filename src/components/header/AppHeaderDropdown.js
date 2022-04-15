@@ -47,13 +47,12 @@ const AppHeaderDropdown = () => {
   const [isTokenFound, setTokenFound] = useState(false)
 
   useEffect(() => {
-    getTokenFCM(setTokenFound)
-
     getSession().then(() => {
       setStatus(true)
     })
     getProfile()
       .then((results) => {
+        getTokenFCM(setTokenFound, results.data.id)
         setData(results.data.image.image_s3_url)
         if (results.data.is_active === false) {
           alert('Your account has been suspended. Contact us for more details')

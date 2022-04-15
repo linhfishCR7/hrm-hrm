@@ -200,7 +200,7 @@ class AddCompany extends Component {
       .then((res) => {
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -394,7 +394,7 @@ class AddCompany extends Component {
                           onSuccess(result, file)
                           message.success({
                             content: 'Upload ảnh thành công!!!',
-                            duration: 10,
+                            duration: 5,
                             maxCount: 1,
                             className: 'custom-class',
                             style: {
@@ -425,7 +425,7 @@ class AddCompany extends Component {
                       message.error({
                         content:
                           'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                        duration: 10,
+                        duration: 5,
                         maxCount: 1,
                         className: 'custom-class',
                         style: {

@@ -100,7 +100,7 @@ class Literacy extends Component {
         this.setState({ literacies: literacies })
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 10,
           className: 'custom-class',
           style: {
@@ -200,7 +200,7 @@ class Literacy extends Component {
         this.closeModal()
         message.success({
           content: 'Update data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 10,
           className: 'custom-class',
           style: {
@@ -211,7 +211,7 @@ class Literacy extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 10,
           className: 'custom-class',
           style: {
@@ -241,7 +241,7 @@ class Literacy extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 10,
           className: 'custom-class',
           style: {
@@ -253,7 +253,7 @@ class Literacy extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 10,
           className: 'custom-class',
           style: {
@@ -322,7 +322,6 @@ class Literacy extends Component {
           <CCol md={4}>
             <Input.Search
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

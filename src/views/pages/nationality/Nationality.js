@@ -107,7 +107,7 @@ class Nationality extends Component {
         this.setState({ nationalities: nationalities })
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -122,7 +122,7 @@ class Nationality extends Component {
         if (error.response.status === 400) {
           message.error({
             content: error.response.data.message,
-            duration: 10,
+            duration: 5,
             maxCount: 1,
             className: 'custom-class',
             style: {
@@ -132,7 +132,7 @@ class Nationality extends Component {
         } else {
           message.error({
             content: error,
-            duration: 10,
+            duration: 5,
             maxCount: 1,
             className: 'custom-class',
             style: {
@@ -205,7 +205,7 @@ class Nationality extends Component {
         this.closeModal()
         message.success({
           content: 'Update data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -216,7 +216,7 @@ class Nationality extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -246,7 +246,7 @@ class Nationality extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -258,7 +258,7 @@ class Nationality extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -297,7 +297,6 @@ class Nationality extends Component {
                   name="nationality"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -330,7 +329,6 @@ class Nationality extends Component {
               //   defaultValue={search}
               //   onSearch={}
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

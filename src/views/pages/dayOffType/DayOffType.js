@@ -103,7 +103,7 @@ class DayOffType extends Component {
         this.setState({ dayOffType: dayOffType })
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -204,7 +204,7 @@ class DayOffType extends Component {
         this.closeModal()
         message.success({
           content: 'Update data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -215,7 +215,7 @@ class DayOffType extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -245,7 +245,7 @@ class DayOffType extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -257,7 +257,7 @@ class DayOffType extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -296,7 +296,6 @@ class DayOffType extends Component {
                   name="day_off_types"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -327,7 +326,6 @@ class DayOffType extends Component {
           <CCol md={4}>
             <Input.Search
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

@@ -268,7 +268,7 @@ class Company extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -298,7 +298,7 @@ class Company extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -310,7 +310,7 @@ class Company extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -348,7 +348,6 @@ class Company extends Component {
           <CCol md={8}>
             <Input.Search
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -588,7 +587,7 @@ class Company extends Component {
                                 onSuccess(result, file)
                                 message.success({
                                   content: 'Upload ảnh thành công!!!',
-                                  duration: 10,
+                                  duration: 5,
                                   maxCount: 1,
                                   className: 'custom-class',
                                   style: {
@@ -619,7 +618,7 @@ class Company extends Component {
                             message.error({
                               content:
                                 'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                              duration: 10,
+                              duration: 5,
                               maxCount: 1,
                               className: 'custom-class',
                               style: {

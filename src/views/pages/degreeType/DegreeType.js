@@ -100,7 +100,7 @@ class DegreeType extends Component {
         this.setState({ degreeType: degreeType })
         message.success({
           content: 'Add data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -198,7 +198,7 @@ class DegreeType extends Component {
         this.closeModal()
         message.success({
           content: 'Update data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -209,7 +209,7 @@ class DegreeType extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -239,7 +239,7 @@ class DegreeType extends Component {
         }))
         message.success({
           content: 'Delete data Success!!!',
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -251,7 +251,7 @@ class DegreeType extends Component {
       .catch((error) =>
         message.error({
           content: error,
-          duration: 10,
+          duration: 5,
           maxCount: 1,
           className: 'custom-class',
           style: {
@@ -290,7 +290,6 @@ class DegreeType extends Component {
                   name="degree_types"
                   onChange={this.handleInputChange}
                   required
-                  allowClear
                 />
               </CInputGroup>{' '}
             </CCol>
@@ -321,7 +320,6 @@ class DegreeType extends Component {
           <CCol md={4}>
             <Input.Search
               placeholder="Search..."
-              allowClear
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

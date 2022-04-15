@@ -16,7 +16,7 @@ var firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig)
 const messaging = getMessaging(firebaseApp)
 
-const getTokenFCM = (setTokenFound) => {
+const getTokenFCM = (setTokenFound, user) => {
   return getToken(messaging, {
     vapidKey:
       'BCL90hDFViJNkFwrHObVBRWv9a7WP98GFUOkpCKOz2qYW1fWYJZGvBTONVOUm8PrwvBcFGSSe9wItynQJoovc-I',
@@ -27,6 +27,7 @@ const getTokenFCM = (setTokenFound) => {
           token: currentToken,
           device: '',
           meid: '',
+          user: user,
         }
         setTokenFound(true)
         axios

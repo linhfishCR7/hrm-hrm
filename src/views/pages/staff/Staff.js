@@ -40,12 +40,12 @@ import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class Company extends Component {
+class Staff extends Component {
   constructor(props) {
     super(props)
     this.state = {
       customers: [],
-      companies: [{}],
+      departments: [{}],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
@@ -71,9 +71,9 @@ class Company extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
+  fetchDeparmentAPI = async (event) => {
     await axios
-      .get('/hrm/customers/?no_pagination=true', {
+      .get('/hrm/deparments/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -81,18 +81,16 @@ class Company extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        const customers = res.data
+        const departments = res.data
         this.setState({
-          customers: customers,
-          logo: res.data.logo,
+          departments: departments,
         })
       })
       .catch((error) => console.log(error))
   }
-
-  fetchCompanyAPI = async (event) => {
+  fetchNationalityAPI = async (event) => {
     await axios
-      .get('/hrm/companies/?no_pagination=true', {
+      .get('/hrm/nationalities/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -106,6 +104,10 @@ class Company extends Component {
         })
       })
       .catch((error) => console.log(error))
+  }
+
+  componentDidMount() {
+    this.fetchDeparmentAPI()
   }
 
   handleInputChange = (event) => {
