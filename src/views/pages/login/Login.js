@@ -92,7 +92,6 @@ const Login = () => {
       onSuccess: (data) => {
         const token = data.idToken.jwtToken
         localStorage.setItem('token', token)
-
         getProfile().then((results) => {
           if (results.data.is_active === false) {
             user.signOut()
@@ -223,6 +222,9 @@ const Login = () => {
                         aria-label="Please choose your company"
                         onChange={(event) => setCompany(event.target.value)}
                       >
+                        <option key="0" value="">
+                          Chọn công ty
+                        </option>
                         {companydata.map((item) => (
                           <option key={item.id} value={item.id}>
                             {item.name}
@@ -239,6 +241,9 @@ const Login = () => {
                         aria-label="Please choose your branch"
                         onChange={(event) => setBranch(event.target.value)}
                       >
+                        <option key="0" value="">
+                          Chọn chi nhánh
+                        </option>
                         {branchdata.map((item) => (
                           <option key={item.id} value={item.id}>
                             {item.name}

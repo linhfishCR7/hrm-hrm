@@ -243,6 +243,29 @@ const _nav = [
       // },
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Nhân Viên',
+    to: '/list-staff',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Quản Lý Nhân Viên',
+        to: '/list-staff',
+      },
+      {
+        component: CNavItem,
+        name: 'Cập Nhật Nhân Viên',
+        to: '/staff',
+      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Add Company',
+      //   to: '/add-company',
+      // },
+    ],
+  },
   // {
   //   component: CNavGroup,
   //   name: 'Buttons',

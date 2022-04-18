@@ -309,6 +309,9 @@ const Register = () => {
                       aria-label="Chọn Bộ Phận Làm Việc"
                       onChange={(event) => setDepartment(event.target.value)}
                     >
+                      <option key="0" value="">
+                        Chọn bộ phận làm việc
+                      </option>
                       {departments.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.name}

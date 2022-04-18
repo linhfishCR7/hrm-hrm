@@ -6,7 +6,7 @@ export const actFetchProductsRequest = () => {
         return callApi('list/', 'GET', null).then(res => {
             
             dispatch(actFetchProducts(res.data.results));
-            console.log(res.data.results);
+            // console.log(res.data.results);
         });
     };
 }

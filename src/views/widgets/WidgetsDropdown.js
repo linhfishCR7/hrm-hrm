@@ -95,13 +95,13 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-              {data.total_staff}{' '}
+              {data.total_department}{' '}
               {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
               </span> */}
             </>
           }
-          title="Nhân Viên"
+          title="Test"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -120,7 +120,7 @@ const WidgetsDropdown = () => {
                 labels: dataStaff.map((item) => 'Tháng ' + item.month),
                 datasets: [
                   {
-                    label: 'Nhân Viên Theo Tháng',
+                    label: 'Test',
                     backgroundColor: 'transparent',
                     borderColor: 'rgba(255,255,255,.55)',
                     pointBackgroundColor: getStyle('--cui-primary'),
@@ -262,13 +262,13 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              {data.total_department}{' '}
+              {data.total_staff}{' '}
               {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
               </span> */}
             </>
           }
-          title="Test"
+          title="Nhân Viên"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -284,13 +284,13 @@ const WidgetsDropdown = () => {
               className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: dataStaff.map((item) => 'Tháng ' + item.month),
                 datasets: [
                   {
-                    label: 'Test',
+                    label: 'Nhân Viên Theo Tháng',
                     backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
+                    data: dataStaff.map((item) => item.sum_amount),
                     fill: true,
                   },
                 ],

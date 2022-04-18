@@ -40,7 +40,7 @@ const getTokenFCM = (setTokenFound, user) => {
           })
           .then((res) => {
             // console.log(res)
-            console.log('OK')
+            // console.log('OK')
           })
           .catch(function (error) {
             console.log(error)

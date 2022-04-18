@@ -68,6 +68,8 @@ const CompanyDetail = React.lazy(() => import('./views/pages/company/CompanyDeta
 const Customer = React.lazy(() => import('./views/pages/customer/Customer'))
 const CustomerDetail = React.lazy(() => import('./views/pages/customer/CustomerDetail'))
 const AddCustomer = React.lazy(() => import('./views/pages/customer/AddCustomer'))
+const Staff = React.lazy(() => import('./views/pages/staff/Staff'))
+const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -93,6 +95,8 @@ const routes = [
   { path: '/customer', name: 'Customer', element: Customer },
   { path: '/add-customer', name: 'AddCustomer', element: AddCustomer },
   { path: '/customer/:id', name: 'CustomerDetail', element: CustomerDetail },
+  { path: '/staff', name: 'Staff', element: Staff },
+  { path: '/list-staff', name: 'ListStaff', element: ListStaff },
 
   // #################################################################
 

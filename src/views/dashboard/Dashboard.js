@@ -19,10 +19,15 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CContainer,
 } from '@coreui/react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
+import { Table, Tag, Space, Button, message, Input, Collapse, Card, Avatar } from 'antd'
+import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
+import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+
 import {
   cibCcAmex,
   cibCcApplePay,
@@ -55,9 +60,14 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import { TOKEN } from '../../constants/Config'
+import axios from '../../utils/axios'
+
+const { Meta } = Card
 
 const Dashboard = () => {
   let navigate = useNavigate()
+  const [staffs, setStaffs] = useState([])
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser()
@@ -96,12 +106,27 @@ const Dashboard = () => {
       }
     })
   }
-
+  const fetchStaffAPI = async (event) => {
+    await axios
+      .get('/hrm/staffs/?no_pagination=true', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const staffs = res.data
+        setStaffs(staffs)
+      })
+      .catch((error) => console.log(error))
+  }
   const [status, setStatus] = useState(false)
   useEffect(() => {
     getSession().then(() => {
       setStatus(true)
     })
+    fetchStaffAPI()
   }, [])
   const user = Pool.getCurrentUser()
   useEffect(() => {
@@ -237,6 +262,49 @@ const Dashboard = () => {
   return (
     <>
       <WidgetsDropdown />
+      <CRow>
+        <CCol>
+          <h4 id="traffic" className="card-title mb-0">
+            Nhân Viên
+          </h4>
+        </CCol>
+      </CRow>
+      <CRow>
+        {staffs.map((item) => (
+          <CCol key={item.id}>
+            <Card
+              key={item.id}
+              className="mb-3"
+              style={{ width: 300 }}
+              //   cover={
+              //     <img
+              //       alt="example"
+              //       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              //     />
+              //   }
+              actions={[
+                <SettingOutlined key="setting" />,
+                <EditOutlined key="edit" />,
+                <EllipsisOutlined key="ellipsis" />,
+              ]}
+            >
+              <Meta
+                avatar={
+                  <Avatar
+                    src={
+                      item.user.image != null
+                        ? item.user.image.image_s3_url
+                        : 'https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png'
+                    }
+                  />
+                }
+                title={item.last_name + ' ' + item.first_name}
+                description={item.position_data}
+              />
+            </Card>
+          </CCol>
+        ))}
+      </CRow>
       {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -363,9 +431,7 @@ const Dashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-
       <WidgetsBrand withCharts />
-
       <CRow>
         <CCol xs>
           <CCard className="mb-4">

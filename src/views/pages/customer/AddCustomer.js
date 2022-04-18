@@ -192,6 +192,9 @@ class AddCustomer extends Component {
                     aria-label="Please choose your company"
                     onChange={this.handleInputChange}
                   >
+                    <option key="0" value="">
+                      Chọn công ty
+                    </option>
                     {this.state.companies.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}

@@ -40,7 +40,7 @@ import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 
-class Company extends Component {
+class Customer extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -662,4 +662,4 @@ class Company extends Component {
   }
 }
 
-export default Company
+export default Customer
