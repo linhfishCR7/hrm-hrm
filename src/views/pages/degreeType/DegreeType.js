@@ -33,6 +33,8 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
+import Loading from '../../../utils/loading'
+
 const { Column, ColumnGroup } = Table
 
 class DegreeType extends Component {
@@ -45,6 +47,7 @@ class DegreeType extends Component {
       id: '',
       degree_types: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,6 +67,7 @@ class DegreeType extends Component {
         const degreeType = res.data
         this.setState({
           degreeType: degreeType,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -275,6 +279,7 @@ class DegreeType extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2> Loại Bằng Cấp</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

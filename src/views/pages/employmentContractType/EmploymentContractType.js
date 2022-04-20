@@ -4,16 +4,9 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import Loading from '../../../utils/loading'
 
 import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
-  CContainer,
   CModal,
   CModalBody,
   CModalFooter,
@@ -27,7 +20,6 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
@@ -45,6 +37,7 @@ class EmploymentContractTypes extends Component {
       id: '',
       employment_contract_types: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,6 +57,7 @@ class EmploymentContractTypes extends Component {
         const employmentContractTypes = res.data
         this.setState({
           employmentContractTypes: employmentContractTypes,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -277,6 +271,7 @@ class EmploymentContractTypes extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2> Loại Hợp Đồng</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

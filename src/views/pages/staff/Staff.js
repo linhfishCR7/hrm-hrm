@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input, Collapse } from 'antd'
+import { Table, Tag, Space, Button, message, Input, Collapse, Spin, Alert } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import LoadingOverlay from 'react-loading-overlay'
 
 import {
   CFormTextarea,
@@ -28,7 +29,6 @@ import {
   CImage,
   CFormSelect,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons'
 import Modal from 'react-modal'
@@ -119,6 +119,7 @@ class Staff extends Component {
       lat3: '',
       lng3: '',
       type3: 'temporary_residence_address',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -244,11 +245,15 @@ class Staff extends Component {
         const staffs = res.data
         this.setState({
           staffs: staffs,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
   }
   componentDidMount() {
+    this.setState({
+      loading: true,
+    })
     this.fetchStaffAPI()
   }
 
@@ -600,6 +605,14 @@ class Staff extends Component {
   render() {
     return (
       <>
+        <LoadingOverlay
+          active={this.state.loading}
+          spinner={<Spin tip="Loading..." size="large"></Spin>}
+          styles={{ wrapper: { backgroundColor: 'black' } }}
+          // text="Loading your content..."
+        >
+          {/* <p>Some content or children or something.</p> */}
+        </LoadingOverlay>
         <h2>Nhân Viên</h2>
         <CRow>
           {/* <CCol md={4}>

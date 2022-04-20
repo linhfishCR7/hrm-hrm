@@ -4,6 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import Loading from '../../../utils/loading'
 
 import {
   CTableBody,
@@ -48,6 +49,7 @@ class Nationality extends Component {
       id: '',
       nationality: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -67,6 +69,7 @@ class Nationality extends Component {
         const nationalities = res.data
         this.setState({
           nationalities: nationalities,
+          loading: false,
           //   message: 'Thêm dữ liệu thành công!!!!',
           //   isSuccess: true,
           //   isError: false,
@@ -282,6 +285,7 @@ class Nationality extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2> Quốc Tịch</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

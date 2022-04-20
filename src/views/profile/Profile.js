@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import getProfile from '../../utils/getProfile'
 import axios from '../../utils/axios'
 import { TOKEN } from '../../constants/Config'
+import Loading from '../../utils/loading'
 
 import {
   CButton,
@@ -28,7 +29,6 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilCloudUpload, cilUser } from '@coreui/icons'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, message, Upload } from 'antd'
-
 import '../../assets/style.css'
 
 const Profile = () => {
@@ -39,6 +39,7 @@ const Profile = () => {
   const [phone, setPhone] = useState('')
   const [dayofbirth, setDayOfBirth] = useState('')
   const [image, setImage] = useState('')
+  const [loading_spin, setLoadingSpin] = useState(true)
 
   const user = Pool.getCurrentUser()
   useEffect(() => {
@@ -54,6 +55,7 @@ const Profile = () => {
         setPhone(results.data.phone)
         setImage(results.data.image.image_s3_url)
         setDayOfBirth(results.data.date_of_birth)
+        setLoadingSpin(false)
       })
       .catch(function (error) {
         if (error.response) {
@@ -128,6 +130,8 @@ const Profile = () => {
   }
   return (
     <>
+      <Loading loading={loading_spin} />
+
       <CCard className="mb-4">
         <CCardBody>
           <h1> My Profile </h1> <p className="text-medium-emphasis"></p>{' '}

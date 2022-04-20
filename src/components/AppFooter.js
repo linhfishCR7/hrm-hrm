@@ -4,7 +4,7 @@ import { CFooter } from '@coreui/react'
 const AppFooter = () => {
   return (
     <CFooter>
-      <div>
+      {/* <div>
         <a href="https://havanlinh.tk" target="_blank" rel="noopener noreferrer">
           HVL
         </a>
@@ -15,7 +15,7 @@ const AppFooter = () => {
         <a href="https://linhfishcr7.wordpress.com/" target="_blank" rel="noopener noreferrer">
           Blog
         </a>
-      </div>
+      </div> */}
     </CFooter>
   )
 }

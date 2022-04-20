@@ -5,6 +5,7 @@ import { Table, Tag, Space, Button, message, Input, Upload } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined, UploadOutlined, InboxOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import Loading from '../../../utils/loading'
 
 import {
   CTableBody,
@@ -77,6 +78,7 @@ class Company extends Component {
       lat2: '',
       lng2: '',
       type2: 'head_office_address',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -97,6 +99,7 @@ class Company extends Component {
         this.setState({
           companies: companies,
           logo: res.data.logo,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -334,6 +337,8 @@ class Company extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
+
         <h2> Công Ty</h2>
         <CRow>
           <CCol md={4}>

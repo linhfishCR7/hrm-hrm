@@ -33,6 +33,8 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
+import Loading from '../../../utils/loading'
+
 const { Column, ColumnGroup } = Table
 
 class DayOffType extends Component {
@@ -45,6 +47,7 @@ class DayOffType extends Component {
       id: '',
       day_off_types: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,6 +67,7 @@ class DayOffType extends Component {
         const dayOffType = res.data
         this.setState({
           dayOffType: dayOffType,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -281,6 +285,7 @@ class DayOffType extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2> Loại Phép Năm</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

@@ -70,33 +70,35 @@ const CustomerDetail = React.lazy(() => import('./views/pages/customer/CustomerD
 const AddCustomer = React.lazy(() => import('./views/pages/customer/AddCustomer'))
 const Staff = React.lazy(() => import('./views/pages/staff/Staff'))
 const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
+const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/profile', name: 'Profile', element: Profile },
-  { path: '/religion', name: 'Religion', element: Religion },
-  { path: '/nationality', name: 'Nationality', element: Nationality },
-  { path: '/ethnicity', name: 'Ethnicity', element: Ethnicity },
-  { path: '/certificate-type', name: 'CertificateType', element: CertificateType },
-  { path: '/degree-type', name: 'DegreeType', element: DegreeType },
-  { path: '/day-off-type', name: 'DayOffType', element: DayOffType },
-  { path: '/position', name: 'Position', element: Position },
-  { path: '/literacy', name: 'Literacy', element: Literacy },
+  { path: '/religion', name: 'Tôn Giáo', element: Religion },
+  { path: '/nationality', name: 'Quốc Tịch', element: Nationality },
+  { path: '/ethnicity', name: 'Dân Tộc', element: Ethnicity },
+  { path: '/certificate-type', name: 'Loại Chứng Nhận', element: CertificateType },
+  { path: '/degree-type', name: 'Loại Bằng Cấp', element: DegreeType },
+  { path: '/day-off-type', name: 'Loại Ngày Nghỉ', element: DayOffType },
+  { path: '/position', name: 'Chức Vụ', element: Position },
+  { path: '/literacy', name: 'Trình Độ Học Vấn', element: Literacy },
   {
     path: '/employment-contract-type',
-    name: 'EmploymentContractType',
+    name: 'Hợp Đồng Lao Động',
     element: EmploymentContractType,
   },
-  { path: '/kind-off-work', name: 'KindOffWork', element: KindOffWork },
-  { path: '/add-company', name: 'AddCompany', element: AddCompany },
-  { path: '/company', name: 'Company', element: Company },
-  { path: '/company/:id', name: 'CompanyDetail', element: CompanyDetail },
-  { path: '/customer', name: 'Customer', element: Customer },
-  { path: '/add-customer', name: 'AddCustomer', element: AddCustomer },
-  { path: '/customer/:id', name: 'CustomerDetail', element: CustomerDetail },
+  { path: '/kind-off-work', name: 'Công', element: KindOffWork },
+  { path: '/add-company', name: 'Thêm Công Ty', element: AddCompany },
+  { path: '/company', name: 'Công Ty', element: Company },
+  { path: '/company/:id', name: 'Chi Tiết Công Ty', element: CompanyDetail },
+  { path: '/customer', name: 'Khách Hàng', element: Customer },
+  { path: '/add-customer', name: 'Thêm Khách Hàng', element: AddCustomer },
+  { path: '/customer/:id', name: 'Chi Tiết Khách Hàng', element: CustomerDetail },
   { path: '/staff', name: 'Staff', element: Staff },
-  { path: '/list-staff', name: 'ListStaff', element: ListStaff },
+  { path: '/list-staff', name: 'Nhân Viên', element: ListStaff },
+  { path: '/salary', name: 'Tiền Lương', element: Salary },
 
   // #################################################################
 

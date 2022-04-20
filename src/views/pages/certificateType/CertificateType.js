@@ -4,6 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import Loading from '../../../utils/loading'
 
 import {
   CTableBody,
@@ -45,6 +46,7 @@ class CertificateType extends Component {
       id: '',
       certificate_types: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,6 +66,7 @@ class CertificateType extends Component {
         const certificateType = res.data
         this.setState({
           certificateType: certificateType,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -275,6 +278,8 @@ class CertificateType extends Component {
   render() {
     return (
       <>
+        {' '}
+        <Loading loading={this.state.loading} />
         <h2> Loại Chứng Chỉ</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

@@ -42,6 +42,7 @@ import { Link } from 'react-router-dom'
 import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle, cilMediaStepBackward } from '@coreui/icons'
+import Loading from '../../../utils/loading'
 
 const { Option } = Select
 const formItemLayout = {
@@ -69,6 +70,7 @@ const CompanyDetail = () => {
   const [dataAdress, setDataAddress] = useState([{}])
   const [data, setData] = useState({})
   const [dataLogo, setDataLogo] = useState({})
+  const [loading, setLoading] = useState(true)
   const [newData, setNewData] = useState({ ['name']: 'defaultValue' })
 
   const fetchAPI = async () => {
@@ -85,6 +87,7 @@ const CompanyDetail = () => {
         setData(companies)
         setDataAddress(companies.addresses)
         setDataLogo(companies.logo)
+        setLoading(false)
       })
       .catch((error) => console.log(error))
   }
@@ -106,6 +109,7 @@ const CompanyDetail = () => {
 
   return (
     <>
+      <Loading loading={loading} />
       <h2>Công Ty</h2>
       <Card title="Chi Tiết Công Ty" bordered={false}>
         <CForm>

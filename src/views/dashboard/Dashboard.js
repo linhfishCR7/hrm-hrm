@@ -24,9 +24,22 @@ import {
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
-import { Table, Tag, Space, Button, message, Input, Collapse, Card, Avatar } from 'antd'
+import {
+  Table,
+  Tag,
+  Space,
+  Button,
+  message,
+  Input,
+  Collapse,
+  Card,
+  Avatar,
+  Spin,
+  Alert,
+} from 'antd'
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+import '../../assets/style.css'
 
 import {
   cibCcAmex,
@@ -62,12 +75,14 @@ import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { TOKEN } from '../../constants/Config'
 import axios from '../../utils/axios'
+import Loading from '../../utils/loading'
 
 const { Meta } = Card
 
 const Dashboard = () => {
   let navigate = useNavigate()
   const [staffs, setStaffs] = useState([])
+  const [loading, setLoading] = useState(true)
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser()
@@ -118,6 +133,7 @@ const Dashboard = () => {
       .then((res) => {
         const staffs = res.data
         setStaffs(staffs)
+        setLoading(false)
       })
       .catch((error) => console.log(error))
   }
@@ -261,6 +277,7 @@ const Dashboard = () => {
 
   return (
     <>
+      <Loading loading={loading} />
       <WidgetsDropdown />
       <CRow>
         <CCol>

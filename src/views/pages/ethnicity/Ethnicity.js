@@ -4,6 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import Loading from '../../../utils/loading'
 
 import {
   CTableBody,
@@ -45,6 +46,7 @@ class Ethnicity extends Component {
       id: '',
       ethnicity: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,6 +66,7 @@ class Ethnicity extends Component {
         const ethnicities = res.data
         this.setState({
           ethnicities: ethnicities,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -277,6 +280,7 @@ class Ethnicity extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2> Dân Tộc</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

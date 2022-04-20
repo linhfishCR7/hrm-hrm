@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import '../../../assets/style.css'
+import LoadingOverlay from 'react-loading-overlay'
 
 import {
   Table,
@@ -752,15 +752,14 @@ class ListStaff extends Component {
         {/* <BackTop>
           <div style={style}>UP</div>
         </BackTop> */}
-        <div className={this.state.loading ? 'spin' : 'hide'}>
-          <Spin tip="Loading..." size="large">
-            <Alert
-              message="Vui lòng chờ tí nhé!"
-              // description="Further details about the context of this alert."
-              type="info"
-            />
-          </Spin>
-        </div>
+        <LoadingOverlay
+          active={this.state.loading}
+          spinner={<Spin tip="Loading..." size="large"></Spin>}
+          styles={{ wrapper: { backgroundColor: 'black' } }}
+          // text="Loading your content..."
+        >
+          {/* <p>Some content or children or something.</p> */}
+        </LoadingOverlay>
         <h2>Nhân Viên</h2>
         <CRow>
           <CCol md={4}>

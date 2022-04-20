@@ -3,6 +3,7 @@ import axios from '../../../utils/axios'
 import axios1 from 'axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { useNavigate, useParams } from 'react-router-dom'
+import Loading from '../../../utils/loading'
 
 import {
   Table,
@@ -68,6 +69,7 @@ const normFile = (e) => {
 const CompanyDetail = () => {
   const { id } = useParams()
   const [data, setData] = useState({})
+  const [loading, setLoading] = useState(true)
   const [dataCompany, setdataCompany] = useState({})
   const [dataAdress, setDataAddress] = useState([])
 
@@ -85,6 +87,7 @@ const CompanyDetail = () => {
         setData(customers)
         setDataAddress(customers.addresses[0])
         setdataCompany(customers.company)
+        setLoading(false)
       })
       .catch((error) => console.log(error))
   }
@@ -94,6 +97,8 @@ const CompanyDetail = () => {
 
   return (
     <>
+      <Loading loading={loading} />
+
       <h2>Chi Tiết Khách Hàng</h2>
       <Card title="Chi Tiết Khách Hàng" bordered={false}>
         <CForm>

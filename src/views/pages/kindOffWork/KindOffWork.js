@@ -4,6 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import Loading from '../../../utils/loading'
 
 import {
   CTableBody,
@@ -46,6 +47,7 @@ class KindOffworks extends Component {
       id: '',
       work: '',
       name: '',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -66,6 +68,7 @@ class KindOffworks extends Component {
         const works = res.data
         this.setState({
           works: works,
+          loading: false,
           //   message: 'Thêm dữ liệu thành công!!!!',
           //   isSuccess: true,
           //   isError: false,
@@ -282,6 +285,7 @@ class KindOffworks extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2>Loại Chấm Công</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>

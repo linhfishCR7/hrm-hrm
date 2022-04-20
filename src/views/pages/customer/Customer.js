@@ -34,10 +34,10 @@ import {
   CImage,
   CFormSelect,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons'
 import Modal from 'react-modal'
+import Loading from '../../../utils/loading'
 const { Column, ColumnGroup } = Table
 
 class Customer extends Component {
@@ -65,6 +65,7 @@ class Customer extends Component {
       lat: '',
       lng: '',
       type: 'head_office_address',
+      loading: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -85,6 +86,7 @@ class Customer extends Component {
         this.setState({
           customers: customers,
           logo: res.data.logo,
+          loading: false,
         })
       })
       .catch((error) => console.log(error))
@@ -309,6 +311,7 @@ class Customer extends Component {
   render() {
     return (
       <>
+        <Loading loading={this.state.loading} />
         <h2>Khách Hàng</h2>
         <CRow>
           <CCol md={4}>
