@@ -2,27 +2,9 @@ import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 
-import {
-  Table,
-  message,
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Radio,
-  Slider,
-  Button,
-  Upload,
-  Rate,
-  Checkbox,
-  Row,
-  Col,
-  Card,
-  Input,
-} from 'antd'
+import { message, Form, Select, Button, Upload, Card, Input } from 'antd'
 
 import {
-  CButton,
   CRow,
   CCol,
   CFormInput,
@@ -32,9 +14,9 @@ import {
   CImage,
 } from '@coreui/react'
 import { TOKEN } from '../../../constants/Config'
-import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { cilCircle } from '@coreui/icons'
 
 const { Option } = Select
 const formItemLayout = {

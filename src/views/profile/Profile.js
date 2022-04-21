@@ -30,6 +30,7 @@ import { cilLockLocked, cilCloudUpload, cilUser } from '@coreui/icons'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, message, Upload } from 'antd'
 import '../../assets/style.css'
+import openNotificationWithIcon from '../../utils/notification'
 
 const Profile = () => {
   let navigate = useNavigate()
@@ -94,36 +95,27 @@ const Profile = () => {
     }
     updateProfile(data)
       .then((res) => {
-        message.success({
-          content: 'Cập Nhật profile thành công!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: 'Cập nhật dữ liệu thành công!!!',
+          placement: 'topRight',
         })
       })
       .catch(function (error) {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })

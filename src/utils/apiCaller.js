@@ -1,12 +1,46 @@
-import axios from 'axios'
-import * as Config from './../constants/Config'
+import axios from './axios'
+import PropTypes from 'prop-types'
+import React from 'react'
 
-export default function callApi(endpoint, method = 'GET', body) {
-  return axios({
-    method: method,
-    url: `${Config.API_URL}/${endpoint}`,
-    data: body,
-  }).catch((err) => {
-    // console.log(err)
-  })
+const API = async ({ REGISTER_URL, ACTION, DATA = {} }) => {
+  API.propTypes = {
+    REGISTER_URL: PropTypes.string,
+    ACTION: PropTypes.string,
+    DATA: {},
+  }
+  const token = localStorage.getItem('token')
+  if (ACTION === 'GET') {
+    return await axios.get(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+  } else if (ACTION === 'DELETE') {
+    return await axios.delete(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+  } else if (ACTION === 'POST') {
+    return await axios.post(REGISTER_URL, DATA, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+  } else if (ACTION === 'PUT') {
+    return await axios.put(REGISTER_URL, DATA, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+  }
 }
+export default API

@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input } from 'antd'
+import { Table, Space, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
-  CContainer,
   CModal,
   CModalBody,
   CModalFooter,
@@ -28,12 +20,13 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
+import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
+import openNotificationWithIcon from '../../../utils/notification'
+
 const { Column, ColumnGroup } = Table
 
 class CertificateType extends Component {
@@ -53,15 +46,8 @@ class CertificateType extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
-    await axios
-      .get('/hrm/certificate-types/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+  componentDidMount() {
+    API({ REGISTER_URL: '/hrm/certificate-types/?no_pagination=true', ACTION: 'GET' })
       .then((res) => {
         const certificateType = res.data
         this.setState({
@@ -88,27 +74,16 @@ class CertificateType extends Component {
       certificate_types: this.state.certificate_types,
       name: this.state.name,
     }
-
-    await axios
-      .post('/hrm/certificate-types/', newItem, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({ REGISTER_URL: '/hrm/certificate-types/', ACTION: 'POST', DATA: newItem })
       .then((res) => {
         let certificateType = this.state.certificateType
         certificateType = [newItem, ...certificateType]
         this.setState({ certificateType: certificateType })
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: 'Sẽ tự động tải lại trang',
+          placement: 'topRight',
         })
         setTimeout(function () {
           window.location.reload()
@@ -116,24 +91,18 @@ class CertificateType extends Component {
       })
       .catch(function (error) {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })
@@ -176,15 +145,11 @@ class CertificateType extends Component {
       certificate_types: this.state.certificate_types,
       name: this.state.name,
     }
-
-    await axios
-      .put('/hrm/certificate-types/' + this.state.id + '/', newUpdate, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({
+      REGISTER_URL: '/hrm/certificate-types/' + this.state.id + '/',
+      ACTION: 'PUT',
+      DATA: newUpdate,
+    })
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
@@ -199,27 +164,30 @@ class CertificateType extends Component {
           ),
         }))
         this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: 'Cập nhật dữ liệu thành công!!!',
+          placement: 'topRight',
         })
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch(function async(error) {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+        }
+      })
   }
 
   handleDelete = (event) => {
@@ -228,52 +196,36 @@ class CertificateType extends Component {
     const Id = {
       id: this.state.id,
     }
-    axios
-      .delete('/hrm/certificate-types/' + this.state.id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({ REGISTER_URL: '/hrm/certificate-types/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
           certificateType: prevState.certificateType.filter((el) => el.id !== this.state.id),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công!!!',
+          description: 'Xoá dữ liệu thành công!!!',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Xoá dữ liệu không thành công!!!',
+          description: error,
+          placement: 'topRight',
         }),
       )
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/certificate-types/?no_pagination=true&search=' + value
-    const res = await axios.get(REGISTER_URL, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${TOKEN}`,
-      },
-      withCredentials: true,
+    API({
+      REGISTER_URL: '/hrm/certificate-types/?no_pagination=true&search=' + value,
+      ACTION: 'GET',
+    }).then((res) => {
+      this.setState({ certificateType: res.data })
     })
-    this.setState({ certificateType: res.data })
   }
   render() {
     return (

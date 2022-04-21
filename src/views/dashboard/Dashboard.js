@@ -288,11 +288,11 @@ const Dashboard = () => {
       </CRow>
       <CRow>
         {staffs.map((item) => (
-          <CCol key={item.id}>
+          <CCol key={item.id} md={4} xl={3}>
             <Card
               key={item.id}
               className="mb-3"
-              style={{ width: 300 }}
+              // style={{ width: 300 }}
               //   cover={
               //     <img
               //       alt="example"
@@ -316,7 +316,9 @@ const Dashboard = () => {
                   />
                 }
                 title={item.last_name + ' ' + item.first_name}
-                description={item.position_data}
+                description={
+                  item.position_data !== 'Nhân Viên' ? <h6>Giám Đốc</h6> : item.position_data
+                }
               />
             </Card>
           </CCol>

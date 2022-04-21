@@ -268,7 +268,7 @@ const WidgetsDropdown = () => {
               </span> */}
             </>
           }
-          title="Nhân Viên"
+          title="Nhân Sự"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">

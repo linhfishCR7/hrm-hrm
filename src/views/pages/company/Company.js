@@ -8,13 +8,6 @@ import { Link } from 'react-router-dom'
 import Loading from '../../../utils/loading'
 
 import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
   CContainer,
   CModal,
   CModalBody,

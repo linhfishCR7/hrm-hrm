@@ -3,10 +3,10 @@ import Pool from '../../utils/UserPool'
 import getSession from '../../utils/getSession'
 import getProfile from '../../utils/getProfile'
 import getTokenFCM from '../../utils/firebase'
-
+import Profile from '../../views/profile/Profile'
 import { useNavigate } from 'react-router-dom'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { message } from 'antd'
+import { message, Drawer } from 'antd'
 import {
   CAvatar,
   CBadge,
@@ -45,6 +45,7 @@ const AppHeaderDropdown = () => {
   const [data, setData] = useState()
   const [status, setStatus] = useState(false)
   const [isTokenFound, setTokenFound] = useState(false)
+  const [visibleprofile, setVisibleProfile] = useState(false)
 
   useEffect(() => {
     getSession().then(() => {
@@ -102,6 +103,13 @@ const AppHeaderDropdown = () => {
       navigate('/login')
     }
   }
+  const showDrawer = () => {
+    setVisibleProfile(true)
+  }
+
+  const onClose = () => {
+    setVisibleProfile(false)
+  }
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -138,10 +146,21 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem> */}
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
-        <CDropdownItem href="/#/profile">
+        <CDropdownItem onClick={showDrawer}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
+        <Drawer
+          title="My Profile"
+          placement="right"
+          onClose={onClose}
+          visible={visibleprofile}
+          // zIndex={99999}
+          maskClosable={false}
+          size="large"
+        >
+          <Profile />
+        </Drawer>
         {/* <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />
           Settings
