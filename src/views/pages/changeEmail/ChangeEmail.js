@@ -19,6 +19,7 @@ import { cilLockLocked } from '@coreui/icons'
 
 import UserPool from '../../../utils/UserPool'
 import { Auth, Amplify } from 'aws-amplify'
+import openNotificationWithIcon from '../../../utils/notification'
 
 const ChangeEmail = () => {
   const navigate = useNavigate()
@@ -51,7 +52,12 @@ const ChangeEmail = () => {
       await Auth.updateUserAttributes(user, { email: email })
       setCodeSent(true)
     } catch (error) {
-      alert(error.message || JSON.stringify(error))
+      openNotificationWithIcon({
+        type: 'error',
+        message: error.message || JSON.stringify(error),
+        description: error.message || JSON.stringify(error),
+        placement: 'topRight',
+      })
       setIsSendingCode(false)
     }
   }
@@ -66,7 +72,12 @@ const ChangeEmail = () => {
 
       navigate('/dashboard')
     } catch (error) {
-      alert(error.message || JSON.stringify(error))
+      openNotificationWithIcon({
+        type: 'error',
+        message: error.message || JSON.stringify(error),
+        description: error.message || JSON.stringify(error),
+        placement: 'topRight',
+      })
       setIsConfirming(false)
     }
   }

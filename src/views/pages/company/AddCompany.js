@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+import openNotificationWithIcon from '../../../utils/notification'
+import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 
 import { message, Form, Select, Button, Upload, Card, Input } from 'antd'
 
@@ -135,7 +137,7 @@ class AddCompany extends Component {
     })
   }
 
-  handleInsertSubmit = async (value) => {
+  handleInsertSubmit = (value) => {
     const newItem = {
       company: value['company'],
       name: value['name'],
@@ -172,48 +174,29 @@ class AddCompany extends Component {
         },
       ],
     }
-    await axios
-      .post('/hrm/companies/', newItem, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({ REGISTER_URL: '/hrm/companies/', ACTION: 'POST', DATA: newItem })
       .then((res) => {
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: 'Thêm dữ liệu thành công!!!',
+          placement: 'topRight',
         })
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
       })
       .catch(function (error) {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: error,
+            description: error,
+            placement: 'topRight',
           })
         }
       })
@@ -336,9 +319,6 @@ class AddCompany extends Component {
                 customRequest={({ file, onError, onSuccess, onProgress }) => {
                   const fileType = file.type
                   const file_name = file.name
-                  console.log('Preparing the upload')
-                  console.log('fileType', fileType)
-
                   // const key = `videos/${generateDateForFileName()}_${fileName}`
                   // const file_name = { fileName }
 
@@ -360,7 +340,6 @@ class AddCompany extends Component {
                         formData.append(key, returnData.fields[key]),
                       )
                       formData.append('file', file)
-
                       // var t0 = performance.now()
                       fetch(signedRequest, {
                         method: 'POST',
@@ -375,14 +354,11 @@ class AddCompany extends Component {
                             logo_url: signedRequest + content.key,
                           })
                           onSuccess(result, file)
-                          message.success({
-                            content: 'Upload ảnh thành công!!!',
-                            duration: 5,
-                            maxCount: 1,
-                            className: 'custom-class',
-                            style: {
-                              marginTop: '20vh',
-                            },
+                          openNotificationWithIcon({
+                            type: 'success',
+                            message: 'Upload ảnh thành công!!!',
+                            description: 'Upload ảnh thành công!!!',
+                            placement: 'topRight',
                           })
                         })
                         .catch((error) => {
@@ -390,14 +366,11 @@ class AddCompany extends Component {
                             loading: false,
                           })
                           onError(error)
-                          message.error({
-                            content: JSON.stringify(error),
-                            duration: 5,
-                            maxCount: 1,
-                            className: 'custom-class',
-                            style: {
-                              marginTop: '20vh',
-                            },
+                          openNotificationWithIcon({
+                            type: 'error',
+                            message: 'Upload ảnh không thành công!!!',
+                            description: JSON.stringify(error),
+                            placement: 'topRight',
                           })
                         })
                     })
@@ -405,15 +378,12 @@ class AddCompany extends Component {
                       this.setState({
                         loading: false,
                       })
-                      message.error({
-                        content:
+                      openNotificationWithIcon({
+                        type: 'error',
+                        message: 'Upload ảnh không thành công!!!',
+                        description:
                           'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                        duration: 5,
-                        maxCount: 1,
-                        className: 'custom-class',
-                        style: {
-                          marginTop: '20vh',
-                        },
+                        placement: 'topRight',
                       })
                     })
                 }}

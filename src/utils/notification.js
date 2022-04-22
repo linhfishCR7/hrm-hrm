@@ -10,7 +10,6 @@ const openNotificationWithIcon = ({ type, message, description, placement }) => 
     description: PropTypes.string,
     placement: PropTypes.string,
   }
-
   notification[type]({
     style: {
       zIndex: 99999,

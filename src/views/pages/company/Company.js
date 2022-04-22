@@ -6,6 +6,8 @@ import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined, UploadOutlined, InboxOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import Loading from '../../../utils/loading'
+import openNotificationWithIcon from '../../../utils/notification'
+import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 
 import {
   CContainer,
@@ -79,14 +81,10 @@ class Company extends Component {
   }
 
   async componentDidMount() {
-    await axios
-      .get('/hrm/companies/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({
+      REGISTER_URL: '/hrm/companies/?no_pagination=true',
+      ACTION: 'GET',
+    })
       .then((res) => {
         const companies = res.data
         this.setState({
@@ -95,7 +93,14 @@ class Company extends Component {
           loading: false,
         })
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: error,
+          description: error,
+          placement: 'topRight',
+        }),
+      )
   }
 
   handleInputChange = (event) => {
@@ -112,14 +117,10 @@ class Company extends Component {
   }
 
   openModal = (item) => {
-    axios
-      .get('/hrm/companies/' + item.id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({
+      REGISTER_URL: '/hrm/companies/' + item.id + '/',
+      ACTION: 'GET',
+    })
       .then((res) => {
         const companies = res.data
         this.setState({
@@ -157,7 +158,14 @@ class Company extends Component {
           type2: 'head_office_address',
         })
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: error,
+          description: error,
+          placement: 'topRight',
+        }),
+      )
   }
   openDeleteModal = (item) => {
     this.setState({
@@ -177,7 +185,7 @@ class Company extends Component {
       modalDeleteIsOpen: false,
     })
   }
-  handleEditSubmit = async (event) => {
+  handleEditSubmit = (event) => {
     event.preventDefault()
 
     const newUpdate = {
@@ -220,15 +228,11 @@ class Company extends Component {
         },
       ],
     }
-
-    await axios
-      .put('/hrm/companies/' + this.state.id + '/', newUpdate, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({
+      REGISTER_URL: '/hrm/companies/' + this.state.id + '/',
+      ACTION: 'PUT',
+      DATA: newUpdate,
+    })
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
@@ -248,28 +252,22 @@ class Company extends Component {
           ),
         }))
         this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: 'Cập nhật dữ liệu thành công!!!',
+          placement: 'topRight',
         })
         // setTimeout(function () {
         //   window.location.reload()
         // }, 3000)
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Cập nhật dữ liệu không thành công!!!',
+          description: error,
+          placement: 'topRight',
         }),
       )
   }
@@ -280,38 +278,25 @@ class Company extends Component {
     const Id = {
       id: this.state.id,
     }
-    axios
-      .delete('/hrm/companies/' + this.state.id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+    API({ REGISTER_URL: '/hrm/companies/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
           companies: prevState.companies.filter((el) => el.id !== this.state.id),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công',
+          description: 'Xoá dữ liệu thành công',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu không thành công',
+          description: error,
+          placement: 'topRight',
         }),
       )
   }
@@ -544,9 +529,6 @@ class Company extends Component {
                       customRequest={({ file, onError, onSuccess, onProgress }) => {
                         const fileType = file.type
                         const file_name = file.name
-                        console.log('Preparing the upload')
-                        console.log('fileType', fileType)
-
                         // const key = `videos/${generateDateForFileName()}_${fileName}`
                         // const file_name = { fileName }
 
@@ -583,14 +565,12 @@ class Company extends Component {
                                   logo_url: signedRequest + content.key,
                                 })
                                 onSuccess(result, file)
-                                message.success({
-                                  content: 'Upload ảnh thành công!!!',
-                                  duration: 5,
-                                  maxCount: 1,
-                                  className: 'custom-class',
-                                  style: {
-                                    marginTop: '20vh',
-                                  },
+
+                                openNotificationWithIcon({
+                                  type: 'success',
+                                  message: 'Upload ảnh thành công!!!',
+                                  description: 'Upload ảnh thành công!!!',
+                                  placement: 'topRight',
                                 })
                               })
                               .catch((error) => {
@@ -598,14 +578,11 @@ class Company extends Component {
                                   loading: false,
                                 })
                                 onError(error)
-                                message.error({
-                                  content: JSON.stringify(error),
-                                  duration: 5,
-                                  maxCount: 1,
-                                  className: 'custom-class',
-                                  style: {
-                                    marginTop: '20vh',
-                                  },
+                                openNotificationWithIcon({
+                                  type: 'error',
+                                  message: 'Upload ảnh không thành công!!!',
+                                  description: JSON.stringify(error),
+                                  placement: 'topRight',
                                 })
                               })
                           })
@@ -613,15 +590,12 @@ class Company extends Component {
                             this.setState({
                               loading: false,
                             })
-                            message.error({
-                              content:
+                            openNotificationWithIcon({
+                              type: 'error',
+                              message: 'Upload ảnh không thành công!!!',
+                              description:
                                 'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                              duration: 5,
-                              maxCount: 1,
-                              className: 'custom-class',
-                              style: {
-                                marginTop: '20vh',
-                              },
+                              placement: 'topRight',
                             })
                           })
                       }}
