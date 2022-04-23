@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import LoadingOverlay from 'react-loading-overlay'
-
+import openNotificationWithIcon from '../../../utils/notification'
+import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import {
   Table,
   Tag,
@@ -17,6 +18,7 @@ import {
   Alert,
   BackTop,
   Select,
+  Divider,
 } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
@@ -44,70 +46,69 @@ const { Column, ColumnGroup } = Table
 const { Panel } = Collapse
 const { Meta } = Card
 const { Option } = Select
-
 const tabListNoTitle = [
   {
     key: 'ThongTin',
     tab: 'Thông tin',
   },
   {
-    key: 'Liên Hệ Khẩn Cấp',
+    key: 'LienHeKhanCap',
     tab: 'Liên Hệ Khẩn Cấp',
   },
   {
-    key: 'Bằng Cấp',
+    key: 'BangCap',
     tab: 'Bằng Cấp',
   },
   {
-    key: 'Chứng Chỉ',
+    key: 'ChungChi',
     tab: 'Chứng Chỉ',
   },
   {
-    key: 'Kỹ Năng',
+    key: 'KyNang',
     tab: 'Kỹ Năng',
   },
   {
-    key: 'Công Tác',
+    key: 'CongTac',
     tab: 'Công Tác',
   },
   {
-    key: 'Chấm Công',
+    key: 'ChamCong',
     tab: 'Chấm Công',
   },
   {
-    key: 'Phép Năm',
+    key: 'PhepNam',
     tab: 'Phép Năm',
   },
   {
-    key: 'Tiền Lương',
+    key: 'TienLuong',
     tab: 'Tiền Lương',
   },
   {
-    key: 'Điều Chỉnh Lương',
+    key: 'DieuChinhLuong',
     tab: 'Điều Chỉnh Lương',
   },
   {
-    key: 'Hợp Đồng',
+    key: 'HopDong',
     tab: 'Hợp Đồng',
   },
   {
-    key: 'Đào Tạo',
+    key: 'DaoTao',
     tab: 'Đào Tạo',
   },
   {
-    key: 'Thăng Tiến',
+    key: 'ThangTien',
     tab: 'Thăng Tiến',
   },
   {
-    key: 'Khen Thưởng',
+    key: 'KhenThuong',
     tab: 'Khen Thưởng',
   },
   {
-    key: 'Kỷ Luật',
+    key: 'KyLuat',
     tab: 'Kỷ Luật',
   },
   {
-    key: 'Khám Sức Khoẻ',
+    key: 'KhamSucKhoe',
     tab: 'Khám Sức Khoẻ',
   },
 ]
@@ -125,12 +126,10 @@ class ListStaff extends Component {
       email: '',
       phone: '',
       is_active: false,
-      departments: [{}],
       nationality: '',
       ethnicity: '',
       religion: '',
       literacy: '',
-      positions: [{}],
       position_data: '',
       staff: '',
       gender: '',
@@ -157,24 +156,38 @@ class ListStaff extends Component {
       religion: '',
       literacy: '',
       staffData: {},
+      urgentContactData: [],
+      certificateData: [],
+      degreeData: [],
+      skillData: [],
+      timekeepingData: [],
+      kindOffYearData: [],
+      salaryData: [],
+      upSalaryData: [],
+      contractData: [],
+      trainningData: [],
+      promotionData: [],
+      bonusData: [],
+      disciplineData: [],
+      heathyData: [],
+      onBusinessData: [],
+      positions: [{}],
+      projects: [{}],
+      departments: [{}],
+      kindofworks: [{}],
       loading: true,
       search: '',
       filter: '',
+      staffName: '',
+      staffId: '',
     }
-
-    this.openModal = this.openModal.bind(this)
-    this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  fetchDeparmentAPI = async (event) => {
-    await axios
-      .get('/hrm/departments/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+  fetchDeparmentAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/departments/?no_pagination=true',
+      ACTION: 'GET',
+    })
       .then((res) => {
         const departmentss = res.data
         const data = []
@@ -191,127 +204,12 @@ class ListStaff extends Component {
       })
       .catch((error) => console.log(error))
   }
-  fetchNationalityAPI = async (event) => {
-    await axios
-      .get('/hrm/nationalities/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const nationalites = res.data
-        this.setState({
-          nationalites: nationalites,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
 
-  fetchEthnicityAPI = async (event) => {
-    await axios
-      .get('/hrm/ethnicities/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const ethnicities = res.data
-        this.setState({
-          ethnicities: ethnicities,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-  fetchReligionAPI = async (event) => {
-    await axios
-      .get('/hrm/religions/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const religions = res.data
-        this.setState({
-          religions: religions,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-
-  fetchLiteracyAPI = async (event) => {
-    await axios
-      .get('/hrm/literacy/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const literacies = res.data
-        this.setState({
-          literacies: literacies,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-
-  fetchStaffDetail = async (id) => {
-    await axios
-      .get('/hrm/staffs/' + id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const staffs = res.data
-        this.setState({
-          staffData: staffs,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-
-  fetchStaffAPI = async (event) => {
-    await axios
-      .get('/hrm/staffs/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const staffs = res.data
-
-        this.setState({
-          staffs: staffs,
-          loading: false,
-        })
-        localStorage.setItem('staffDetail', staffs[3].id)
-        const staffDetail = localStorage.getItem('staffDetail')
-        this.fetchStaffDetail(staffDetail)
-      })
-      .catch((error) => console.log(error))
-  }
-
-  fetchPositionAPI = async (event) => {
-    await axios
-      .get('/hrm/positions/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
+  fetchPositionAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/positions/?no_pagination=true',
+      ACTION: 'GET',
+    })
       .then((res) => {
         const positionss = res.data
         const data = []
@@ -329,6 +227,310 @@ class ListStaff extends Component {
       .catch((error) => console.log(error))
   }
 
+  fetchProjectAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/projects/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const projectss = res.data
+        const data = []
+        projectss.map((item) =>
+          // this.setState({
+          data.push({
+            text: item.name,
+            value: item.name,
+          }),
+        )
+        this.setState({
+          projects: data,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchKindOfWorkAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/kinds-of-work/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const kindofworkss = res.data
+        const data = []
+        kindofworkss.map((item) =>
+          // this.setState({
+          data.push({
+            text: item.name,
+            value: item.name,
+          }),
+        )
+        this.setState({
+          kindofworks: data,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchStaffDetail = (id) => {
+    API({
+      REGISTER_URL: '/hrm/staffs/' + id + '/',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const staffs = res.data
+        this.setState({
+          staffData: staffs,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchUrgentContact = (id) => {
+    API({
+      REGISTER_URL: '/hrm/urgent-contacts/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const urgentContacts = res.data
+        this.setState({
+          urgentContactData: urgentContacts,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchCertificate = (id) => {
+    API({
+      REGISTER_URL: '/hrm/certificate/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const certificateData = res.data
+        this.setState({
+          certificateData: certificateData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchDegree = (id) => {
+    API({
+      REGISTER_URL: '/hrm/degree/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const degreeData = res.data
+        this.setState({
+          degreeData: degreeData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchSkill = (id) => {
+    API({
+      REGISTER_URL: '/hrm/skills/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const skillData = res.data
+        this.setState({
+          skillData: skillData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchTimeKeeping = (id) => {
+    API({
+      REGISTER_URL: '/hrm/timekeeping/?no_pagination=true&staff_project__staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const timekeepingData = res.data
+        this.setState({
+          timekeepingData: timekeepingData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchDayOffYear = (id) => {
+    API({
+      REGISTER_URL: '/hrm/day-off-years/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const kindOffYearData = res.data
+        this.setState({
+          kindOffYearData: kindOffYearData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchSalary = (id) => {
+    API({
+      REGISTER_URL: '/hrm/salary/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const salaryData = res.data
+        this.setState({
+          salaryData: salaryData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchUpSalary = (id) => {
+    API({
+      REGISTER_URL: '/hrm/up-salary/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const upSalaryData = res.data
+        this.setState({
+          upSalaryData: upSalaryData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchContract = (id) => {
+    API({
+      REGISTER_URL: '/hrm/employment-contract/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const contractData = res.data
+        this.setState({
+          contractData: contractData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchTrainning = (id) => {
+    API({
+      REGISTER_URL: '/hrm/trainning-requirement-detail/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const trainningData = res.data
+        this.setState({
+          trainningData: trainningData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchPromotion = (id) => {
+    API({
+      REGISTER_URL: '/hrm/promotions/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const promotionData = res.data
+        this.setState({
+          promotionData: promotionData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchBonus = (id) => {
+    API({
+      REGISTER_URL: '/hrm/bonuses/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const bonusData = res.data
+        this.setState({
+          bonusData: bonusData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchDiscipline = (id) => {
+    API({
+      REGISTER_URL: '/hrm/discipline/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const disciplineData = res.data
+        this.setState({
+          disciplineData: disciplineData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchHeathy = (id) => {
+    API({
+      REGISTER_URL: '/hrm/health-status/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const heathyData = res.data
+        this.setState({
+          heathyData: heathyData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchOnBussiness = (id) => {
+    API({
+      REGISTER_URL: '/hrm/on-business/?no_pagination=true&staff__id=' + id,
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const onBusinessData = res.data
+        this.setState({
+          onBusinessData: onBusinessData,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchStaffAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const staffs = res.data
+
+        this.setState({
+          staffs: staffs,
+          loading: false,
+          staffName: staffs[3].user.first_name + ' ' + staffs[3].user.last_name,
+          staffId: staffs[3].staff,
+        })
+        localStorage.setItem('staffDetail', staffs[3].id)
+        const staffDetail = localStorage.getItem('staffDetail')
+        this.fetchUrgentContact(staffDetail)
+        this.fetchStaffDetail(staffDetail)
+        this.fetchCertificate(staffDetail)
+        this.fetchDegree(staffDetail)
+        this.fetchSkill(staffDetail)
+        this.fetchTimeKeeping(staffDetail)
+        this.fetchDayOffYear(staffDetail)
+        this.fetchSalary(staffDetail)
+        this.fetchUpSalary(staffDetail)
+        this.fetchContract(staffDetail)
+        this.fetchTrainning(staffDetail)
+        this.fetchPromotion(staffDetail)
+        this.fetchBonus(staffDetail)
+        this.fetchDiscipline(staffDetail)
+        this.fetchHeathy(staffDetail)
+        this.fetchOnBussiness(staffDetail)
+      })
+      .catch((error) => console.log(error))
+  }
+
   componentDidMount() {
     this.setState({
       loading: true,
@@ -336,185 +538,49 @@ class ListStaff extends Component {
     this.fetchStaffAPI()
     this.fetchDeparmentAPI()
     this.fetchPositionAPI()
+    this.fetchProjectAPI()
+    this.fetchKindOfWorkAPI()
   }
 
-  UNSAFE_componentWillMount() {
-    Modal.setAppElement('body')
-  }
-
-  openModal = (item) => {
-    axios
-      .get('/hrm/staffs/' + item.id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const staffs = res.data
-        if (staffs.addresses == '') {
-          this.setState({
-            address: '',
-            country: '',
-            city: '',
-            province: '',
-            district: '',
-            commune: '',
-            postcode: '',
-            lat: '',
-            lng: '',
-            type: 'place_of_birth_address',
-
-            address2: '',
-            country2: '',
-            city2: '',
-            province2: '',
-            district2: '',
-            commune2: '',
-            postcode2: '',
-            lat2: '',
-            lng2: '',
-            type2: 'permanent_address',
-
-            address3: '',
-            country3: '',
-            city3: '',
-            province3: '',
-            district3: '',
-            commune3: '',
-            postcode3: '',
-            lat3: '',
-            lng3: '',
-            type3: 'temporary_residence_address',
-          })
-        } else {
-          this.setState({
-            address: staffs.addresses[0].address,
-            country: staffs.addresses[0].country,
-            city: staffs.addresses[0].city,
-            province: staffs.addresses[0].province,
-            district: staffs.addresses[0].district,
-            commune: staffs.addresses[0].commune,
-            postcode: staffs.addresses[0].postcode,
-            lat: staffs.addresses[0].lat,
-            lng: staffs.addresses[0].lng,
-            type: 'place_of_birth_address',
-
-            address2: staffs.addresses[1].address,
-            country2: staffs.addresses[1].country,
-            city2: staffs.addresses[1].city,
-            province2: staffs.addresses[1].province,
-            district2: staffs.addresses[1].district,
-            commune2: staffs.addresses[1].commune,
-            postcode2: staffs.addresses[1].postcode,
-            lat2: staffs.addresses[1].lat,
-            lng2: staffs.addresses[1].lng,
-            type2: 'permanent_address',
-
-            address3: staffs.addresses[2].address,
-            country3: staffs.addresses[2].country,
-            city3: staffs.addresses[2].city,
-            province3: staffs.addresses[2].province,
-            district3: staffs.addresses[2].district,
-            commune3: staffs.addresses[2].commune,
-            postcode3: staffs.addresses[2].postcode,
-            lat3: staffs.addresses[2].lat,
-            lng3: staffs.addresses[2].lng,
-            type3: 'temporary_residence_address',
-          })
-        }
-        this.setState({
-          modalIsOpen: true,
-          id: staffs.id,
-          gender: staffs.gender,
-          first_name: staffs.first_name,
-          last_name: staffs.last_name,
-          email: staffs.email,
-          phone: staffs.phone,
-          is_active: staffs.is_active,
-          marital_status: staffs.marital_status,
-          number_of_children: staffs.number_of_children,
-          identity_card: staffs.identity_card,
-          issuance_date: staffs.issuance_date,
-          place_of_issuance: staffs.place_of_issuance,
-          start_work_date: staffs.start_work_date,
-          probationary_end_date: staffs.probationary_end_date,
-          labor_contract_signing_date: staffs.labor_contract_signing_date,
-          personal_email: staffs.personal_email,
-          facebook: staffs.facebook,
-          social_insurance_number: staffs.social_insurance_number,
-          tax_code: staffs.tax_code,
-          bank_account: staffs.bank_account,
-          elect_notifications: staffs.elect_notifications,
-          elect_decision: staffs.elect_decision,
-          url: staffs.url,
-          note: staffs.note,
-          department: staffs.department ? staffs.department.id : '',
-          nationality: staffs.nationality ? staffs.nationality.id : '',
-          ethnicity: staffs.ethnicity ? staffs.ethnicity.id : '',
-          religion: staffs.religion ? staffs.religion.id : '',
-          literacy: staffs.literacy ? staffs.literacy.id : '',
-          position: staffs.position ? staffs.position.id : '',
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-  openDeleteModal = (item) => {
-    this.setState({
-      modalDeleteIsOpen: true,
-      id: item.id,
-      first_name: item.first_name,
-      last_name: item.last_name,
-    })
-  }
-  openSettingModal = (item) => {
-    this.setState({
-      modalSettingIsOpen: true,
-      id: item.id,
-      name: item.first_name + ' ' + item.last_name,
-      staff: item.staff,
-    })
-    localStorage.setItem('staff', item.id)
-  }
-
-  closeSettingModal = () => {
-    this.setState({
-      modalSettingIsOpen: false,
-    })
-  }
-  handleSearch = async (event) => {
+  handleSearch = (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
-    const res = await axios.get(REGISTER_URL, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${TOKEN}`,
-      },
-      withCredentials: true,
+    API({
+      REGISTER_URL: '/hrm/staffs/?no_pagination=true&search=' + value,
+      ACTION: 'GET',
+    }).then((res) => {
+      this.setState({ staffs: res.data })
     })
-    this.setState({ staffs: res.data })
   }
-  // handleSearch = async (event) => {
-  //   let value = event.target.value
-  //   const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value + '&department__name__in'
-  //   const res = await axios.get(REGISTER_URL, {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${TOKEN}`,
-  //     },
-  //     withCredentials: true,
-  //   })
-  //   this.setState({ staffs: res.data })
-  // }
 
   handleGetStaffDetail = (item) => {
     localStorage.setItem('staffDetail', item.id)
+    this.setState({
+      staffName: item.first_name + ' ' + item.last_name,
+      staffId: item.staff,
+    })
     const staffDetail = localStorage.getItem('staffDetail')
     this.fetchStaffDetail(staffDetail)
+    this.fetchUrgentContact(staffDetail)
+    this.fetchCertificate(staffDetail)
+    this.fetchDegree(staffDetail)
+    this.fetchSkill(staffDetail)
+    this.fetchTimeKeeping(staffDetail)
+    this.fetchDayOffYear(staffDetail)
+    this.fetchSalary(staffDetail)
+    this.fetchUpSalary(staffDetail)
+    this.fetchContract(staffDetail)
+    this.fetchTrainning(staffDetail)
+    this.fetchPromotion(staffDetail)
+    this.fetchBonus(staffDetail)
+    this.fetchDiscipline(staffDetail)
+    this.fetchHeathy(staffDetail)
+    this.fetchOnBussiness(staffDetail)
   }
 
   render() {
+    const onChange = (pagination, filters, sorter, extra) => {
+      console.log('params', pagination, filters, sorter, extra)
+    }
     const contentListNoTitle = {
       ThongTin: (
         <CTable hover color="dark">
@@ -736,16 +802,247 @@ class ListStaff extends Component {
           </CTableBody>
         </CTable>
       ),
-      app: <p>app content</p>,
-      project: <p>project content</p>,
+      LienHeKhanCap: (
+        <Table dataSource={this.state.urgentContactData} bordered>
+          <Column title="Họ Tên" dataIndex="full_name" key="full_name" />
+          <Column title="Điện Thoại Bàn" dataIndex="phone" key="phone" />
+          <Column title="Điện Thoại Di Động" dataIndex="mobile_phone" key="mobile_phone" />
+          <Column title="Địa Chỉ" dataIndex="address" key="address" />
+          <Column title="Mối Quan Hệ" dataIndex="type" key="type" />
+        </Table>
+      ),
+      ChungChi: (
+        <Table dataSource={this.state.certificateData} bordered>
+          <Column title="Số" dataIndex="number" key="number" />
+          <Column title="Tên Chứng Chỉ" dataIndex="name" key="name" />
+          <Column title="Cấp Độ" dataIndex="level" key="level" />
+          <Column title="Cấp Ngày" dataIndex="date" key="date" />
+          <Column title="Nơi Cấp" dataIndex="place" key="place" />
+          <Column title="Thời Hạn" dataIndex="expire" key="expire" />
+          <Column title="Đính Kèm" dataIndex="attach" key="attach" />
+          <Column title="Ghi Chú" dataIndex="note" key="note" />
+        </Table>
+      ),
+      BangCap: (
+        <Table dataSource={this.state.degreeData} bordered>
+          <Column title="Số" dataIndex="number" key="number" />
+          <Column title="Tên Bằng Cấp" dataIndex="name" key="name" />
+          <Column title="Cấp Ngày" dataIndex="date" key="date" />
+          <Column title="Nơi Cấp" dataIndex="place" key="place" />
+          <Column title="Đính Kèm" dataIndex="attach" key="attach" />
+        </Table>
+      ),
+      KyNang: (
+        <Table dataSource={this.state.skillData} bordered>
+          <Column title="Tên Kỹ Năng" dataIndex="name" key="name" />
+          <Column title="Loại" dataIndex="type" key="type" />
+        </Table>
+      ),
+      CongTac: (
+        <>
+          <Table dataSource={this.state.onBusinessData} bordered>
+            <Column title="Thời Gian" dataIndex="date_data" key="date_data" />
+            <Column title="Công Ty" dataIndex="company" key="company" />
+            <Column title="Vị Trí" dataIndex="position" key="position" />
+            <Column title="Mô Tả Công Việc" dataIndex="content" key="content" />
+          </Table>
+        </>
+      ),
+      ChamCong: (
+        <Table dataSource={this.state.timekeepingData} bordered>
+          <Column title="Ngày" dataIndex="date" key="date" />
+          <Column
+            title="Số Lượng Công Việc"
+            dataIndex="amount_in_project"
+            key="amount_in_project"
+          />
+          <Column title="Thời Gian Làm Thêm" dataIndex="amount_time" key="amount_time" />
+          <Column
+            title="Loại Thời Gian Làm Thêm"
+            dataIndex="type_time"
+            key="type_time"
+            filters={[
+              { text: 'Giờ Hành Chính', value: 'Giờ Hành Chính' },
+              { text: 'Làm Thêm Ngày Thường', value: 'Làm Thêm Ngày Thường' },
+              { text: 'Làm Thêm Ngày Cuối Tuần', value: 'Làm Thêm Ngày Cuối Tuần' },
+              { text: 'Làm Thêm Ngày Lễ Tết', value: 'Làm Thêm Ngày Lễ Tết' },
+            ]}
+            onFilter={(value, record) => record.type_time.startsWith(value)}
+            filterSearch={true}
+            width="40%"
+          />
+          <Column
+            title="Loại Công"
+            dataIndex="type_work_name"
+            key="type_work_name"
+            filters={this.state.kindofworks}
+            onFilter={(value, record) => record.type_work_name.startsWith(value)}
+            filterSearch={true}
+          />
+          <Column
+            title="Dự Án"
+            dataIndex="project_name"
+            key="project_name"
+            filters={this.state.projects}
+            onFilter={(value, record) => record.project_name.startsWith(value)}
+            filterSearch={true}
+          />
+        </Table>
+      ),
+      PhepNam: (
+        <Table dataSource={this.state.kindOffYearData} bordered>
+          <Column title="Ngày Xin Nghỉ Phép" dataIndex="date" key="date" />
+          <Column title="Lí Do" dataIndex="reason" key="reason" />
+          <Column title="Người Liên Hệ" dataIndex="contact" key="contact" />
+          <Column title="Người Đảm Nhiệm Tạm Thời" dataIndex="hand_over" key="hand_over" />
+          <Column title="Trạng Thái" dataIndex="status_text" key="status_text" />
+          <Column title="Người Phê Duyệt" dataIndex="approved_by_name" key="approved_by_name" />
+        </Table>
+      ),
+      TienLuong: (
+        <Table dataSource={this.state.salaryData} bordered>
+          <Column
+            title="Tháng"
+            dataIndex="month"
+            key="month"
+            filters={[
+              { text: 'Tháng 1', value: '01' },
+              { text: 'Tháng 2', value: '02' },
+              { text: 'Tháng 3', value: '03' },
+              { text: 'Tháng 4', value: '04' },
+              { text: 'Tháng 5', value: '05' },
+              { text: 'Tháng 6', value: '06' },
+              { text: 'Tháng 7', value: '07' },
+              { text: 'Tháng 8', value: '08' },
+              { text: 'Tháng 9', value: '09' },
+              { text: 'Tháng 10', value: '10' },
+              { text: 'Tháng 11', value: '11' },
+              { text: 'Tháng 12', value: '12' },
+            ]}
+            onFilter={(value, record) => record.month.startsWith(value)}
+            filterSearch={true}
+          />
+          <Column
+            title="Năm"
+            dataIndex="year"
+            key="year"
+            filters={[
+              { text: 'Năm 2009', value: '2009' },
+              { text: 'Năm 2010', value: '2010' },
+              { text: 'Năm 2011', value: '2011' },
+              { text: 'Năm 2012', value: '2012' },
+              { text: 'Năm 2013', value: '2013' },
+              { text: 'Năm 2014', value: '2014' },
+              { text: 'Năm 2015', value: '2015' },
+              { text: 'Năm 2016', value: '2016' },
+              { text: 'Năm 2017', value: '2017' },
+              { text: 'Năm 2018', value: '2028' },
+              { text: 'Năm 2019', value: '2029' },
+              { text: 'Năm 2020', value: '2020' },
+              { text: 'Năm 2021', value: '2021' },
+              { text: 'Năm 2022', value: '2022' },
+              { text: 'Năm 2023', value: '2023' },
+              { text: 'Năm 2024', value: '2024' },
+              { text: 'Năm 2025', value: '2025' },
+              { text: 'Năm 2026', value: '2026' },
+              { text: 'Năm 2027', value: '2027' },
+              { text: 'Năm 2028', value: '2028' },
+            ]}
+            onFilter={(value, record) => record.year.startsWith(value)}
+            filterSearch={true}
+          />
+          <Column title="Ngày Tạo Phiếu Lương" dataIndex="date" key="date" />
+          <Column title="Lương Cơ Bản" dataIndex="basic_salary_data" key="basic_salary_data" />
+          <Column title="Phụ Cấp" dataIndex="extra_data" key="extra_data" />
+          <Column title="Hỗ Trợ Khác" dataIndex="other_support_data" key="other_support_data" />
+          <Column title="Tổng Lương" dataIndex="total_salary" key="total_salary" />
+          <Column title="Tiền Lương Thực Tế" dataIndex="actual_salary" key="actual_salary" />
+        </Table>
+      ),
+      DieuChinhLuong: (
+        <Table dataSource={this.state.upSalaryData} bordered>
+          <Column title="Ngày Tăng Lương" dataIndex="date" key="date" />
+          <Column title="Hệ Số Cũ" dataIndex="old_coefficient" key="old_coefficient" />
+          <Column title="Hệ Số Mới" dataIndex="coefficient" key="coefficient" />
+        </Table>
+      ),
+      HopDong: (
+        <Table dataSource={this.state.contractData} bordered>
+          <Column title="Số Hợp Đồng" dataIndex="number_contract" key="number_contract" />
+          <Column title="Tên Hợp Đồng" dataIndex="name" key="name" />
+          <Column title="Loại Hợp Đồng" dataIndex="type_name" key="type_name" />
+          <Column title="Từ Ngày" dataIndex="from_date" key="from_date" />
+          <Column title="Đến Ngày" dataIndex="to_date" key="to_date" />
+          <Column title="Lương Cơ Bản" dataIndex="basic_salary_data" key="basic_salary_data" />
+          <Column title="Phụ Cấp" dataIndex="extra_data" key="extra_data" />
+          <Column title="Hỗ Trợ Khác" dataIndex="other_support_data" key="other_support_data" />
+          <Column title="Tổng Lương" dataIndex="total_salary" key="total_salary" />
+          <Column title="Tình Trạng" dataIndex="status_data" key="status_data" />
+        </Table>
+      ),
+      DaoTao: (
+        <Table dataSource={this.state.trainningData} bordered>
+          <Column title="Mã" dataIndex="id" key="id" />
+          <Column title="Nội Dung Đào Tạo" dataIndex="content" key="content" />
+          <Column title="Tên Khoá Học" dataIndex="course_name" key="course_name" />
+          <Column
+            title="Đơn Vị Tổ Chức"
+            dataIndex="organizational_units"
+            key="organizational_units"
+          />
+          <Column
+            title="Dự Kiến Chi Phí"
+            dataIndex="estimated_cost_data"
+            key="estimated_cost_data"
+          />
+          <Column title="Ngày Yêu Cầu" dataIndex="date_requirement" key="date_requirement" />
+          <Column title="Thời Gian" dataIndex="time_organizational" key="time_organizational" />
+          <Column title="Số Lượng" dataIndex="amount" key="amount" />
+          <Column title="Địa Điểm" dataIndex="place" key="place" />
+        </Table>
+      ),
+      ThangTien: (
+        <Table dataSource={this.state.promotionData} bordered>
+          <Column title="Ngày" dataIndex="date" key="date" />
+          <Column title="Nội Dung" dataIndex="content" key="content" />
+          <Column title="Chức Vụ" dataIndex="position_name" key="position_name" />
+          <Column title="Ghi Chú" dataIndex="note" key="note" />
+        </Table>
+      ),
+      KhenThuong: (
+        <Table dataSource={this.state.bonusData} bordered>
+          <Column title="Ngày" dataIndex="date" key="date" />
+          <Column title="Lí Do" dataIndex="reason" key="reason" />
+          <Column title="Số Lượng" dataIndex="amount_data" key="amount_data" />
+          <Column title="Ghi Chú" dataIndex="note" key="note" />
+        </Table>
+      ),
+      KyLuat: (
+        <Table dataSource={this.state.disciplineData} bordered>
+          <Column title="Ngày" dataIndex="date" key="date" />
+          <Column title="Nội Dung" dataIndex="content" key="content" />
+          <Column title="Thời Hạn" dataIndex="expire" key="expire" />
+          <Column
+            title="Hình Thức Kỷ Luật"
+            dataIndex="form_of_discipline"
+            key="form_of_discipline"
+          />
+          <Column title="Ghi Chú" dataIndex="note" key="note" />
+        </Table>
+      ),
+      KhamSucKhoe: (
+        <Table dataSource={this.state.heathyData} bordered>
+          <Column title="Ngày Khám" dataIndex="date" key="date" />
+          <Column title="Nội Dung Khám" dataIndex="content" key="content" />
+          <Column title="Nơi Khám" dataIndex="place" key="place" />
+          <Column title="Tình Trạng Sức Khoẻ" dataIndex="health_status" key="health_status" />
+        </Table>
+      ),
     }
     const onTab2Change = (key) => {
       this.setState({ activeTabKey2: key })
     }
 
-    const onChange = (pagination, filters, sorter, extra) => {
-      console.log('params', pagination, filters, sorter, extra)
-    }
     return (
       <>
         <BackTop />
@@ -760,17 +1057,19 @@ class ListStaff extends Component {
         >
           {/* <p>Some content or children or something.</p> */}
         </LoadingOverlay>
-        <h2>Nhân Viên</h2>
+        <h2>Danh Sách Nhân Viên</h2>
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.staffs} bordered scroll={{ y: 240 }}>
+        <Table dataSource={this.state.staffs} bordered>
+          {' '}
+          {/*scroll={{ y: 240 }}*/}
           <Column
             title="Hành động"
             key={this.state.staff}
@@ -807,7 +1106,7 @@ class ListStaff extends Component {
             filters={this.state.departments}
             onFilter={(value, record) => record.department_data.startsWith(value)}
             filterSearch={true}
-            width="40%"
+            width="20%"
           />
           <Column
             title="Vị Trí"
@@ -819,7 +1118,13 @@ class ListStaff extends Component {
             // width="40%"
           />
         </Table>
-        <br />
+        <Divider />
+        <h2>
+          Thông Tin Chi Tiết Nhân Viên:{' '}
+          <i>
+            {this.state.staffName} ({this.state.staffId})
+          </i>
+        </h2>
         <Card
           style={{ width: '100%' }}
           tabList={tabListNoTitle}

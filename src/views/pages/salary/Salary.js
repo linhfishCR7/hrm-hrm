@@ -64,7 +64,7 @@ class Salary extends Component {
 
   fetchSalaryCurrentAPI = async (event) => {
     await axios
-      .get(`/hrm/salary/?no_pagination=true`, {
+      .get(`/hrm/salary/current/?no_pagination=true`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -273,9 +273,9 @@ class Salary extends Component {
         }),
       )
   }
-  handleSearch = async (event) => {
+  handleSearchCurrent = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/hrm/salary/current/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
