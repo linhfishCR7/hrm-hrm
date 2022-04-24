@@ -22,6 +22,7 @@ import { cilLockLocked } from '@coreui/icons'
 import UserPool from '../../../utils/UserPool'
 import { Auth, Amplify } from 'aws-amplify'
 import '../../../assets/style.css'
+import openNotificationWithIcon from '../../../utils/notification'
 
 const ChangePassword = () => {
   const navigate = useNavigate()
@@ -50,20 +51,30 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('')
   const [oldPassword, setOldPassword] = useState('')
   const [isChanging, setIsChanging] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(false)
 
   async function handleChangeClick(event) {
     event.preventDefault()
-
     setIsChanging(true)
 
     try {
       const currentUser = await Auth.currentAuthenticatedUser()
       await Auth.changePassword(currentUser, oldPassword, newPassword)
-
+      openNotificationWithIcon({
+        type: 'success',
+        message: 'Đổi mật khẩu thành công!!!',
+        description: '',
+        placement: 'topRight',
+      })
       navigate('/dashboard')
     } catch (error) {
-      setError(error.message || JSON.stringify(error))
+      setError(true)
+      openNotificationWithIcon({
+        type: 'error',
+        message: 'Đổi mật khẩu thành công!!!',
+        description: error.message || JSON.stringify(error),
+        placement: 'topRight',
+      })
       setIsChanging(false)
     }
   }

@@ -6,6 +6,8 @@ import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import LoadingOverlay from 'react-loading-overlay'
+import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
   CFormTextarea,
@@ -41,11 +43,13 @@ class Staff extends Component {
     this.state = {
       staffs: [],
       departments: [{}],
+      departmentData: [{}],
       nationalites: [{}],
       ethnicities: [{}],
       religions: [{}],
       literacies: [{}],
       positions: [{}],
+      positionData: [{}],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       modalSettingIsOpen: false,
@@ -124,6 +128,50 @@ class Staff extends Component {
 
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
+  }
+
+  fetchDeparmentFilterAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/departments/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const departmentss = res.data
+        const data = []
+        departmentss.map((item) =>
+          // this.setState({
+          data.push({
+            text: item.name,
+            value: item.name,
+          }),
+        )
+        this.setState({
+          departmentData: data,
+        })
+      })
+      .catch((error) => console.log(error))
+  }
+
+  fetchPositionFilterAPI = (event) => {
+    API({
+      REGISTER_URL: '/hrm/positions/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const positionss = res.data
+        const data = []
+        positionss.map((item) =>
+          // this.setState({
+          data.push({
+            text: item.name,
+            value: item.name,
+          }),
+        )
+        this.setState({
+          positionData: data,
+        })
+      })
+      .catch((error) => console.log(error))
   }
 
   fetchDeparmentAPI = async (event) => {
@@ -255,6 +303,8 @@ class Staff extends Component {
       loading: true,
     })
     this.fetchStaffAPI()
+    this.fetchDeparmentFilterAPI()
+    this.fetchPositionFilterAPI()
   }
 
   handleInputChange = (event) => {
@@ -522,29 +572,20 @@ class Staff extends Component {
           ),
         }))
         this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
         this.fetchStaffAPI()
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Cập nhật dữ liệu không thành công!!!',
+          description: error,
+          placement: 'topRight',
         }),
       )
   }
@@ -567,26 +608,20 @@ class Staff extends Component {
         this.setState((prevState) => ({
           staffs: prevState.staffs.filter((el) => el.id !== this.state.id),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Xoá dữ liệu không thành công!!!',
+          description: error,
+          placement: 'topRight',
         }),
       )
   }
@@ -626,7 +661,7 @@ class Staff extends Component {
           </CCol> */}
           <CCol md={8}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -634,13 +669,45 @@ class Staff extends Component {
         </CRow>
         <Table dataSource={this.state.staffs} bordered>
           {/* <Column title="Mã" dataIndex="company" key="company" /> */}
-          <Column title="Mã Số" dataIndex="staff" key="staff" />
+          <Column
+            title="Mã Số"
+            dataIndex="staff"
+            key="staff"
+            sorter={(a, b) => a.staff.length - b.staff.length}
+            sortDirections={['descend', 'ascend']}
+          />
           <Column title="Họ" dataIndex="last_name" key="last_name" />
           <Column title="Tên" dataIndex="first_name" key="first_name" />
           <Column title="Email" dataIndex="email" key="email" />
           <Column title="Số điện thoại" dataIndex="phone" key="phone" />
-          <Column title="Bộ phận" dataIndex="department_data" key="department_data" />
-          <Column title="Chức Vụ" dataIndex="position_data" key="position_data" />
+          <Column
+            title="Bộ phận"
+            dataIndex="department_data"
+            key="department_data"
+            filters={this.state.departmentData}
+            onFilter={(value, record) => record.department_data.startsWith(value)}
+            filterSearch={true}
+            width="20%"
+          />
+          <Column
+            title="Chức Vụ"
+            dataIndex="position_data"
+            key="position_data"
+            filters={this.state.positionData}
+            onFilter={(value, record) => record.position_data.startsWith(value)}
+            filterSearch={true}
+          />
+          <Column
+            title="Tình Trạng"
+            dataIndex="is_active_data"
+            key="is_active_data"
+            filters={[
+              { text: 'Nghỉ Làm', value: 'Nghỉ Làm' },
+              { text: 'Còn Làm', value: 'Còn Làm' },
+            ]}
+            onFilter={(value, record) => record.is_active_data.startsWith(value)}
+            filterSearch={true}
+          />
           <Column
             title="Hành động"
             key={this.state.staff}

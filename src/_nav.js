@@ -254,11 +254,11 @@ const _nav = [
         name: 'Cập Nhật Nhân Viên',
         to: '/staff',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Add Company',
-      //   to: '/add-company',
-      // },
+      {
+        component: CNavItem,
+        name: 'Thêm Nhân Viên',
+        to: '/add-staff',
+      },
     ],
   },
   {

@@ -69,6 +69,7 @@ const Customer = React.lazy(() => import('./views/pages/customer/Customer'))
 const CustomerDetail = React.lazy(() => import('./views/pages/customer/CustomerDetail'))
 const AddCustomer = React.lazy(() => import('./views/pages/customer/AddCustomer'))
 const Staff = React.lazy(() => import('./views/pages/staff/Staff'))
+const AddStaff = React.lazy(() => import('./views/pages/staff/addStaff'))
 const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
 const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
 
@@ -96,7 +97,8 @@ const routes = [
   { path: '/customer', name: 'Khách Hàng', element: Customer },
   { path: '/add-customer', name: 'Thêm Khách Hàng', element: AddCustomer },
   { path: '/customer/:id', name: 'Chi Tiết Khách Hàng', element: CustomerDetail },
-  { path: '/staff', name: 'Staff', element: Staff },
+  { path: '/staff', name: 'Nhân Viên', element: Staff },
+  { path: '/add-staff', name: 'Thêm Nhân Viên', element: AddStaff },
   { path: '/list-staff', name: 'Nhân Viên', element: ListStaff },
   { path: '/salary', name: 'Tiền Lương', element: Salary },
 
