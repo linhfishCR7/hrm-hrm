@@ -13,7 +13,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
-
+import NotificationDropdown from '../views/pages/notification/notification'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
@@ -50,11 +50,12 @@ const AppHeader = () => {
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
+            {/* <CIcon icon={cilBell} size="lg" /> */}
+            <NotificationDropdown />
           </CNavItem>
           {/* <CNavItem>
+                  <NotificationDropdown />
+
             <CNavLink href="#">
               <CIcon icon={cilList} size="lg" />
             </CNavLink>

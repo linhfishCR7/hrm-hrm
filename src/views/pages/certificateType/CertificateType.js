@@ -137,7 +137,7 @@ class CertificateType extends Component {
       modalDeleteIsOpen: false,
     })
   }
-  handleEditSubmit = async (event) => {
+  handleEditSubmit = (event) => {
     event.preventDefault()
 
     const newUpdate = {
@@ -218,7 +218,7 @@ class CertificateType extends Component {
         }),
       )
   }
-  handleSearch = async (event) => {
+  handleSearch = (event) => {
     let value = event.target.value
     API({
       REGISTER_URL: '/hrm/certificate-types/?no_pagination=true&search=' + value,
