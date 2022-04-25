@@ -84,9 +84,24 @@ const ChangePassword = () => {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={5}>
-            <h1 style={{ marginBottom: '100px', fontWight: 'bolder', color: 'light' }}>
-              WELCOME TO HRM SYSTEM
-            </h1>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+              }}
+            >
+              <h1
+                style={{
+                  marginBottom: '60px',
+                  fontWight: 'bolder',
+                  color: 'light',
+                }}
+              >
+                WELCOME TO HRM SYSTEM
+              </h1>
+            </div>
           </CCol>
         </CRow>
         <CRow className="justify-content-center">
