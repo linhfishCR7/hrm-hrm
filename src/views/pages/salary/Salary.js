@@ -243,7 +243,6 @@ class Salary extends Component {
             })
             .then((res) => {
               const staffs = res.data
-              console.log(staffs)
               this.setState({
                 listStaff: staffs,
                 modalCheckIsOpen: true,
