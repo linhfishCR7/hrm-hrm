@@ -186,6 +186,7 @@ class Certificate extends Component {
       note: this.state.note,
       attach: this.state.attach,
       type: this.state.type_data,
+      name: this.state.name,
       staff: staff_id,
     }
     API({
@@ -201,6 +202,7 @@ class Certificate extends Component {
               ? {
                   ...elm,
                   number: this.state.number,
+                  name: this.state.name,
                   level: this.state.level,
                   expire: this.state.expire,
                   place: this.state.place,
