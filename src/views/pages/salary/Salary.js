@@ -28,9 +28,10 @@ import {
   CFormLabel,
   CFormText,
   CFormSelect,
+  CSpinner,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCircle, cilInfo, cilCloudUpload } from '@coreui/icons'
+import { cilCircle, cilInfo, cilCloudUpload, cilCheck } from '@coreui/icons'
 import Modal from 'react-modal'
 import Loading from '../../../utils/loading'
 const { Column, ColumnGroup } = Table
@@ -61,6 +62,13 @@ class Salary extends Component {
       modalActiveIsOpen: false,
       modalDeleteIsOpen: false,
       modalIsOpen: false,
+      modalCheckIsOpen: false,
+      listStaff: [],
+      loadStatusCheck: false,
+      loadStatusActive: false,
+      modalAddSalaryIsOpen: false,
+      first_name: '',
+      last_name: '',
     }
 
     this.openModal = this.openModal.bind(this)
@@ -86,7 +94,6 @@ class Salary extends Component {
             value: item.first_name + ' ' + item.last_name,
           }),
         )
-        console.log(data)
         this.setState({
           staffs: data,
         })
@@ -153,7 +160,7 @@ class Salary extends Component {
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
   }
-
+  // Open modal //
   openModal = (item) => {
     this.fetchDeparmentAPI()
     axios
@@ -192,15 +199,85 @@ class Salary extends Component {
       modalActiveIsOpen: true,
     })
   }
+
+  openAddSalaryModal = (item) => {
+    this.setState({
+      first_name: item.first_name,
+      last_name: item.last_name,
+      modalAddSalaryIsOpen: true,
+    })
+  }
+  // //
+
+  openCheckModal = () => {
+    this.setState({
+      loadStatusCheck: true,
+    })
+    axios
+      .get('/hrm/salary/check-salary/', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.message) {
+          this.setState({
+            loadStatusCheck: false,
+          })
+          openNotificationWithIcon({
+            type: 'success',
+            message: res.data.message,
+            description: '',
+            placement: 'topRight',
+          })
+        } else {
+          axios
+            .get('/hrm/staffs/?no_pagination=true&id__in=' + res.data, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${TOKEN}`,
+              },
+              withCredentials: true,
+            })
+            .then((res) => {
+              const staffs = res.data
+              console.log(staffs)
+              this.setState({
+                listStaff: staffs,
+                modalCheckIsOpen: true,
+                loadStatusCheck: false,
+              })
+            })
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          loadStatusCheck: false,
+        })
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Có lỗi xảy ra',
+          description: error,
+          placement: 'topRight',
+        })
+      })
+  }
   closeModal = () => {
     this.setState({
       modalIsOpen: false,
     })
   }
-
+  // Close Modal //
   closeActiveModal = () => {
     this.setState({
       modalActiveIsOpen: false,
+    })
+  }
+  closeCheckModal = () => {
+    this.setState({
+      modalCheckIsOpen: false,
     })
   }
 
@@ -210,6 +287,14 @@ class Salary extends Component {
     })
   }
 
+  closeAddSalaryModal = () => {
+    this.setState({
+      modalAddSalaryIsOpen: false,
+    })
+  }
+  // //
+
+  // Handle Form //
   handleEditSubmit = async (event) => {
     event.preventDefault()
 
@@ -312,6 +397,9 @@ class Salary extends Component {
   }
 
   handleActive = (event) => {
+    this.setState({
+      loadStatusActive: true,
+    })
     event.preventDefault()
     axios
       .get('/hrm/salary/active-salary/', {
@@ -322,9 +410,9 @@ class Salary extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        this.setState((prevState) => ({
-          staffs: prevState.staffs.filter((el) => el.id !== this.state.id),
-        }))
+        this.setState({
+          loadStatusActive: false,
+        })
         openNotificationWithIcon({
           type: 'success',
           message: 'Active phiếu lương thành công!!!',
@@ -333,14 +421,17 @@ class Salary extends Component {
         })
         this.closeActiveModal()
       })
-      .catch((error) =>
+      .catch((error) => {
+        this.setState({
+          loadStatusActive: false,
+        })
         openNotificationWithIcon({
           type: 'error',
           message: 'Active phiếu lương không thành công!!!',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
 
   handleSearchCurrent = async (event) => {
@@ -368,6 +459,8 @@ class Salary extends Component {
     })
     this.setState({ staffs: res.data })
   }
+
+  // //
   render() {
     const contentListNoTitle = {
       SalaryCurrent: (
@@ -390,6 +483,25 @@ class Salary extends Component {
                     onClick={() => this.openActiveModal()}
                   >
                     <CIcon icon={cilCloudUpload} /> Active Phiếu Lương
+                  </CButton>
+                </CTooltip>
+                <CTooltip content="Kiểm Tra Phiếu Lương" placement="top">
+                  <CButton
+                    color="success"
+                    // size="lg"
+                    className="mb-3"
+                    onClick={() => this.openCheckModal()}
+                  >
+                    {this.state.loadStatusCheck ? (
+                      <>
+                        <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
+                        Đang Tiến Hành Kiểm Tra...
+                      </>
+                    ) : (
+                      <>
+                        <CIcon icon={cilCheck} /> Kiểm Tra Phiếu Lương
+                      </>
+                    )}
                   </CButton>
                 </CTooltip>
               </Space>
@@ -669,7 +781,79 @@ class Salary extends Component {
                   HUỶ
                 </CButton>
                 <CButton color="info" type="submit">
-                  OK
+                  {this.state.loadStatusActive ? (
+                    <>
+                      <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
+                      Đang Tiến Hành Active...
+                    </>
+                  ) : (
+                    'OK'
+                  )}
+                </CButton>
+              </CModalFooter>
+            </CForm>{' '}
+          </CModalBody>
+        </CModal>
+        {/* Check */}
+        <CModal visible={this.state.modalCheckIsOpen} onClose={this.closeCheckModal} size="xl">
+          <CModalHeader>
+            <CModalTitle>CHECK PHIẾU LƯƠNG</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <Table dataSource={this.state.listStaff} bordered>
+              {/* <Column title="Mã" dataIndex="company" key="company" /> */}
+              <Column
+                title="Mã Số"
+                dataIndex="staff"
+                key="staff"
+                sorter={(a, b) => a.staff.length - b.staff.length}
+                sortDirections={['descend', 'ascend']}
+              />
+              <Column title="Họ" dataIndex="last_name" key="last_name" />
+              <Column title="Tên" dataIndex="first_name" key="first_name" />
+              <Column title="Email" dataIndex="email" key="email" />
+              <Column title="Số điện thoại" dataIndex="phone" key="phone" />
+              <Column title="Bộ phận" dataIndex="department_data" key="department_data" />
+              <Column title="Chức Vụ" dataIndex="position_data" key="position_data" />
+              <Column
+                title="Hành động"
+                key={this.state.listStaff}
+                render={(text, record) => (
+                  <Space size="middle">
+                    <CTooltip content="Thêm Phiếu Lương" placement="top">
+                      <CButton color="info" onClick={() => this.openAddSalaryModal(text)}>
+                        {/* <CIcon icon={cilDelete} /> */}
+                        Thêm Phiếu Lương
+                      </CButton>
+                    </CTooltip>
+                  </Space>
+                )}
+              />
+            </Table>
+          </CModalBody>
+        </CModal>
+        {/* Add Salary */}
+        <CModal
+          visible={this.state.modalAddSalaryIsOpen}
+          onClose={this.closeAddSalaryModal}
+          size="lg"
+        >
+          <CModalHeader>
+            <CModalTitle>
+              THÊM PHIẾU LƯƠNG - NHÂN VIÊN{' '}
+              <span style={{ textTransform: 'uppercase' }}>
+                {this.state.first_name} {this.state.last_name}
+              </span>
+            </CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm onSubmit={this.handleAddSalary}>
+              <CModalFooter>
+                <CButton color="secondary" onClick={this.closeAddSalaryModal}>
+                  HUỶ
+                </CButton>
+                <CButton color="info" type="submit">
+                  SAVE
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
