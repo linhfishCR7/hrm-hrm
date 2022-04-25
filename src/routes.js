@@ -55,6 +55,7 @@ const Nationality = React.lazy(() => import('./views/pages/nationality/Nationali
 const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
 const Certificate = React.lazy(() => import('./views/pages/certificate/Certificate'))
 const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
+const Degree = React.lazy(() => import('./views/pages/degree/Degree'))
 const DayOffType = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
 const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
 const Position = React.lazy(() => import('./views/pages/position/Position'))
@@ -74,6 +75,7 @@ const AddStaff = React.lazy(() => import('./views/pages/staff/addStaff'))
 const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
 const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
 const Skill = React.lazy(() => import('./views/pages/skill/Skill'))
+const Contact = React.lazy(() => import('./views/pages/contact/Contact'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -85,6 +87,7 @@ const routes = [
   { path: '/certificate-type', name: 'Loại Chứng Nhận', element: CertificateType },
   { path: '/staff/certificate', name: 'Chứng Nhận', element: Certificate },
   { path: '/degree-type', name: 'Loại Bằng Cấp', element: DegreeType },
+  { path: '/staff/degree', name: 'Bằng Cấp', element: Degree },
   { path: '/day-off-type', name: 'Loại Ngày Nghỉ', element: DayOffType },
   { path: '/position', name: 'Chức Vụ', element: Position },
   { path: '/literacy', name: 'Trình Độ Học Vấn', element: Literacy },
@@ -105,6 +108,7 @@ const routes = [
   { path: '/list-staff', name: 'Nhân Viên', element: ListStaff },
   { path: '/salary', name: 'Tiền Lương', element: Salary },
   { path: '/staff/skill', name: 'Kỹ Năng', element: Skill },
+  { path: '/staff/contact', name: 'Liên Hệ Khẩn Cấp', element: Contact },
 
   // #################################################################
 

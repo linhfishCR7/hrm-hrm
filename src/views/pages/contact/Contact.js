@@ -33,16 +33,19 @@ const { Column, ColumnGroup } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
-class Skill extends Component {
+class Contact extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      skill: [],
+      contact: [],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      name: '',
+      full_name: '',
       loading: true,
+      phone: null,
+      mobile_phone: null,
+      address: '',
       type: '',
     }
 
@@ -52,13 +55,13 @@ class Skill extends Component {
 
   componentDidMount() {
     API({
-      REGISTER_URL: '/hrm/skills/?no_pagination=true&staff__id=' + staff_id,
+      REGISTER_URL: '/hrm/urgent-contacts/?no_pagination=true&staff__id=' + staff_id,
       ACTION: 'GET',
     })
       .then((res) => {
-        const skill = res.data
+        const contact = res.data
         this.setState({
-          skill: skill,
+          contact: contact,
           loading: false,
         })
       })
@@ -78,7 +81,10 @@ class Skill extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      name: item.name,
+      phone: item.phone,
+      full_name: item.full_name,
+      mobile_phone: item.mobile_phone,
+      address: item.address,
       type: item.type,
       staff: staff_id,
     })
@@ -88,7 +94,7 @@ class Skill extends Component {
     this.setState({
       modalDeleteIsOpen: true,
       id: item.id,
-      name: item.name,
+      full_name: item.full_name,
     })
   }
 
@@ -116,15 +122,15 @@ class Skill extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    API({ REGISTER_URL: '/hrm/skills/' + this.state.id + '/', ACTION: 'DELETE' })
+    API({ REGISTER_URL: '/hrm/urgent-contacts/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
-          skill: prevState.skill.filter((el) => el.id !== this.state.id),
+          contact: prevState.contact.filter((el) => el.id !== this.state.id),
         }))
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: '',
+          description: 'Xoá dữ liệu thành công!!!',
           placement: 'topRight',
         })
         this.closeDeleteModal()
@@ -143,23 +149,29 @@ class Skill extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      name: this.state.name,
+      phone: this.state.phone,
+      full_name: this.state.full_name,
+      mobile_phone: this.state.mobile_phone,
+      address: this.state.address,
       type: this.state.type,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/skills/' + this.state.id + '/',
+      REGISTER_URL: '/hrm/urgent-contacts/' + this.state.id + '/',
       ACTION: 'PUT',
       DATA: newUpdate,
     })
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          skill: prevState.skill.map((elm) =>
+          contact: prevState.contact.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
-                  name: this.state.number,
+                  phone: this.state.phone,
+                  full_name: this.state.full_name,
+                  mobile_phone: this.state.mobile_phone,
+                  address: this.state.address,
                   type: this.state.type,
                 }
               : elm,
@@ -198,19 +210,22 @@ class Skill extends Component {
     event.preventDefault()
 
     const newData = {
-      name: this.state.name,
+      phone: this.state.phone,
+      full_name: this.state.full_name,
+      mobile_phone: this.state.mobile_phone,
+      address: this.state.address,
       type: this.state.type,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/skills/',
+      REGISTER_URL: '/hrm/urgent-contacts/',
       ACTION: 'POST',
       DATA: newData,
     })
       .then((res) => {
-        let skill = this.state.skill
-        skill = [newData, ...skill]
-        this.setState({ skill: skill })
+        let contact = this.state.contact
+        contact = [newData, ...contact]
+        this.setState({ contact: contact })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
@@ -244,41 +259,103 @@ class Skill extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Kỹ Năng</h2>
+        <h2>{staff_name} - Liên Hệ Khẩn Cấp</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           <CContainer>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Tên Kỹ Năng</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Họ Tên</CFormLabel>
                 <CFormInput
                   type="text"
-                  placeholder="Tên Kỹ Năng"
-                  autoComplete="name"
-                  name="name"
+                  placeholder="Họ Tên"
+                  autoComplete="full_name"
+                  name="full_name"
                   onChange={this.handleInputChange}
                   required
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên kỹ năng!
+                  Vui lòng nhập họ và tên
                 </CFormText>
               </CCol>
+
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Loại Kỹ Năng</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
+
                 <CFormInput
                   type="text"
-                  placeholder="Loại Kỹ Năng"
-                  autoComplete="type"
-                  name="type"
+                  placeholder="Địa Chỉ"
+                  autoComplete="address"
+                  name="address"
                   onChange={this.handleInputChange}
                   required
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập loại kỹ năng
+                  Vui lòng nhập địa chỉ (ấp, xã, huyện, (thành phố), tỉnh)
                 </CFormText>
               </CCol>
             </CRow>
+            <CRow className="mb-3">
+              <CCol>
+                <CFormLabel htmlFor="exampleFormControlInput1">Số Điện Thoại</CFormLabel>
+                <CFormInput
+                  type="tel"
+                  placeholder="Số Điện Thoại"
+                  autoComplete="phone"
+                  name="phone"
+                  onChange={this.handleInputChange}
+                  required
+                  aria-describedby="exampleFormControlInputHelpInline"
+                />
+                {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Thông tin này không được chỉnh sửa!
+                    </CFormText> */}
+              </CCol>
+              <CCol>
+                <CFormLabel htmlFor="exampleFormControlInput1">Điện Thoại DĐ</CFormLabel>
+                <CFormInput
+                  type="tel"
+                  placeholder="Điện Thoại DĐ"
+                  autoComplete="mobile_phone"
+                  name="mobile_phone"
+                  onChange={this.handleInputChange}
+                  aria-describedby="exampleFormControlInputHelpInline"
+                />
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Điện Thoại DĐ không bắt buộc
+                </CFormText>
+              </CCol>
+              <CCol>
+                <CFormLabel htmlFor="exampleFormControlInput1">Mối Quan Hệ</CFormLabel>
+
+                <CFormSelect
+                  name="type"
+                  aria-label="Vui lòng chọn mối quan hệ"
+                  onChange={this.handleInputChange}
+                >
+                  <option key="0" value="">
+                    Vui lòng chọn mối quan hệ
+                  </option>
+                  <option key="Ba" value="Ba">
+                    Ba
+                  </option>
+                  <option key="Mẹ" value="Mẹ">
+                    Mẹ
+                  </option>
+                  <option key="Chồng" value="Chồng">
+                    Chồng
+                  </option>
+                  <option key="Vợ" value="Vợ">
+                    Vợ
+                  </option>
+                </CFormSelect>
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Vui lòng chọn mối quan hệ
+                </CFormText>
+              </CCol>
+            </CRow>
+
             <CRow>
               <CCol>
                 <CButton color="primary" type="submit">
@@ -289,12 +366,15 @@ class Skill extends Component {
           </CContainer>
         </CForm>{' '}
         <Divider />
-        <Table dataSource={this.state.skill} bordered>
-          <Column title="Tên Kỹ Năng" dataIndex="name" key="name" />
-          <Column title="Loại Kỹ Năng" dataIndex="type" key="type" />
+        <Table dataSource={this.state.contact} bordered>
+          <Column title="Họ Tên" dataIndex="full_name" key="full_name" />
+          <Column title="Mối Quan Hệ" dataIndex="type" key="type" />
+          <Column title="Số ĐT" dataIndex="phone" key="phone" />
+          <Column title="ĐTDĐ" dataIndex="mobile_phone" key="mobile_phone" />
+          <Column title="Địa Chỉ" dataIndex="address" key="address" />
           <Column
             title="Hành động"
-            key={this.state.skill}
+            key={this.state.contact}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Cập Nhật Dự Liệu" placement="top">
@@ -325,35 +405,99 @@ class Skill extends Component {
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Kỹ Năng</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Họ Tên</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="Tên Kỹ Năng"
-                      autoComplete="name"
-                      name="name"
-                      value={this.state.name}
+                      placeholder="Họ Tên"
+                      autoComplete="full_name"
+                      name="full_name"
+                      value={this.state.full_name}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên kỹ năng!
+                      Vui lòng nhập họ và tên
+                    </CFormText>
+                  </CCol>
+
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
+
+                    <CFormInput
+                      type="text"
+                      placeholder="Địa Chỉ"
+                      autoComplete="address"
+                      name="address"
+                      value={this.state.address}
+                      onChange={this.handleInputChange}
+                      required
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Vui lòng nhập địa chỉ (ấp, xã, huyện, (thành phố), tỉnh)
+                    </CFormText>
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Số Điện Thoại</CFormLabel>
+                    <CFormInput
+                      type="tel"
+                      placeholder="Số Điện Thoại"
+                      autoComplete="phone"
+                      name="phone"
+                      value={this.state.phone}
+                      onChange={this.handleInputChange}
+                      required
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Thông tin này không được chỉnh sửa!
+                    </CFormText> */}
+                  </CCol>
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Điện Thoại DĐ</CFormLabel>
+                    <CFormInput
+                      type="tel"
+                      placeholder="Điện Thoại DĐ"
+                      autoComplete="mobile_phone"
+                      name="mobile_phone"
+                      value={this.state.mobile_phone}
+                      onChange={this.handleInputChange}
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Điện Thoại DĐ không bắt buộc
                     </CFormText>
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Loại Kỹ Năng</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="Loại Kỹ Năng"
-                      autoComplete="type"
+                    <CFormLabel htmlFor="exampleFormControlInput1">Mối Quan Hệ</CFormLabel>
+
+                    <CFormSelect
                       name="type"
-                      value={this.state.type}
+                      aria-label="Vui lòng chọn mối quan hệ"
                       onChange={this.handleInputChange}
-                      required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
+                      value={this.state.type}
+                    >
+                      <option key="0" value="">
+                        Vui lòng chọn mối quan hệ
+                      </option>
+                      <option key="Ba" value="Ba">
+                        Ba
+                      </option>
+                      <option key="Mẹ" value="Mẹ">
+                        Mẹ
+                      </option>
+                      <option key="Chồng" value="Chồng">
+                        Chồng
+                      </option>
+                      <option key="Vợ" value="Vợ">
+                        Vợ
+                      </option>
+                    </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập loại kỹ năng
+                      Vui lòng chọn mối quan hệ
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -378,7 +522,7 @@ class Skill extends Component {
             {' '}
             <CForm onSubmit={this.handleDelete}>
               <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
+                Bạn có chắc chắn xoá {this.state.full_name}?
               </h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
@@ -386,8 +530,8 @@ class Skill extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder=""
-                  autoComplete=""
+                  placeholder="contact_types"
+                  autoComplete="contact_types"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -410,4 +554,4 @@ class Skill extends Component {
   }
 }
 
-export default Skill
+export default Contact
