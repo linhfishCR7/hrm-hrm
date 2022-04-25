@@ -53,6 +53,7 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
 const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
 const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
+const Certificate = React.lazy(() => import('./views/pages/certificate/Certificate'))
 const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
 const DayOffType = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
 const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
@@ -81,6 +82,7 @@ const routes = [
   { path: '/nationality', name: 'Quốc Tịch', element: Nationality },
   { path: '/ethnicity', name: 'Dân Tộc', element: Ethnicity },
   { path: '/certificate-type', name: 'Loại Chứng Nhận', element: CertificateType },
+  { path: '/staff/certificate', name: 'Chứng Nhận', element: Certificate },
   { path: '/degree-type', name: 'Loại Bằng Cấp', element: DegreeType },
   { path: '/day-off-type', name: 'Loại Ngày Nghỉ', element: DayOffType },
   { path: '/position', name: 'Chức Vụ', element: Position },
