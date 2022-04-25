@@ -33,22 +33,19 @@ const { Column, ColumnGroup } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
-class Certificate extends Component {
+class Degree extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      certificate: [],
-      certificateType: [{}],
+      degree: [],
+      degreeType: [{}],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
       name: '',
       loading: true,
       number: '',
-      level: '',
-      expire: null,
       place: '',
-      note: '',
       attach: '',
       type_data: '',
       date: null,
@@ -59,11 +56,11 @@ class Certificate extends Component {
   }
 
   componentDidMount() {
-    API({ REGISTER_URL: '/hrm/certificate-types/?no_pagination=true', ACTION: 'GET' })
+    API({ REGISTER_URL: '/hrm/degree-types/?no_pagination=true', ACTION: 'GET' })
       .then((res) => {
-        const certificateType = res.data
+        const degreeType = res.data
         this.setState({
-          certificateType: certificateType,
+          degreeType: degreeType,
         })
       })
       .catch((error) => console.log(error))
@@ -72,13 +69,13 @@ class Certificate extends Component {
       staff: staff_id,
     })
     API({
-      REGISTER_URL: '/hrm/certificate/?no_pagination=true&staff__id=' + staff_id,
+      REGISTER_URL: '/hrm/degree/?no_pagination=true&staff__id=' + staff_id,
       ACTION: 'GET',
     })
       .then((res) => {
-        const certificate = res.data
+        const degree = res.data
         this.setState({
-          certificate: certificate,
+          degree: degree,
           loading: false,
         })
       })
@@ -96,11 +93,11 @@ class Certificate extends Component {
   }
   openModal = (item) => {
     console.log(item.type)
-    API({ REGISTER_URL: '/hrm/certificate-types/?no_pagination=true', ACTION: 'GET' })
+    API({ REGISTER_URL: '/hrm/degree-types/?no_pagination=true', ACTION: 'GET' })
       .then((res) => {
-        const certificateType = res.data
+        const degreeType = res.data
         this.setState({
-          certificateType: certificateType,
+          degreeType: degreeType,
         })
       })
       .catch((error) => console.log(error))
@@ -109,11 +106,8 @@ class Certificate extends Component {
       id: item.id,
       number: item.number,
       name: item.name,
-      level: item.level,
       date: item.date,
-      expire: item.expire,
       place: item.place,
-      note: item.note,
       attach: item.attach,
       type_data: item.type_data,
       staff: staff_id,
@@ -152,10 +146,10 @@ class Certificate extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    API({ REGISTER_URL: '/hrm/certificate/' + this.state.id + '/', ACTION: 'DELETE' })
+    API({ REGISTER_URL: '/hrm/degree/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
-          certificate: prevState.certificate.filter((el) => el.id !== this.state.id),
+          degree: prevState.degree.filter((el) => el.id !== this.state.id),
         }))
         openNotificationWithIcon({
           type: 'success',
@@ -180,34 +174,28 @@ class Certificate extends Component {
 
     const newUpdate = {
       number: this.state.number,
-      level: this.state.level,
       date: this.state.date,
-      expire: this.state.expire,
       place: this.state.place,
-      note: this.state.note,
       attach: this.state.attach,
       type: this.state.type_data,
       name: this.state.name,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/certificate/' + this.state.id + '/',
+      REGISTER_URL: '/hrm/degree/' + this.state.id + '/',
       ACTION: 'PUT',
       DATA: newUpdate,
     })
       .then((res) => {
         let key = this.state.id
         this.setState((prevState) => ({
-          certificate: prevState.certificate.map((elm) =>
+          degree: prevState.degree.map((elm) =>
             elm.id === key
               ? {
                   ...elm,
                   number: this.state.number,
                   name: this.state.name,
-                  level: this.state.level,
-                  expire: this.state.expire,
                   place: this.state.place,
-                  note: this.state.note,
                   attach: this.state.attach,
                   type_data: this.state.type_data,
                 }
@@ -248,25 +236,22 @@ class Certificate extends Component {
 
     const newData = {
       number: this.state.number,
-      level: this.state.level,
       name: this.state.name,
       date: this.state.date,
-      expire: this.state.expire,
       place: this.state.place,
-      note: this.state.note,
       attach: this.state.attach,
       type: this.state.type_data,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/certificate/',
+      REGISTER_URL: '/hrm/degree/',
       ACTION: 'POST',
       DATA: newData,
     })
       .then((res) => {
-        let certificate = this.state.certificate
-        certificate = [newData, ...certificate]
-        this.setState({ certificate: certificate })
+        let degree = this.state.degree
+        degree = [newData, ...degree]
+        this.setState({ degree: degree })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
@@ -300,15 +285,15 @@ class Certificate extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Chứng Chỉ</h2>
+        <h2>{staff_name} - Bằng Cấp</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           <CContainer>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Số Chứng Chỉ</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Số Bằng Cấp</CFormLabel>
                 <CFormInput
                   type="text"
-                  placeholder="Số Chứng Chỉ"
+                  placeholder="Số Bằng Cấp"
                   autoComplete="number"
                   name="number"
                   onChange={this.handleInputChange}
@@ -320,10 +305,10 @@ class Certificate extends Component {
                     </CFormText> */}
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Tên Chứng Chỉ</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
                 <CFormInput
                   type="text"
-                  placeholder="Tên Chứng Chỉ"
+                  placeholder="Tên Bằng Cấp"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -331,23 +316,7 @@ class Certificate extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên chứng chỉ
-                </CFormText>
-              </CCol>
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Cấp Độ</CFormLabel>
-
-                <CFormInput
-                  type="number"
-                  placeholder="Cấp Độ"
-                  autoComplete="level"
-                  name="level"
-                  onChange={this.handleInputChange}
-                  // required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập cấp độ nếu có
+                  Vui lòng nhập tên Bằng Cấp
                 </CFormText>
               </CCol>
             </CRow>
@@ -364,23 +333,10 @@ class Certificate extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Ngày cấp chứng chỉ
+                  Ngày cấp Bằng Cấp
                 </CFormText>
               </CCol>
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Thời Hạn Chứng Chỉ Đến</CFormLabel>
-                <CFormInput
-                  type="date"
-                  placeholder="Thời Hạn Chứng Chỉ Đến"
-                  autoComplete="expire"
-                  name="expire"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập thời hạn nếu có
-                </CFormText>
-              </CCol>
+
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Nơi Cấp</CFormLabel>
 
@@ -394,25 +350,11 @@ class Certificate extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập nơi cấp chứng chỉ
+                  Vui lòng nhập nơi cấp Bằng Cấp
                 </CFormText>
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
-                <CFormInput
-                  type="text"
-                  placeholder="Ghi Chú"
-                  autoComplete="note"
-                  name="note"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nếu có ghi chú
-                </CFormText>
-              </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Đính Kèm</CFormLabel>
                 <CFormInput
@@ -428,24 +370,24 @@ class Certificate extends Component {
                 </CFormText>
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Loại Chứng Chỉ</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Loại Bằng Cấp</CFormLabel>
 
                 <CFormSelect
                   name="type_data"
-                  aria-label="Vui lòng chọn loại chứng chỉ"
+                  aria-label="Vui lòng chọn loại Bằng Cấp"
                   onChange={this.handleInputChange}
                 >
                   <option key="0" value="">
-                    Chọn loại chứng chỉ
+                    Chọn loại Bằng Cấp
                   </option>
-                  {this.state.certificateType.map((item) => (
+                  {this.state.degreeType.map((item) => (
                     <option key={item.id} value={item.id}>
                       {item.name}
                     </option>
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn loại chứng chỉ!
+                  Vui lòng chọn loại Bằng Cấp!
                 </CFormText>
               </CCol>
             </CRow>
@@ -459,18 +401,15 @@ class Certificate extends Component {
           </CContainer>
         </CForm>{' '}
         <Divider />
-        <Table dataSource={this.state.certificate} bordered>
+        <Table dataSource={this.state.degree} bordered>
           <Column title="Số" dataIndex="number" key="number" />
-          <Column title="Tên Chứng Chỉ" dataIndex="name" key="name" />
-          <Column title="Cấp Độ" dataIndex="level" key="level" />
+          <Column title="Tên Bằng Cấp" dataIndex="name" key="name" />
           <Column title="Cấp Ngày" dataIndex="date" key="date" />
           <Column title="Nơi Cấp" dataIndex="place" key="place" />
-          <Column title="Thời Hạn" dataIndex="expire" key="expire" />
           <Column title="Đính Kèm" dataIndex="attach" key="attach" />
-          <Column title="Ghi Chú" dataIndex="note" key="note" />
           <Column
             title="Hành động"
-            key={this.state.certificate}
+            key={this.state.degree}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Cập Nhật Dự Liệu" placement="top">
@@ -501,10 +440,10 @@ class Certificate extends Component {
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Số Chứng Chỉ</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Số Bằng Cấp</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="Số Chứng Chỉ"
+                      placeholder="Số Bằng Cấp"
                       autoComplete="number"
                       name="number"
                       value={this.state.number}
@@ -517,10 +456,10 @@ class Certificate extends Component {
                     </CFormText> */}
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Chứng Chỉ</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="Tên Chứng Chỉ"
+                      placeholder="Tên Bằng Cấp"
                       autoComplete="name"
                       name="name"
                       value={this.state.name}
@@ -529,24 +468,7 @@ class Certificate extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên chứng chỉ
-                    </CFormText>
-                  </CCol>
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Cấp Độ</CFormLabel>
-
-                    <CFormInput
-                      type="number"
-                      placeholder="Cấp Độ"
-                      autoComplete="level"
-                      name="level"
-                      value={this.state.level}
-                      onChange={this.handleInputChange}
-                      // required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập cấp độ nếu có
+                      Vui lòng nhập tên Bằng Cấp
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -564,26 +486,10 @@ class Certificate extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày cấp chứng chỉ
+                      Ngày cấp Bằng Cấp
                     </CFormText>
                   </CCol>
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">
-                      Thời Hạn Chứng Chỉ Đến
-                    </CFormLabel>
-                    <CFormInput
-                      type="date"
-                      placeholder="Thời Hạn Chứng Chỉ Đến"
-                      autoComplete="expire"
-                      name="expire"
-                      value={this.state.expire}
-                      onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập thời hạn nếu có
-                    </CFormText>
-                  </CCol>
+
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Nơi Cấp</CFormLabel>
 
@@ -598,26 +504,11 @@ class Certificate extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập nơi cấp chứng chỉ
+                      Vui lòng nhập nơi cấp Bằng Cấp
                     </CFormText>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="Ghi Chú"
-                      autoComplete="note"
-                      name="note"
-                      value={this.state.note}
-                      onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nếu có ghi chú
-                    </CFormText>
-                  </CCol>
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Đính Kèm</CFormLabel>
                     <CFormInput
@@ -634,25 +525,25 @@ class Certificate extends Component {
                     </CFormText>
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Loại Chứng Chỉ</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Loại Bằng Cấp</CFormLabel>
 
                     <CFormSelect
                       value={this.state.type_data}
                       name="type_data"
-                      aria-label="Vui lòng chọn loại chứng chỉ"
+                      aria-label="Vui lòng chọn loại Bằng Cấp"
                       onChange={this.handleInputChange}
                     >
                       <option key="0" value="">
-                        Chọn loại chứng chỉ
+                        Chọn loại Bằng Cấp
                       </option>
-                      {this.state.certificateType.map((item) => (
+                      {this.state.degreeType.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.name}
                         </option>
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn loại chứng chỉ!
+                      Vui lòng chọn loại Bằng Cấp!
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -685,8 +576,8 @@ class Certificate extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="certificate_types"
-                  autoComplete="certificate_types"
+                  placeholder="degree_types"
+                  autoComplete="degree_types"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -709,4 +600,4 @@ class Certificate extends Component {
   }
 }
 
-export default Certificate
+export default Degree

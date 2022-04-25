@@ -460,6 +460,7 @@ class Staff extends Component {
       staff: item.staff,
     })
     localStorage.setItem('staff', item.id)
+    localStorage.setItem('staff_name', item.first_name + ' ' + item.last_name)
   }
 
   closeModal = () => {
@@ -757,7 +758,7 @@ class Staff extends Component {
               {/* <h2 style={{ textTransform: 'uppercase' }}>{this.state.name}</h2> */}
 
               <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/contact" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Thông Tin Khẩn Cấp
@@ -766,7 +767,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Bằng Cấp" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/degree" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Bằng Cấp
