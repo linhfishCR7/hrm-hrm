@@ -106,7 +106,7 @@ const ForgotPassword = () => {
                   color: 'light',
                 }}
               >
-                WELCOME TO HRM SYSTEM
+                CHÀO MỪNG ĐẾN VỚI HỆ THỐNG HRM
               </h1>
             </div>
           </CCol>

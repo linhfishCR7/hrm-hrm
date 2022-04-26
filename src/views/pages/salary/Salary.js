@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input, Collapse, Card, Spin, Alert } from 'antd'
+import { Table, Space, message, Input, Card } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import '../../../assets/style.css'
 // import LoadingOverlay from 'react-loading-overlay'
 import openNotificationWithIcon from '../../../utils/notification'
 
 import {
-  CFormTextarea,
-  CContainer,
   CModal,
   CModalBody,
   CModalFooter,
@@ -25,18 +23,15 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormLabel,
-  CFormText,
-  CFormSelect,
   CSpinner,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCircle, cilInfo, cilCloudUpload, cilCheck } from '@coreui/icons'
+import { cilCircle, cilCloudUpload, cilCheck } from '@coreui/icons'
 import Modal from 'react-modal'
 import Loading from '../../../utils/loading'
-const { Column, ColumnGroup } = Table
-const { Panel } = Collapse
-const { Meta } = Card
+const { Column } = Table
+// const { Panel } = Collapse
+// const { Meta } = Card
 
 const tabListNoTitle = [
   {
@@ -356,9 +351,6 @@ class Salary extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    const Id = {
-      id: this.state.id,
-    }
     axios
       .delete('/hrm/staffs/' + this.state.id + '/', {
         headers: {
