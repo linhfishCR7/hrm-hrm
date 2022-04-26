@@ -794,7 +794,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Công Tác" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/on-business" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */} Công Tác
