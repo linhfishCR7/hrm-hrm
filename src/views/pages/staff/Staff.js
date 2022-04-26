@@ -839,7 +839,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Hợp Đồng Lao Động" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/contract" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Hợp Đồng Lao Động
@@ -857,7 +857,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Thăng Tiến" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/promotion" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Thăng Tiến
@@ -866,7 +866,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Khen Thưởng" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/bonus" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Khen Thưởng

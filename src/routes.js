@@ -79,6 +79,9 @@ const Contact = React.lazy(() => import('./views/pages/contact/Contact'))
 const OnBusiness = React.lazy(() => import('./views/pages/onBusiness/OnBusiness'))
 const Health = React.lazy(() => import('./views/pages/health/Health'))
 const Discipline = React.lazy(() => import('./views/pages/discipline/Discipline'))
+const Bonus = React.lazy(() => import('./views/pages/bonus/Bonus'))
+const Promotion = React.lazy(() => import('./views/pages/promotion/Promotion'))
+const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -115,6 +118,9 @@ const routes = [
   { path: '/staff/on-business', name: 'Công Tác', element: OnBusiness },
   { path: '/staff/health', name: 'Khám Sức Khoẻ', element: Health },
   { path: '/staff/discipline', name: 'Kỷ Luật', element: Discipline },
+  { path: '/staff/bonus', name: 'Khen Thưởng', element: Bonus },
+  { path: '/staff/promotion', name: 'Thăng Tiến', element: Promotion },
+  { path: '/staff/contract', name: 'Hợp Đồng Lao Động', element: Contract },
 
   // #################################################################
 
