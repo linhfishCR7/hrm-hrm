@@ -77,6 +77,8 @@ const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
 const Skill = React.lazy(() => import('./views/pages/skill/Skill'))
 const Contact = React.lazy(() => import('./views/pages/contact/Contact'))
 const OnBusiness = React.lazy(() => import('./views/pages/onBusiness/OnBusiness'))
+const Health = React.lazy(() => import('./views/pages/health/Health'))
+const Discipline = React.lazy(() => import('./views/pages/discipline/Discipline'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -111,6 +113,8 @@ const routes = [
   { path: '/staff/skill', name: 'Kỹ Năng', element: Skill },
   { path: '/staff/contact', name: 'Liên Hệ Khẩn Cấp', element: Contact },
   { path: '/staff/on-business', name: 'Công Tác', element: OnBusiness },
+  { path: '/staff/health', name: 'Khám Sức Khoẻ', element: Health },
+  { path: '/staff/discipline', name: 'Kỷ Luật', element: Discipline },
 
   // #################################################################
 
