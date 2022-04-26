@@ -92,24 +92,6 @@ class Customer extends Component {
       .catch((error) => console.log(error))
   }
 
-  fetchCompanyAPI = async (event) => {
-    await axios
-      .get('/hrm/companies/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const companies = res.data
-        this.setState({
-          companies: companies,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
-
   handleInputChange = (event) => {
     const target = event.target
     const value = target.value
@@ -124,7 +106,6 @@ class Customer extends Component {
   }
 
   openModal = (item) => {
-    this.fetchCompanyAPI()
     axios
       .get('/hrm/customers/' + item.id + '/', {
         headers: {
@@ -138,7 +119,7 @@ class Customer extends Component {
         this.setState({
           modalIsOpen: true,
           id: customers.id,
-          company: customers.company.id,
+          company: customers.company,
           name: customers.name,
           email: customers.email,
           phone: customers.phone,
@@ -379,19 +360,18 @@ class Customer extends Component {
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Mã Công Ty</CFormLabel>
-                    <CFormSelect
-                      value={this.state.company}
+                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Công Ty</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="Tên Công Ty"
+                      autoComplete="company"
                       name="company"
-                      aria-label="Please choose your company"
+                      value={this.state.company}
                       onChange={this.handleInputChange}
-                    >
-                      {this.state.companies.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </CFormSelect>
+                      required
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+
                     {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
                   Nhập đúng dịnh dạng SDT
                 </CFormText> */}
