@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -21,7 +21,6 @@ import {
   CContainer,
   CFormLabel,
   CFormText,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
@@ -29,7 +28,7 @@ import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 

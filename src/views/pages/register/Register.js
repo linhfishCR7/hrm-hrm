@@ -142,7 +142,7 @@ const Register = () => {
                   color: 'light',
                 }}
               >
-                WELCOME TO HRM SYSTEM
+                CHÀO MỪNG ĐẾN VỚI HỆ THỐNG HRM
               </h1>
             </div>
           </CCol>
@@ -182,7 +182,7 @@ const Register = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Mật Khẩu"
                         autoComplete="new-password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
@@ -297,7 +297,7 @@ const Register = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        placeholder="first_name"
+                        placeholder="Tên"
                         autoComplete="first_name"
                         value={firstName}
                         onChange={(event) => setFirstName(event.target.value)}
@@ -310,7 +310,7 @@ const Register = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        placeholder="last_name"
+                        placeholder="Họ"
                         autoComplete="last_name"
                         value={lastName}
                         onChange={(event) => setLastName(event.target.value)}

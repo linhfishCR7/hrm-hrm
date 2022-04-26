@@ -99,7 +99,7 @@ const ChangePassword = () => {
                   color: 'light',
                 }}
               >
-                WELCOME TO HRM SYSTEM
+                CHÀO MỪNG ĐẾN VỚI HỆ THỐNG HRM
               </h1>
             </div>
           </CCol>
@@ -109,8 +109,8 @@ const ChangePassword = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleChangeClick}>
-                  <h1> Change Password </h1>{' '}
-                  <p className="text-medium-emphasis"> Change password your account </p>{' '}
+                  <h1> Thay đổi mật khẩu </h1>{' '}
+                  <p className="text-medium-emphasis"> Thay đổi mật khẩu tài khoản của bạn </p>{' '}
                   <CToast
                     autohide={error ? false : true}
                     visible={error ? true : false}
@@ -139,7 +139,7 @@ const ChangePassword = () => {
                     </CInputGroupText>{' '}
                     <CFormInput
                       type="password"
-                      placeholder="Old Password"
+                      placeholder="Mật Khẩu Cũ"
                       autoComplete="old-password"
                       value={oldPassword}
                       onChange={(event) => setOldPassword(event.target.value)}
@@ -152,7 +152,7 @@ const ChangePassword = () => {
                     </CInputGroupText>{' '}
                     <CFormInput
                       type="password"
-                      placeholder="New Password"
+                      placeholder="Mật Khẩu Mới"
                       autoComplete="new-password"
                       value={newPassword}
                       onChange={(event) => setNewPassword(event.target.value)}
@@ -161,14 +161,14 @@ const ChangePassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="success" type="submit">
-                      Confirm{' '}
+                      Xác Nhận{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
                 <div className="d-grid">
                   <Link to="/dashboard">
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                      Back Dashboard{' '}
+                      Trở Về Trang Chủ{' '}
                     </CButton>{' '}
                   </Link>{' '}
                 </div>{' '}

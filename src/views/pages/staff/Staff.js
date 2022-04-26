@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input, Collapse, Spin, Alert } from 'antd'
+import { Table, Space, Input, Collapse, Spin } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -25,16 +25,14 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
   CFormLabel,
   CFormText,
-  CImage,
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons'
+import { cilCircle, cilInfo } from '@coreui/icons'
 import Modal from 'react-modal'
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const { Panel } = Collapse
 
 class Staff extends Component {
@@ -85,12 +83,6 @@ class Staff extends Component {
       elect_decision: '',
       url: '',
       note: '',
-      department: '',
-      nationality: '',
-      ethnicity: '',
-      religion: '',
-      literacy: '',
-
       address: '',
       country: '',
       city: '',
@@ -337,7 +329,7 @@ class Staff extends Component {
       })
       .then((res) => {
         const staffs = res.data
-        if (staffs.addresses == '') {
+        if (staffs.addresses === '') {
           this.setState({
             address: '',
             country: '',
@@ -594,9 +586,6 @@ class Staff extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    const Id = {
-      id: this.state.id,
-    }
     axios
       .delete('/hrm/staffs/' + this.state.id + '/', {
         headers: {
@@ -812,7 +801,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Phép Năm" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/day-off-year" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Phép Năm

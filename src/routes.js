@@ -82,6 +82,7 @@ const Discipline = React.lazy(() => import('./views/pages/discipline/Discipline'
 const Bonus = React.lazy(() => import('./views/pages/bonus/Bonus'))
 const Promotion = React.lazy(() => import('./views/pages/promotion/Promotion'))
 const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
+const DayOffYear = React.lazy(() => import('./views/pages/dayOffYear/DayOffYear'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -121,6 +122,7 @@ const routes = [
   { path: '/staff/bonus', name: 'Khen Thưởng', element: Bonus },
   { path: '/staff/promotion', name: 'Thăng Tiến', element: Promotion },
   { path: '/staff/contract', name: 'Hợp Đồng Lao Động', element: Contract },
+  { path: '/staff/day-off-year', name: 'Nghỉ Phép', element: DayOffYear },
 
   // #################################################################
 
