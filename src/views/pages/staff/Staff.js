@@ -460,6 +460,7 @@ class Staff extends Component {
       staff: item.staff,
     })
     localStorage.setItem('staff', item.id)
+    localStorage.setItem('staff_name', item.first_name + ' ' + item.last_name)
   }
 
   closeModal = () => {
@@ -757,7 +758,7 @@ class Staff extends Component {
               {/* <h2 style={{ textTransform: 'uppercase' }}>{this.state.name}</h2> */}
 
               <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/contact" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Thông Tin Khẩn Cấp
@@ -766,7 +767,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Bằng Cấp" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/degree" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Bằng Cấp
@@ -775,7 +776,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Chứng Chỉ" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/certificate" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */} Chứng Chỉ
@@ -784,7 +785,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Kỹ Năng" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/skill" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Kỹ Năng
@@ -793,7 +794,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Công Tác" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/on-business" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */} Công Tác
@@ -838,7 +839,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Hợp Đồng Lao Động" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/contract" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Hợp Đồng Lao Động
@@ -856,7 +857,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Thăng Tiến" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/promotion" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Thăng Tiến
@@ -865,7 +866,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Khen Thưởng" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/bonus" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Khen Thưởng
@@ -874,7 +875,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Kỷ Luật" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/discipline" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Kỷ Luật
@@ -883,7 +884,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Sức Khoẻ" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/health" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Sức Khoẻ

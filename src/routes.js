@@ -53,7 +53,9 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Religion = React.lazy(() => import('./views/pages/religion/Religion'))
 const Nationality = React.lazy(() => import('./views/pages/nationality/Nationality'))
 const CertificateType = React.lazy(() => import('./views/pages/certificateType/CertificateType'))
+const Certificate = React.lazy(() => import('./views/pages/certificate/Certificate'))
 const DegreeType = React.lazy(() => import('./views/pages/degreeType/DegreeType'))
+const Degree = React.lazy(() => import('./views/pages/degree/Degree'))
 const DayOffType = React.lazy(() => import('./views/pages/dayOffType/DayOffType'))
 const Ethnicity = React.lazy(() => import('./views/pages/ethnicity/Ethnicity'))
 const Position = React.lazy(() => import('./views/pages/position/Position'))
@@ -72,6 +74,14 @@ const Staff = React.lazy(() => import('./views/pages/staff/Staff'))
 const AddStaff = React.lazy(() => import('./views/pages/staff/addStaff'))
 const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
 const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
+const Skill = React.lazy(() => import('./views/pages/skill/Skill'))
+const Contact = React.lazy(() => import('./views/pages/contact/Contact'))
+const OnBusiness = React.lazy(() => import('./views/pages/onBusiness/OnBusiness'))
+const Health = React.lazy(() => import('./views/pages/health/Health'))
+const Discipline = React.lazy(() => import('./views/pages/discipline/Discipline'))
+const Bonus = React.lazy(() => import('./views/pages/bonus/Bonus'))
+const Promotion = React.lazy(() => import('./views/pages/promotion/Promotion'))
+const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -81,7 +91,9 @@ const routes = [
   { path: '/nationality', name: 'Quốc Tịch', element: Nationality },
   { path: '/ethnicity', name: 'Dân Tộc', element: Ethnicity },
   { path: '/certificate-type', name: 'Loại Chứng Nhận', element: CertificateType },
+  { path: '/staff/certificate', name: 'Chứng Nhận', element: Certificate },
   { path: '/degree-type', name: 'Loại Bằng Cấp', element: DegreeType },
+  { path: '/staff/degree', name: 'Bằng Cấp', element: Degree },
   { path: '/day-off-type', name: 'Loại Ngày Nghỉ', element: DayOffType },
   { path: '/position', name: 'Chức Vụ', element: Position },
   { path: '/literacy', name: 'Trình Độ Học Vấn', element: Literacy },
@@ -101,6 +113,14 @@ const routes = [
   { path: '/add-staff', name: 'Thêm Nhân Viên', element: AddStaff },
   { path: '/list-staff', name: 'Nhân Viên', element: ListStaff },
   { path: '/salary', name: 'Tiền Lương', element: Salary },
+  { path: '/staff/skill', name: 'Kỹ Năng', element: Skill },
+  { path: '/staff/contact', name: 'Liên Hệ Khẩn Cấp', element: Contact },
+  { path: '/staff/on-business', name: 'Công Tác', element: OnBusiness },
+  { path: '/staff/health', name: 'Khám Sức Khoẻ', element: Health },
+  { path: '/staff/discipline', name: 'Kỷ Luật', element: Discipline },
+  { path: '/staff/bonus', name: 'Khen Thưởng', element: Bonus },
+  { path: '/staff/promotion', name: 'Thăng Tiến', element: Promotion },
+  { path: '/staff/contract', name: 'Hợp Đồng Lao Động', element: Contract },
 
   // #################################################################
 

@@ -171,7 +171,7 @@ class CertificateType extends Component {
           placement: 'topRight',
         })
       })
-      .catch(function async(error) {
+      .catch(function (error) {
         if (error.response.status === 400) {
           openNotificationWithIcon({
             type: 'error',
@@ -283,7 +283,7 @@ class CertificateType extends Component {
           </CCol>
         </CRow>
         <Table dataSource={this.state.certificateType} bordered scroll={{ y: 240 }}>
-          <Column title="Mã" dataIndex="certificate_types" key="nationalty" />
+          <Column title="Mã" dataIndex="certificate_types" key="certificate_types" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
             title="Hành động"

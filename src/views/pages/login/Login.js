@@ -161,9 +161,24 @@ const Login = () => {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={5}>
-            <h1 style={{ marginBottom: '60px', fontWight: 'bolder', color: 'light' }}>
-              WELCOME TO HRM SYSTEM
-            </h1>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+              }}
+            >
+              <h1
+                style={{
+                  marginBottom: '60px',
+                  fontWight: 'bolder',
+                  color: 'light',
+                }}
+              >
+                WELCOME TO HRM SYSTEM
+              </h1>
+            </div>
           </CCol>
         </CRow>
         <CRow className="justify-content-center">
@@ -275,7 +290,7 @@ const Login = () => {
               <CCard
                 className="text-white bg-primary py-5"
                 style={{
-                  width: '44%',
+                  width: '100%',
                 }}
               >
                 <CCardBody className="text-center">
