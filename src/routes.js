@@ -84,6 +84,7 @@ const Promotion = React.lazy(() => import('./views/pages/promotion/Promotion'))
 const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
 const DayOffYear = React.lazy(() => import('./views/pages/dayOffYear/DayOffYear'))
 const UpSalary = React.lazy(() => import('./views/pages/upSalary/UpSalary'))
+const Trainning = React.lazy(() => import('./views/pages/trainning/Trainning'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -125,6 +126,7 @@ const routes = [
   { path: '/staff/contract', name: 'Hợp Đồng Lao Động', element: Contract },
   { path: '/staff/day-off-year', name: 'Nghỉ Phép', element: DayOffYear },
   { path: '/staff/up-salary', name: 'Xét Tăng Lương', element: UpSalary },
+  { path: '/trainning', name: 'Chương Trình Đào Tạo', element: Trainning },
 
   // #################################################################
 
