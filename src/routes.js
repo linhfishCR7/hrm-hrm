@@ -85,6 +85,8 @@ const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
 const DayOffYear = React.lazy(() => import('./views/pages/dayOffYear/DayOffYear'))
 const UpSalary = React.lazy(() => import('./views/pages/upSalary/UpSalary'))
 const Trainning = React.lazy(() => import('./views/pages/trainning/Trainning'))
+const Department = React.lazy(() => import('./views/pages/department/Department'))
+const SalaryStaff = React.lazy(() => import('./views/pages/salary/SalaryStaff'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -127,6 +129,8 @@ const routes = [
   { path: '/staff/day-off-year', name: 'Nghỉ Phép', element: DayOffYear },
   { path: '/staff/up-salary', name: 'Xét Tăng Lương', element: UpSalary },
   { path: '/trainning', name: 'Chương Trình Đào Tạo', element: Trainning },
+  { path: '/department', name: 'Bộ Phận', element: Department },
+  { path: '/staff/salary', name: 'Tiền Lương', element: SalaryStaff },
 
   // #################################################################
 

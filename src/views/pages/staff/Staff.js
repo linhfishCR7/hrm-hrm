@@ -810,7 +810,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Tiền Lương" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/salary" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Tiền Lương

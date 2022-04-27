@@ -28,8 +28,9 @@ import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
-const { TextArea } = Input
+import { COMPANY, BRANCH } from '../../../constants/Config'
 
+const { TextArea } = Input
 const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
@@ -82,7 +83,11 @@ class Trainning extends Component {
         }),
       )
     API({
-      REGISTER_URL: '/hrm/trainning-requirement/?no_pagination=true&staff__id=' + staff_id,
+      REGISTER_URL:
+        '/hrm/trainning-requirement/?no_pagination=true&staff__id=' +
+        staff_id +
+        '&branch__id=' +
+        BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
@@ -119,10 +124,8 @@ class Trainning extends Component {
       unit_head: item.unit_head,
       approved_by: item.approved_by,
       unit: item.unit,
-      branch: item.branch_id,
+      branch: BRANCH,
     })
-
-    console.log(item.approved_by)
   }
 
   openDeleteModal = (item) => {
@@ -195,7 +198,7 @@ class Trainning extends Component {
       unit_head: this.state.unit_head,
       approved_by: this.state.approved_by,
       unit: this.state.unit,
-      branch: this.state.branch,
+      branch: BRANCH,
     }
     API({
       REGISTER_URL: '/hrm/trainning-requirement/' + this.state.id + '/',
@@ -220,7 +223,7 @@ class Trainning extends Component {
                   unit_head: this.state.unit_head,
                   approved_by: this.state.approved_by,
                   unit: this.state.unit,
-                  branch: this.state.branch,
+                  branch: BRANCH,
                 }
               : elm,
           ),
@@ -272,7 +275,7 @@ class Trainning extends Component {
       unit_head: this.state.unit_head,
       approved_by: this.state.approved_by,
       unit: this.state.unit,
-      branch: this.state.branch,
+      branch: BRANCH,
     }
     API({
       REGISTER_URL: '/hrm/trainning-requirement/',
@@ -467,7 +470,7 @@ class Trainning extends Component {
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CCol>
+              {/* <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Chi Nhánh</CFormLabel>
                 <CFormSelect
                   value={this.state.branch}
@@ -487,7 +490,7 @@ class Trainning extends Component {
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
                   Chọn chi nhánh
                 </CFormText>
-              </CCol>
+              </CCol> */}
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Phê Duyệt</CFormLabel>
                 <CFormInput
@@ -740,7 +743,7 @@ class Trainning extends Component {
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
-                  <CCol>
+                  {/* <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Chi Nhánh</CFormLabel>
                     <CFormSelect
                       value={this.state.branch}
@@ -760,7 +763,7 @@ class Trainning extends Component {
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
                       Chọn chi nhánh
                     </CFormText>
-                  </CCol>
+                  </CCol> */}
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Phê Duyệt</CFormLabel>
                     <CFormInput

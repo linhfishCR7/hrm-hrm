@@ -200,34 +200,47 @@ const _nav = [
       },
     ],
   },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Công',
+  //   to: '/kind-off-work',
+  //   icon: <CIcon icon={cilCheck} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Loại công',
+  //       to: '/kind-off-work',
+  //     },
+  //   ],
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Công ty',
+  //   to: '/company',
+  //   icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Danh sách công ty',
+  //       to: '/company',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Thêm công ty',
+  //       to: '/add-company',
+  //     },
+  //   ],
+  // },
   {
     component: CNavGroup,
-    name: 'Công',
-    to: '/kind-off-work',
-    icon: <CIcon icon={cilCheck} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Loại công',
-        to: '/kind-off-work',
-      },
-    ],
-  },
-  {
-    component: CNavGroup,
-    name: 'Công ty',
-    to: '/company',
+    name: 'Bộ Phận',
+    to: '/department',
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Danh sách công ty',
-        to: '/company',
-      },
-      {
-        component: CNavItem,
-        name: 'Thêm công ty',
-        to: '/add-company',
+        name: 'Danh sách bộ phận',
+        to: '/department',
       },
     ],
   },

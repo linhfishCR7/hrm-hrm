@@ -122,9 +122,10 @@ const Login = () => {
               })
             }
             getAuthorization().then((results) => {
-              console.log(company)
               if (results.data.company === company) {
                 if (results.data.branch === branch) {
+                  localStorage.setItem('company', results.data.company)
+                  localStorage.setItem('branch', results.data.branch)
                   navigate('/dashboard')
                 } else {
                   user.signOut()
