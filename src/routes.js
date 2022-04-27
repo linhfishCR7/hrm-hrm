@@ -87,6 +87,7 @@ const UpSalary = React.lazy(() => import('./views/pages/upSalary/UpSalary'))
 const Trainning = React.lazy(() => import('./views/pages/trainning/Trainning'))
 const Department = React.lazy(() => import('./views/pages/department/Department'))
 const SalaryStaff = React.lazy(() => import('./views/pages/salary/SalaryStaff'))
+const TrainningDetail = React.lazy(() => import('./views/pages/trainningDetail/TrainningDetail'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -131,6 +132,7 @@ const routes = [
   { path: '/trainning', name: 'Chương Trình Đào Tạo', element: Trainning },
   { path: '/department', name: 'Bộ Phận', element: Department },
   { path: '/staff/salary', name: 'Tiền Lương', element: SalaryStaff },
+  { path: '/staff/trainning', name: 'Chương Trình Đào Tạo', element: TrainningDetail },
 
   // #################################################################
 

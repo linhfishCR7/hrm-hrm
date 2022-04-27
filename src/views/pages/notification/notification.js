@@ -216,7 +216,7 @@ const NotificationDropdown = () => {
                   <MenuItemSubtitle variant="body2">{item.body}</MenuItemSubtitle>
                 </Box>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                  {item.created_at}
+                  {item.created_at_data}
                 </Typography>
               </Box>
             </MenuItem>
