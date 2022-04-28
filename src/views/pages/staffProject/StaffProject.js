@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider, Input } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -28,27 +28,24 @@ import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
-const { TextArea } = Input
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
-class Promotion extends Component {
+class StaffProject extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      promotions: [],
-      positions: [{}],
+      staffProject: [],
+      staffs: [{}],
+      projects: [{}],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
+      staff: '',
       loading: true,
-      date: null,
-      content: '',
-      file: '',
-      note: '',
-      position: '',
+      project: '',
     }
 
     this.openModal = this.openModal.bind(this)
@@ -56,26 +53,50 @@ class Promotion extends Component {
   }
 
   componentDidMount() {
-    API({ REGISTER_URL: '/hrm/positions/?no_pagination=true', ACTION: 'GET' })
-      .then((res) => {
-        const positions = res.data
-        this.setState({
-          positions: positions,
-        })
-      })
-      .catch((error) => console.log(error))
-    this.setState({
-      modalAddIsOpen: true,
-      staff: staff_id,
-    })
     API({
-      REGISTER_URL: '/hrm/promotions/?no_pagination=true&staff__id=' + staff_id,
+      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
       ACTION: 'GET',
     })
       .then((res) => {
-        const promotions = res.data
+        const staffs = res.data
         this.setState({
-          promotions: promotions,
+          staffs: staffs,
+        })
+      })
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Có lỗi xảy ra',
+          description: error,
+          placement: 'topRight',
+        }),
+      )
+    API({
+      REGISTER_URL: '/hrm/projects/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const projects = res.data
+        this.setState({
+          projects: projects,
+        })
+      })
+      .catch((error) =>
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Có lỗi xảy ra',
+          description: error,
+          placement: 'topRight',
+        }),
+      )
+    API({
+      REGISTER_URL: '/hrm/staff-project/?no_pagination=true',
+      ACTION: 'GET',
+    })
+      .then((res) => {
+        const staffProject = res.data
+        this.setState({
+          staffProject: staffProject,
           loading: false,
         })
       })
@@ -95,12 +116,8 @@ class Promotion extends Component {
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      date: item.date,
-      content: item.content,
-      file: item.file,
-      note: item.note,
-      position: item.position_data,
-      staff: staff_id,
+      staff: item.staff_id,
+      project: item.project_id,
     })
   }
 
@@ -108,7 +125,7 @@ class Promotion extends Component {
     this.setState({
       modalDeleteIsOpen: true,
       id: item.id,
-      position_name: item.position_name,
+      name: item.name,
     })
   }
 
@@ -136,15 +153,15 @@ class Promotion extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    API({ REGISTER_URL: '/hrm/promotions/' + this.state.id + '/', ACTION: 'DELETE' })
+    API({ REGISTER_URL: '/hrm/staff-project/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
-          promotions: prevState.promotions.filter((el) => el.id !== this.state.id),
+          staffProject: prevState.staffProject.filter((el) => el.id !== this.state.id),
         }))
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
@@ -163,19 +180,33 @@ class Promotion extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      date: this.state.date,
-      content: this.state.content,
-      file: this.state.file,
-      note: this.state.note,
-      position: this.state.position,
-      staff: staff_id,
+      staff: this.state.staff,
+      project: this.state.project,
     }
     API({
-      REGISTER_URL: '/hrm/promotions/' + this.state.id + '/',
+      REGISTER_URL: '/hrm/staff-project/' + this.state.id + '/',
       ACTION: 'PUT',
       DATA: newUpdate,
     })
       .then((res) => {
+        API({
+          REGISTER_URL: '/hrm/staff-project/?no_pagination=true',
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const staffProject = res.data
+            this.setState({
+              staffProject: staffProject,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -183,9 +214,6 @@ class Promotion extends Component {
           placement: 'topRight',
         })
         this.closeModal()
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -212,31 +240,39 @@ class Promotion extends Component {
     event.preventDefault()
 
     const newData = {
-      date: this.state.date,
-      content: this.state.content,
-      file: this.state.file,
-      note: this.state.note,
-      position: this.state.position,
-      staff: staff_id,
+      staff: this.state.staff,
+      project: this.state.project,
     }
     API({
-      REGISTER_URL: '/hrm/promotions/',
+      REGISTER_URL: '/hrm/staff-project/',
       ACTION: 'POST',
       DATA: newData,
     })
       .then((res) => {
-        let promotions = this.state.promotions
-        promotions = [newData, ...promotions]
-        this.setState({ promotions: promotions })
+        API({
+          REGISTER_URL: '/hrm/staff-project/?no_pagination=true',
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const staffProject = res.data
+            this.setState({
+              staffProject: staffProject,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -256,95 +292,62 @@ class Promotion extends Component {
         }
       })
   }
+  handleSearch = (event) => {
+    let value = event.target.value
+    API({
+      REGISTER_URL: '/hrm/staff-project/?no_pagination=true&search=' + value,
+      ACTION: 'GET',
+    }).then((res) => {
+      this.setState({ staffProject: res.data })
+    })
+  }
   render() {
     return (
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Thăng Tiến</h2>
+        <h2>Nhân Viên Làm Dự Án</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           <CContainer>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Ngày Thăng Chức</CFormLabel>
-                <CFormInput
-                  type="date"
-                  placeholder="Ngày Thăng Chức"
-                  autoComplete="date"
-                  name="date"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Ngày thăng chức
-                </CFormText>
-              </CCol>
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Chức Vụ</CFormLabel>
-
+                <CFormLabel htmlFor="exampleFormControlInput1">Nhân Viên</CFormLabel>
                 <CFormSelect
-                  name="position"
-                  aria-label="Vui lòng chọn chức vụ"
+                  name="staff"
+                  aria-label="Chọn Nhân Viên"
                   onChange={this.handleInputChange}
                 >
                   <option key="0" value="">
-                    Chọn chức vụ
+                    Chọn Nhân Viên
                   </option>
-                  {this.state.positions.map((item) => (
+                  {this.state.staffs.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.name}
+                      {item.staff} - {item.name}
                     </option>
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn chức vụ!
+                  Vui lòng chọn nhân viên!
                 </CFormText>
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">File</CFormLabel>
-                <CFormInput
-                  type="text"
-                  placeholder="File"
-                  autoComplete="file"
-                  name="file"
+                <CFormLabel htmlFor="exampleFormControlInput1">Dự Án</CFormLabel>
+                <CFormSelect
+                  name="project"
+                  aria-label="Chịn Dự Án"
                   onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
+                >
+                  <option key="0" value="">
+                    Chọn Dự Án
+                  </option>
+                  {this.state.projects.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.project} - {item.name}
+                    </option>
+                  ))}
+                </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập file nếu có
-                </CFormText>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Nội Dung</CFormLabel>
-                <TextArea
-                  rows={8}
-                  type="text"
-                  placeholder="Nội Dung"
-                  autoComplete="content"
-                  name="content"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung
-                </CFormText>
-              </CCol>
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
-                <TextArea
-                  rows={8}
-                  type="text"
-                  placeholder="Ghi Chú"
-                  autoComplete="note"
-                  name="note"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập ghi chú nếu có
+                  Vui lòng chọn dự án!
                 </CFormText>
               </CCol>
             </CRow>
@@ -358,15 +361,23 @@ class Promotion extends Component {
           </CContainer>
         </CForm>{' '}
         <Divider />
-        <Table dataSource={this.state.promotions} bordered>
-          <Column title="Ngày Thăng Chức" dataIndex="date" key="date" />
-          <Column title="Chức Vụ" dataIndex="position_name" key="position_name" />
-          <Column title="Nội Dung" dataIndex="content" key="content" />
-          <Column title="File" dataIndex="file" key="file" />
-          <Column title="Ghi Chú" dataIndex="note" key="note" />
+        <CRow>
+          <CCol md={4}>
+            <Input.Search
+              placeholder="Tìm kiếm..."
+              onChange={(event) => this.handleSearch(event)}
+              className="mb-3"
+            />
+          </CCol>
+        </CRow>
+        <Table dataSource={this.state.staffProject} bordered>
+          <Column title="Mã Nhân Viên" dataIndex="staff_staff" key="staff_staff" />
+          <Column title="Nhân Viên" dataIndex="staff_name" key="staff_name" />
+          <Column title="Mã Dự Án" dataIndex="project_project" key="project_project" />
+          <Column title="Dự Án" dataIndex="project_name" key="project_name" />
           <Column
             title="Hành động"
-            key={this.state.promotions}
+            key={this.state.staffProject}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Cập Nhật Dự Liệu" placement="top">
@@ -397,92 +408,45 @@ class Promotion extends Component {
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Ngày Thăng Chức</CFormLabel>
-                    <CFormInput
-                      type="date"
-                      placeholder="Ngày Thăng Chức"
-                      autoComplete="date"
-                      name="date"
-                      value={this.state.date}
-                      onChange={this.handleInputChange}
-                      required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày thăng chức
-                    </CFormText>
-                  </CCol>
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Chức Vụ</CFormLabel>
-
+                    <CFormLabel htmlFor="exampleFormControlInput1">Nhân Viên</CFormLabel>
                     <CFormSelect
-                      name="position"
-                      aria-label="Vui lòng chọn chức vụ"
-                      value={this.state.position}
+                      name="staff"
+                      aria-label="Chọn Nhân Viên"
+                      value={this.state.staff}
                       onChange={this.handleInputChange}
                     >
                       <option key="0" value="">
-                        Chọn chức vụ
+                        Chọn Nhân Viên
                       </option>
-                      {this.state.positions.map((item) => (
+                      {this.state.staffs.map((item) => (
                         <option key={item.id} value={item.id}>
-                          {item.name}
+                          {item.staff} - {item.name}
                         </option>
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn chức vụ!
+                      Vui lòng chọn nhân viên!
                     </CFormText>
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">File</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="File"
-                      autoComplete="file"
-                      name="file"
-                      value={this.state.file}
+                    <CFormLabel htmlFor="exampleFormControlInput1">Dự Án</CFormLabel>
+                    <CFormSelect
+                      name="project"
+                      aria-label="Chịn Dự Án"
+                      value={this.state.project}
                       onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
+                    >
+                      <option key="0" value="">
+                        Chọn Dự Án
+                      </option>
+                      {this.state.projects.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.project} - {item.name}
+                        </option>
+                      ))}
+                    </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập file nếu có
-                    </CFormText>
-                  </CCol>
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Nội Dung</CFormLabel>
-                    <TextArea
-                      rows={8}
-                      type="text"
-                      placeholder="Nội Dung"
-                      autoComplete="content"
-                      value={this.state.content}
-                      name="content"
-                      onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung
-                    </CFormText>
-                  </CCol>
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
-                    <TextArea
-                      rows={8}
-                      type="text"
-                      placeholder="Ghi Chú"
-                      autoComplete="note"
-                      name="note"
-                      value={this.state.note}
-                      onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập ghi chú nếu có
+                      Vui lòng chọn dự án!
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -506,17 +470,15 @@ class Promotion extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.position_name}?
-              </h2>
+              <h2 style={{ textTransform: 'uppercase' }}>Bạn có chắc chắn xoá?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="position_name"
-                  autoComplete="position_name"
+                  placeholder=""
+                  autoComplete=""
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -539,4 +501,4 @@ class Promotion extends Component {
   }
 }
 
-export default Promotion
+export default StaffProject

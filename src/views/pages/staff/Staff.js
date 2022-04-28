@@ -564,13 +564,13 @@ class Staff extends Component {
               : elm,
           ),
         }))
-        this.closeModal()
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
+        this.closeModal()
         this.fetchStaffAPI()
       })
       .catch((error) =>

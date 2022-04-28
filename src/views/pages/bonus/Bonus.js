@@ -174,31 +174,31 @@ class Bonus extends Component {
               : elm,
           ),
         }))
-        this.closeModal()
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
+        this.closeModal()
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          this.closeModal()
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
             description: error.response.data.message,
             placement: 'topRight',
           })
-        } else {
           this.closeModal()
+        } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
             description: error,
             placement: 'topRight',
           })
+          this.closeModal()
         }
       })
   }
