@@ -21,6 +21,7 @@ import {
   cilContact,
   cilMoney,
   cilCalendar,
+  cilSatelite,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -272,6 +273,19 @@ const _nav = [
         component: CNavItem,
         name: 'Thêm Nhân Viên',
         to: '/add-staff',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Dự Án',
+    to: '/project',
+    icon: <CIcon icon={cilSatelite} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Danh sách dự án',
+        to: '/project',
       },
     ],
   },
