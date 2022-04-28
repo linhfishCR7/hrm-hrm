@@ -133,28 +133,15 @@ class SalaryStaff extends Component {
   }
   // Open modal //
   openModal = (item) => {
-    this.fetchDeparmentAPI()
-    axios
-      .get('/hrm/staffs/' + item.id + '/', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const staffs = res.data
-
-        this.setState({
-          modalIsOpen: true,
-          id: staffs.id,
-          gender: staffs.gender,
-          first_name: staffs.first_name,
-          last_name: staffs.last_name,
-          email: staffs.email,
-        })
-      })
-      .catch((error) => console.log(error))
+    this.setState({
+      modalIsOpen: true,
+      id: item.id,
+      date: item.date,
+      other_support: item.other_support,
+      other: item.other,
+      note: item.note,
+      staff: staff_id,
+    })
   }
   openDeleteModal = (item) => {
     this.setState({
@@ -173,6 +160,7 @@ class SalaryStaff extends Component {
   // //
 
   closeModal = () => {
+    this.fetchSalaryCurrentAPI()
     this.setState({
       modalIsOpen: false,
     })
@@ -214,9 +202,7 @@ class SalaryStaff extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let salaries = this.state.salaries
-        salaries = [newItem, ...salaries]
-        this.setState({ salaries: salaries })
+        this.fetchSalaryCurrentAPI()
         this.closeAddSalaryModal()
         openNotificationWithIcon({
           type: 'success',
@@ -224,9 +210,6 @@ class SalaryStaff extends Component {
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -250,15 +233,14 @@ class SalaryStaff extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      gender: this.state.gender,
-      is_active: this.state.is_active,
-      marital_status: this.state.marital_status,
-      number_of_children: this.state.number_of_children,
-      identity_card: this.state.identity_card,
-      issuance_date: this.state.issuance_date,
+      date: this.state.date,
+      other_support: this.state.other_support,
+      other: this.state.other,
+      note: this.state.note,
+      staff: staff_id,
     }
     await axios
-      .put('/hrm/staffs/' + this.state.id + '/', newUpdate, {
+      .put('/hrm/salary/' + this.state.id + '/', newUpdate, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -266,40 +248,21 @@ class SalaryStaff extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          staffs: prevState.staffs.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  // TODO autoload
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchSalaryCurrentAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
+        this.closeModal()
       })
       .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'error',
+          message: error,
+          description: '',
+          placement: 'topRight',
         }),
       )
   }
@@ -527,14 +490,7 @@ class SalaryStaff extends Component {
             />
             {/* <Column title="Ngày Tạo" dataIndex="date" key="date" /> */}
             <Column title="Mã Nhân Viên" dataIndex="staff_data" key="staff_data" />
-            <Column
-              title="Tên Nhân Viên"
-              dataIndex="user_fullname"
-              key="user_fullname"
-              filters={this.state.staffs}
-              onFilter={(value, record) => record.user_fullname.startsWith(value)}
-              filterSearch={true}
-            />
+            <Column title="Tên Nhân Viên" dataIndex="user_fullname" key="user_fullname" />
             <Column title="Lương Cơ Bản" dataIndex="basic_salary_data" key="basic_salary_data" />
             <Column title="Phụ Cấp" dataIndex="extra_data" key="extra_data" />
             <Column title="Hỗ Trợ Khác" dataIndex="other_support_data" key="other_support_data" />
@@ -545,7 +501,7 @@ class SalaryStaff extends Component {
               key={this.state.salaries}
               render={(text, record) => (
                 <Space size="middle">
-                  <CTooltip content="Edit data" placement="top">
+                  {/* <CTooltip content="Edit data" placement="top">
                     <CButton
                       color="warning"
                       style={{ marginRight: '10px' }}
@@ -554,7 +510,7 @@ class SalaryStaff extends Component {
                     >
                       <EditOutlined />
                     </CButton>
-                  </CTooltip>
+                  </CTooltip> */}
                   <CTooltip content="Remove data" placement="top">
                     <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                       {/* <CIcon icon={cilDelete} /> */}
@@ -701,6 +657,100 @@ class SalaryStaff extends Component {
                 </CButton>
                 <CButton color="info" type="submit">
                   LƯU
+                </CButton>
+              </CModalFooter>
+            </CForm>{' '}
+          </CModalBody>
+        </CModal>
+
+        {/* Update */}
+        <CModal
+          visible={this.state.modalIsOpen}
+          onClose={this.closeModal}
+          size="lg"
+          scrollable={true}
+        >
+          <CModalHeader>
+            <CModalTitle style={{ textTransform: 'uppercase' }}>
+              CẬP NHẬT PHIẾU LƯƠNG - NHÂN VIÊN{' '}
+              <span style={{ textTransform: 'uppercase' }}>{staff_name}</span>
+            </CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm onSubmit={this.handleEditSubmit}>
+              <CContainer>
+                <CRow className="mb-3">
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Ngày</CFormLabel>
+                    <CFormInput
+                      type="date"
+                      placeholder="Ngày"
+                      autoComplete="date"
+                      name="date"
+                      value={this.state.date}
+                      onChange={this.handleInputChange}
+                      required
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Ngày nhập phiếu lương
+                    </CFormText>
+                  </CCol>
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Hỗ Trợ Khác</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      placeholder="Hỗ Trợ Khác"
+                      autoComplete="other_support"
+                      name="other_support"
+                      value={this.state.other_support}
+                      onChange={this.handleInputChange}
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Hỗ Trợ Khác
+                    </CFormText>
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Khác</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      placeholder="Khác"
+                      autoComplete="other"
+                      name="other"
+                      value={this.state.other}
+                      onChange={this.handleInputChange}
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Ngày nhập phiếu lương
+                    </CFormText>
+                  </CCol>
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="Ghi Chú"
+                      autoComplete="note"
+                      name="note"
+                      onChange={this.handleInputChange}
+                      value={this.state.note}
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Ghi chú
+                    </CFormText>
+                  </CCol>
+                </CRow>
+              </CContainer>
+              <CModalFooter>
+                <CButton color="secondary" onClick={this.closeModal}>
+                  Close
+                </CButton>
+                <CButton color="primary" type="submit">
+                  Save changes
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

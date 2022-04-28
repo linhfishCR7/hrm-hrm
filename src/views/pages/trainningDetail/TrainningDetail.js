@@ -48,7 +48,6 @@ class TrainningDetail extends Component {
       amount: 0,
       note: '',
       trainning_requirement: '',
-      date: null,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -64,10 +63,7 @@ class TrainningDetail extends Component {
         })
       })
       .catch((error) => console.log(error))
-    this.setState({
-      modalAddIsOpen: true,
-      staff: staff_id,
-    })
+
     API({
       REGISTER_URL: '/hrm/trainning-requirement-detail/?no_pagination=true&staff__id=' + staff_id,
       ACTION: 'GET',
