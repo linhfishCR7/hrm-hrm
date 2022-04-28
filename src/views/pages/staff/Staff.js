@@ -564,13 +564,13 @@ class Staff extends Component {
               : elm,
           ),
         }))
-        this.closeModal()
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
+        this.closeModal()
         this.fetchStaffAPI()
       })
       .catch((error) =>
@@ -792,7 +792,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Chấm Công" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/timekeeping" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Chấm Công
@@ -810,7 +810,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Tiền Lương" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/salary" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Tiền Lương
@@ -819,7 +819,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Điều Chỉnh Lương" placement="top">
-                <Link to={'3'}>
+                <Link to="/staff/up-salary" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Điều Chỉnh Lương
@@ -837,7 +837,7 @@ class Staff extends Component {
                 </Link>
               </CTooltip>
               <CTooltip content="Đào Tạo" placement="top">
-                <Link to={'#'}>
+                <Link to="/staff/trainning" target="_blank">
                   <div className="d-grid mb-3">
                     <CButton color="info" style={{ marginRight: '10px' }}>
                       {/* <CIcon icon={cilInfo} /> */}Đào Tạo

@@ -83,6 +83,14 @@ const Bonus = React.lazy(() => import('./views/pages/bonus/Bonus'))
 const Promotion = React.lazy(() => import('./views/pages/promotion/Promotion'))
 const Contract = React.lazy(() => import('./views/pages/contract/Contract'))
 const DayOffYear = React.lazy(() => import('./views/pages/dayOffYear/DayOffYear'))
+const UpSalary = React.lazy(() => import('./views/pages/upSalary/UpSalary'))
+const Trainning = React.lazy(() => import('./views/pages/trainning/Trainning'))
+const Department = React.lazy(() => import('./views/pages/department/Department'))
+const SalaryStaff = React.lazy(() => import('./views/pages/salary/SalaryStaff'))
+const TrainningDetail = React.lazy(() => import('./views/pages/trainningDetail/TrainningDetail'))
+const TimeKeeping = React.lazy(() => import('./views/pages/timeKeeping/TimeKeeping'))
+const Project = React.lazy(() => import('./views/pages/project/Project'))
+const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffProject'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -123,6 +131,14 @@ const routes = [
   { path: '/staff/promotion', name: 'Thăng Tiến', element: Promotion },
   { path: '/staff/contract', name: 'Hợp Đồng Lao Động', element: Contract },
   { path: '/staff/day-off-year', name: 'Nghỉ Phép', element: DayOffYear },
+  { path: '/staff/up-salary', name: 'Xét Tăng Lương', element: UpSalary },
+  { path: '/trainning', name: 'Chương Trình Đào Tạo', element: Trainning },
+  { path: '/department', name: 'Bộ Phận', element: Department },
+  { path: '/staff/salary', name: 'Tiền Lương', element: SalaryStaff },
+  { path: '/staff/trainning', name: 'Chương Trình Đào Tạo', element: TrainningDetail },
+  { path: '/staff/timekeeping', name: 'Chấm Công', element: TimeKeeping },
+  { path: '/project', name: 'Dự Án', element: Project },
+  { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
 
   // #################################################################
 

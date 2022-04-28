@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Space, Divider } from 'antd'
+import { Table, Space, Divider, Input } from 'antd'
 import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
@@ -28,27 +28,26 @@ import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
+const { TextArea } = Input
 
 const { Column, ColumnGroup } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
-class Degree extends Component {
+class TrainningDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      degree: [],
-      degreeType: [{}],
+      trainningDetail: [],
+      trainning: [{}],
       modalIsOpen: false,
       modalDeleteIsOpen: false,
       id: '',
-      name: '',
       loading: true,
-      number: '',
-      place: '',
-      attach: '',
-      type_data: '',
       date: null,
+      amount: 0,
+      note: '',
+      trainning_requirement: '',
     }
 
     this.openModal = this.openModal.bind(this)
@@ -56,26 +55,23 @@ class Degree extends Component {
   }
 
   componentDidMount() {
-    API({ REGISTER_URL: '/hrm/degree-types/?no_pagination=true', ACTION: 'GET' })
+    API({ REGISTER_URL: '/hrm/trainning-requirement/?no_pagination=true', ACTION: 'GET' })
       .then((res) => {
-        const degreeType = res.data
+        const trainning = res.data
         this.setState({
-          degreeType: degreeType,
+          trainning: trainning,
         })
       })
       .catch((error) => console.log(error))
-    this.setState({
-      modalAddIsOpen: true,
-      staff: staff_id,
-    })
+
     API({
-      REGISTER_URL: '/hrm/degree/?no_pagination=true&staff__id=' + staff_id,
+      REGISTER_URL: '/hrm/trainning-requirement-detail/?no_pagination=true&staff__id=' + staff_id,
       ACTION: 'GET',
     })
       .then((res) => {
-        const degree = res.data
+        const trainningDetail = res.data
         this.setState({
-          degree: degree,
+          trainningDetail: trainningDetail,
           loading: false,
         })
       })
@@ -93,23 +89,21 @@ class Degree extends Component {
   }
   openModal = (item) => {
     console.log(item.type)
-    API({ REGISTER_URL: '/hrm/degree-types/?no_pagination=true', ACTION: 'GET' })
+    API({ REGISTER_URL: '/hrm/trainning-requirement/?no_pagination=true', ACTION: 'GET' })
       .then((res) => {
-        const degreeType = res.data
+        const trainning = res.data
         this.setState({
-          degreeType: degreeType,
+          trainning: trainning,
         })
       })
       .catch((error) => console.log(error))
     this.setState({
       modalIsOpen: true,
       id: item.id,
-      number: item.number,
-      name: item.name,
       date: item.date,
-      place: item.place,
-      attach: item.attach,
-      type_data: item.type_data,
+      amount: item.amount,
+      note: item.note,
+      trainning_requirement: item.id_trainning_requirement,
       staff: staff_id,
     })
   }
@@ -146,10 +140,13 @@ class Degree extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    API({ REGISTER_URL: '/hrm/degree/' + this.state.id + '/', ACTION: 'DELETE' })
+    API({
+      REGISTER_URL: '/hrm/trainning-requirement-detail/' + this.state.id + '/',
+      ACTION: 'DELETE',
+    })
       .then((res) => {
         this.setState((prevState) => ({
-          degree: prevState.degree.filter((el) => el.id !== this.state.id),
+          trainningDetail: prevState.trainningDetail.filter((el) => el.id !== this.state.id),
         }))
         openNotificationWithIcon({
           type: 'success',
@@ -173,35 +170,38 @@ class Degree extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      number: this.state.number,
       date: this.state.date,
-      place: this.state.place,
-      attach: this.state.attach,
-      type: this.state.type_data,
-      name: this.state.name,
+      amount: this.state.amount,
+      note: this.state.note,
+      trainning_requirement: this.state.trainning_requirement,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/degree/' + this.state.id + '/',
+      REGISTER_URL: '/hrm/trainning-requirement-detail/' + this.state.id + '/',
       ACTION: 'PUT',
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          degree: prevState.degree.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  number: this.state.number,
-                  name: this.state.name,
-                  place: this.state.place,
-                  attach: this.state.attach,
-                  type_data: this.state.type_data,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL:
+            '/hrm/trainning-requirement-detail/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const trainningDetail = res.data
+            this.setState({
+              trainningDetail: trainningDetail,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -235,23 +235,21 @@ class Degree extends Component {
     event.preventDefault()
 
     const newData = {
-      number: this.state.number,
-      name: this.state.name,
       date: this.state.date,
-      place: this.state.place,
-      attach: this.state.attach,
-      type: this.state.type_data,
+      amount: this.state.amount,
+      note: this.state.note,
+      trainning_requirement: this.state.trainning_requirement,
       staff: staff_id,
     }
     API({
-      REGISTER_URL: '/hrm/degree/',
+      REGISTER_URL: '/hrm/trainning-requirement-detail/',
       ACTION: 'POST',
       DATA: newData,
     })
       .then((res) => {
-        let degree = this.state.degree
-        degree = [newData, ...degree]
-        this.setState({ degree: degree })
+        let trainningDetail = this.state.trainningDetail
+        trainningDetail = [newData, ...trainningDetail]
+        this.setState({ trainningDetail: trainningDetail })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
@@ -285,17 +283,17 @@ class Degree extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Bằng Cấp</h2>
+        <h2>{staff_name} - Đào Tạo</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           <CContainer>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Số Bằng Cấp</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Ngày Đào Tạo</CFormLabel>
                 <CFormInput
-                  type="text"
-                  placeholder="Số Bằng Cấp"
-                  autoComplete="number"
-                  name="number"
+                  type="date"
+                  placeholder="Ngày Đào Tạo"
+                  autoComplete="date"
+                  name="date"
                   onChange={this.handleInputChange}
                   required
                   aria-describedby="exampleFormControlInputHelpInline"
@@ -305,89 +303,55 @@ class Degree extends Component {
                     </CFormText> */}
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Số Lượng</CFormLabel>
                 <CFormInput
-                  type="text"
-                  placeholder="Tên Bằng Cấp"
-                  autoComplete="name"
-                  name="name"
+                  type="number"
+                  placeholder="Số Lượng"
+                  autoComplete="amount"
+                  name="amount"
                   onChange={this.handleInputChange}
                   required
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên Bằng Cấp
-                </CFormText>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Cấp Ngày</CFormLabel>
-                <CFormInput
-                  type="date"
-                  placeholder="Cấp Ngày"
-                  autoComplete="date"
-                  name="date"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Ngày cấp Bằng Cấp
-                </CFormText>
-              </CCol>
-
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Nơi Cấp</CFormLabel>
-
-                <CFormInput
-                  type="text"
-                  placeholder="Nơi Cấp"
-                  autoComplete="place"
-                  name="place"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập nơi cấp Bằng Cấp
-                </CFormText>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Đính Kèm</CFormLabel>
-                <CFormInput
-                  type="text"
-                  placeholder="Đính Kèm"
-                  autoComplete="attach"
-                  name="attach"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập đính kèm nếu có
+                  Vui lòng nhập số lượng
                 </CFormText>
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Loại Bằng Cấp</CFormLabel>
-
+                <CFormLabel htmlFor="exampleFormControlInput1">Chương Trình Đào Tạo</CFormLabel>
                 <CFormSelect
-                  name="type_data"
-                  aria-label="Vui lòng chọn loại Bằng Cấp"
+                  name="trainning_requirement"
+                  aria-label="Vui lòng chọn chương trình đào tạo"
                   onChange={this.handleInputChange}
                 >
                   <option key="0" value="">
-                    Chọn loại Bằng Cấp
+                    Chọn chương trình đào tạo
                   </option>
-                  {this.state.degreeType.map((item) => (
+                  {this.state.trainning.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.name}
+                      {item.date_requirement} + {item.course_name}
                     </option>
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn loại Bằng Cấp!
+                  Vui lòng chọn chương trình đào tạo!
+                </CFormText>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CCol>
+                <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
+                <TextArea
+                  rows={8}
+                  type="text"
+                  placeholder="Ghi Chú"
+                  autoComplete="note"
+                  name="note"
+                  onChange={this.handleInputChange}
+                  aria-describedby="exampleFormControlInputHelpInline"
+                />{' '}
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Nhập nếu có ghi chú
                 </CFormText>
               </CCol>
             </CRow>
@@ -401,15 +365,13 @@ class Degree extends Component {
           </CContainer>
         </CForm>{' '}
         <Divider />
-        <Table dataSource={this.state.degree} bordered>
-          <Column title="Số" dataIndex="number" key="number" />
-          <Column title="Tên Bằng Cấp" dataIndex="name" key="name" />
-          <Column title="Cấp Ngày" dataIndex="date" key="date" />
-          <Column title="Nơi Cấp" dataIndex="place" key="place" />
-          <Column title="Đính Kèm" dataIndex="attach" key="attach" />
+        <Table dataSource={this.state.trainningDetail} bordered>
+          <Column title="Ngày Đào Tạo" dataIndex="date" key="date" />
+          <Column title="Số Lượng" dataIndex="amount" key="amount" />
+          <Column title="Ghi Chú" dataIndex="note" key="note" />
           <Column
             title="Hành động"
-            key={this.state.degree}
+            key={this.state.trainningDetail}
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Cập Nhật Dự Liệu" placement="top">
@@ -440,13 +402,13 @@ class Degree extends Component {
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Số Bằng Cấp</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Ngày Đào Tạo</CFormLabel>
                     <CFormInput
-                      type="text"
-                      placeholder="Số Bằng Cấp"
-                      autoComplete="number"
-                      name="number"
-                      value={this.state.number}
+                      type="date"
+                      placeholder="Ngày Đào Tạo"
+                      autoComplete="date"
+                      name="date"
+                      value={this.state.date}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
@@ -456,94 +418,59 @@ class Degree extends Component {
                     </CFormText> */}
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Số Lượng</CFormLabel>
                     <CFormInput
-                      type="text"
-                      placeholder="Tên Bằng Cấp"
-                      autoComplete="name"
-                      name="name"
-                      value={this.state.name}
+                      type="number"
+                      placeholder="Số Lượng"
+                      autoComplete="amount"
+                      name="amount"
+                      value={this.state.amount}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên Bằng Cấp
-                    </CFormText>
-                  </CCol>
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Cấp Ngày</CFormLabel>
-                    <CFormInput
-                      type="date"
-                      placeholder="Cấp Ngày"
-                      autoComplete="date"
-                      name="date"
-                      value={this.state.date}
-                      onChange={this.handleInputChange}
-                      required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày cấp Bằng Cấp
-                    </CFormText>
-                  </CCol>
-
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Nơi Cấp</CFormLabel>
-
-                    <CFormInput
-                      type="text"
-                      placeholder="Nơi Cấp"
-                      autoComplete="place"
-                      name="place"
-                      value={this.state.place}
-                      onChange={this.handleInputChange}
-                      required
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập nơi cấp Bằng Cấp
-                    </CFormText>
-                  </CCol>
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Đính Kèm</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="Đính Kèm"
-                      autoComplete="attach"
-                      name="attach"
-                      value={this.state.attach}
-                      onChange={this.handleInputChange}
-                      aria-describedby="exampleFormControlInputHelpInline"
-                    />
-                    <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập đính kèm nếu có
+                      Vui lòng nhập số lượng
                     </CFormText>
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Loại Bằng Cấp</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Chương Trình Đào Tạo</CFormLabel>
 
                     <CFormSelect
-                      value={this.state.type_data}
-                      name="type_data"
-                      aria-label="Vui lòng chọn loại Bằng Cấp"
+                      name="trainning_requirement"
+                      aria-label="Vui lòng chọn chương trình đào tạo"
                       onChange={this.handleInputChange}
+                      value={this.state.trainning_requirement}
                     >
                       <option key="0" value="">
-                        Chọn loại Bằng Cấp
+                        Chọn chương trình đào tạo
                       </option>
-                      {this.state.degreeType.map((item) => (
+                      {this.state.trainning.map((item) => (
                         <option key={item.id} value={item.id}>
-                          {item.name}
+                          {item.date_requirement} {item.course_name}
                         </option>
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn loại Bằng Cấp!
+                      Vui lòng chọn chương trình đào tạo!
+                    </CFormText>
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
+                    <TextArea
+                      rows={8}
+                      type="text"
+                      placeholder="Ghi Chú"
+                      autoComplete="note"
+                      name="note"
+                      value={this.state.note}
+                      onChange={this.handleInputChange}
+                      aria-describedby="exampleFormControlInputHelpInline"
+                    />{' '}
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Nhập nếu có ghi chú
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -576,8 +503,8 @@ class Degree extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="degree_types"
-                  autoComplete="degree_types"
+                  placeholder="trainningDetail_types"
+                  autoComplete="trainningDetail_types"
                   name="id"
                   value={this.state.id}
                   onChange={this.handleInputChange}
@@ -600,4 +527,4 @@ class Degree extends Component {
   }
 }
 
-export default Degree
+export default TrainningDetail

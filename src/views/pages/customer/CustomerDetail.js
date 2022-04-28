@@ -41,36 +41,35 @@ import {
 import { TOKEN } from '../../../constants/Config'
 import { Link } from 'react-router-dom'
 
-import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+// import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle, cilMediaStepBackward } from '@coreui/icons'
+import { cilCircle, cilMediaStepBackward } from '@coreui/icons'
 
-const { Option } = Select
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
+// const { Option } = Select
+// const formItemLayout = {
+//   labelCol: {
+//     span: 6,
+//   },
+//   wrapperCol: {
+//     span: 14,
+//   },
+// }
 
-const normFile = (e) => {
-  console.log('Upload event:', e)
+// const normFile = (e) => {
+//   console.log('Upload event:', e)
 
-  if (Array.isArray(e)) {
-    console.log('Upload event1:', e)
-    return e
-  }
+//   if (Array.isArray(e)) {
+//     console.log('Upload event1:', e)
+//     return e
+//   }
 
-  return e && e.fileList
-}
+//   return e && e.fileList
+// }
 
 const CompanyDetail = () => {
   const { id } = useParams()
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
-  const [dataCompany, setdataCompany] = useState({})
   const [dataAdress, setDataAddress] = useState([])
 
   const fetchAPI = async () => {
@@ -86,7 +85,6 @@ const CompanyDetail = () => {
         const customers = res.data
         setData(customers)
         setDataAddress(customers.addresses[0])
-        setdataCompany(customers.company)
         setLoading(false)
       })
       .catch((error) => console.log(error))
@@ -107,7 +105,7 @@ const CompanyDetail = () => {
           <CContainer>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Thuộc Công Ty</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Tên Công Ty</CFormLabel>
 
                 <CFormInput
                   type="text"
@@ -116,7 +114,7 @@ const CompanyDetail = () => {
                   // text="Nhập đúng dịnh dạng email"
                   aria-describedby="exampleFormControlInputHelpInline"
                   name="company"
-                  value={dataCompany.name}
+                  value={data.company}
                 />
                 {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
                   Nhập đúng dịnh dạng SDT

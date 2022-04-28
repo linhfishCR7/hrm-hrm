@@ -43,7 +43,6 @@ class AddCustomer extends Component {
     super(props)
     this.state = {
       customers: [],
-      companies: [],
       loading: false,
       key: '',
       modalIsOpen: false,
@@ -71,23 +70,23 @@ class AddCustomer extends Component {
       ],
     }
   }
-  async componentDidMount() {
-    await axios
-      .get('/hrm/companies/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const companies = res.data
-        this.setState({
-          companies: companies,
-        })
-      })
-      .catch((error) => console.log(error))
-  }
+  // async componentDidMount() {
+  //   await axios
+  //     .get('/hrm/companies/?no_pagination=true', {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${TOKEN}`,
+  //       },
+  //       withCredentials: true,
+  //     })
+  //     .then((res) => {
+  //       const companies = res.data
+  //       this.setState({
+  //         companies: companies,
+  //       })
+  //     })
+  //     .catch((error) => console.log(error))
+  // }
 
   handleInputChange = (event) => {
     const target = event.target
@@ -142,7 +141,7 @@ class AddCustomer extends Component {
           },
         })
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
           message.error({
             content: error.response.data.message,
@@ -185,22 +184,17 @@ class AddCustomer extends Component {
             <CContainer>
               <CRow className="mb-3">
                 <CCol>
-                  <CFormLabel htmlFor="exampleFormControlInput1">Mã Công Ty</CFormLabel>
-                  <CFormSelect
-                    // value={this.state.company}
+                  <CFormLabel htmlFor="exampleFormControlInput1">Tên Công Ty</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    placeholder="Tên Công Ty"
+                    autoComplete="company"
                     name="company"
-                    aria-label="Please choose your company"
+                    // value={this.state.name}
                     onChange={this.handleInputChange}
-                  >
-                    <option key="0" value="">
-                      Chọn công ty
-                    </option>
-                    {this.state.companies.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </CFormSelect>
+                    required
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
                 </CCol>
                 <CCol>
                   <CFormLabel htmlFor="exampleFormControlInput1">Tên Khách Hàng</CFormLabel>

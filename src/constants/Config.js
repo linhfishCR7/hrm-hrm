@@ -3,3 +3,5 @@ export const USER_POOL_ID = 'ap-southeast-1_8Floj89lt'
 export const REGION = 'ap-southeast-1'
 export const CLIENT_ID = '3tg4c27ft0da820h919g1p3943'
 export const TOKEN = localStorage.getItem('token')
+export const COMPANY = localStorage.getItem('company')
+export const BRANCH = localStorage.getItem('branch')
