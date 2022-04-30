@@ -76,13 +76,13 @@ import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { TOKEN } from '../../constants/Config'
 import axios from '../../utils/axios'
 import Loading from '../../utils/loading'
+import { Divider } from 'antd'
 
 const { Meta } = Card
 
 const Dashboard = () => {
   let navigate = useNavigate()
-  const [staffs, setStaffs] = useState([])
-  const [loading, setLoading] = useState(true)
+
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser()
@@ -121,28 +121,12 @@ const Dashboard = () => {
       }
     })
   }
-  const fetchStaffAPI = async (event) => {
-    await axios
-      .get('/hrm/staffs/?no_pagination=true', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const staffs = res.data
-        setStaffs(staffs)
-        setLoading(false)
-      })
-      .catch((error) => console.log(error))
-  }
+
   const [status, setStatus] = useState(false)
   useEffect(() => {
     getSession().then(() => {
       setStatus(true)
     })
-    fetchStaffAPI()
   }, [])
   const user = Pool.getCurrentUser()
   useEffect(() => {
@@ -277,53 +261,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Loading loading={loading} />
       <WidgetsDropdown />
-      <CRow>
-        <CCol>
-          <h4 id="traffic" className="card-title mb-0">
-            Nhân Viên
-          </h4>
-        </CCol>
-      </CRow>
-      <CRow>
-        {staffs.map((item) => (
-          <CCol key={item.id} md={4} xl={3}>
-            <Card
-              key={item.id}
-              className="mb-3"
-              // style={{ width: 300 }}
-              //   cover={
-              //     <img
-              //       alt="example"
-              //       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              //     />
-              //   }
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-            >
-              <Meta
-                avatar={
-                  <Avatar
-                    src={
-                      item.user.image != null
-                        ? item.user.image.image_s3_url
-                        : 'https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png'
-                    }
-                  />
-                }
-                title={item.last_name + ' ' + item.first_name}
-                description={
-                  item.position_data !== 'Nhân Viên' ? <h6>Giám Đốc</h6> : item.position_data
-                }
-              />
-            </Card>
-          </CCol>
-        ))}
-      </CRow>
       {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>

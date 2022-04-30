@@ -471,6 +471,7 @@ class Staff extends Component {
       modalSettingIsOpen: false,
     })
   }
+
   handleEditSubmit = async (event) => {
     event.preventDefault()
     const newUpdate = {
@@ -938,7 +939,7 @@ class Staff extends Component {
         >
           <CModalHeader>
             <CModalTitle style={{ textTransform: 'uppercase' }}>
-              CẬP NHẬT THÔNG TIN NHÂN VIÊN:  {this.state.last_name + ' ' + this.state.first_name}{' '}
+              CẬP NHẬT THÔNG TIN NHÂN VIÊN: {this.state.last_name + ' ' + this.state.first_name}{' '}
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
