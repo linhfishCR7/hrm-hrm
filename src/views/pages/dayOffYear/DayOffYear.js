@@ -379,11 +379,6 @@ class DayOffYear extends Component {
                     </CButton>
                   </CTooltip>
                 )}
-                <CTooltip content="Xoá Dữ Liệu" placement="top">
-                  <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-                    <DeleteOutlined />
-                  </CButton>
-                </CTooltip>
                 <CTooltip content="Chi Tiết" placement="top">
                   <CButton color="info" onClick={() => this.openSettingModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
