@@ -79,14 +79,14 @@ class Project extends Component {
           customers: customers,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
     API({
       REGISTER_URL: '/hrm/projects/?no_pagination=true',
       ACTION: 'GET',
@@ -98,14 +98,14 @@ class Project extends Component {
           loadingSpin: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -177,14 +177,25 @@ class Project extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -466,7 +477,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên dự án!
+                  Tên dự án bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -481,7 +492,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập dịch vụ
+                  Dịch vụ bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -496,7 +507,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập số hợp đồng
+                  Số hợp đồng bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -513,7 +524,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày đăng ký!
+                  Ngày đăng ký bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -528,7 +539,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày bắt đầu
+                  Ngày bắt đầu bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -543,24 +554,24 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày kết thúc
+                  Ngày kết thúc dự án bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
             <CRow className="mb-3">
               <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Kích Cỡ Dự Án</CFormLabel>
+                <CFormLabel htmlFor="exampleFormControlInput1">Quy Mô Dự Án</CFormLabel>
                 <CFormInput
                   type="text"
-                  placeholder="Kích Cỡ Dự Án"
+                  placeholder="Quy Mô Dự Án"
                   autoComplete="size"
                   name="size"
                   onChange={this.handleInputChange}
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
-                {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày đăng ký!
-                </CFormText> */}
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Quy mô dự án có thể nhập hoặc không
+                </CFormText>
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
@@ -572,6 +583,9 @@ class Project extends Component {
                   onChange={this.handleInputChange}
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Ghi chú có thể nhập hoặc không
+                </CFormText>
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">File Đính Kèm</CFormLabel>
@@ -583,9 +597,9 @@ class Project extends Component {
                   onChange={this.handleInputChange}
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
-                {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày kết thúc
-                </CFormText> */}
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  File đính kèm có thể nhập hoặc không
+                </CFormText>
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Khách Hàng</CFormLabel>
@@ -606,7 +620,7 @@ class Project extends Component {
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn khách hàng!
+                  Khách hàng của dự án bắt buộc chọn
                 </CFormText>
               </CCol>
             </CRow>
@@ -623,7 +637,7 @@ class Project extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />{' '}
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập địa điểm!
+                  Địa điểm có thể nhập hoặc không
                 </CFormText>
               </CCol>
             </CRow>
@@ -640,7 +654,7 @@ class Project extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm tên dự án, mã dự án và ngày kí nhận"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -813,14 +827,14 @@ class Project extends Component {
                       type="text"
                       placeholder="Tên Dự Án"
                       autoComplete="name"
-                      value={this.state.name}
                       name="name"
+                      value={this.state.name}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên dự án!
+                      Tên dự án bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -829,14 +843,14 @@ class Project extends Component {
                       type="text"
                       placeholder="Dịch Vụ"
                       autoComplete="service"
-                      value={this.state.service}
                       name="service"
+                      value={this.state.service}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập dịch vụ
+                      Dịch vụ bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -846,13 +860,13 @@ class Project extends Component {
                       placeholder="Số Hợp Đồng"
                       autoComplete="contract_number"
                       name="contract_number"
+                      value={this.state.contract_number}
                       onChange={this.handleInputChange}
                       required
-                      value={this.state.contract_number}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập số hợp đồng
+                      Số hợp đồng bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -863,14 +877,14 @@ class Project extends Component {
                       type="date"
                       placeholder="Ngày Đăng Ký"
                       autoComplete="signing_date"
-                      name="signing_date"
                       value={this.state.signing_date}
+                      name="signing_date"
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập ngày đăng ký!
+                      Ngày đăng ký bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -886,7 +900,7 @@ class Project extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập ngày bắt đầu
+                      Ngày bắt đầu bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -902,25 +916,25 @@ class Project extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập ngày kết thúc
+                      Ngày kết thúc dự án bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Kích Cỡ Dự Án</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Quy Mô Dự Án</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="Kích Cỡ Dự Án"
+                      placeholder="Quy Mô Dự Án"
                       autoComplete="size"
-                      value={this.state.size}
                       name="size"
+                      value={this.state.size}
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
-                    {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày đăng ký!
-                </CFormText> */}
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Quy mô dự án có thể nhập hoặc không
+                    </CFormText>
                   </CCol>
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
@@ -928,26 +942,29 @@ class Project extends Component {
                       type="text"
                       placeholder="Ghi Chú"
                       autoComplete="note"
-                      name="note"
                       value={this.state.note}
+                      name="note"
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Ghi chú có thể nhập hoặc không
+                    </CFormText>
                   </CCol>
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">File Đính Kèm</CFormLabel>
                     <CFormInput
                       type="text"
-                      value={this.state.file}
                       placeholder="File Đính Kèm"
                       autoComplete="file"
                       name="file"
+                      value={this.state.file}
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
-                    {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập ngày kết thúc
-                </CFormText> */}
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      File đính kèm có thể nhập hoặc không
+                    </CFormText>
                   </CCol>
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Khách Hàng</CFormLabel>
@@ -968,7 +985,7 @@ class Project extends Component {
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn khách hàng!
+                      Khách hàng của dự án bắt buộc chọn
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -980,13 +997,12 @@ class Project extends Component {
                       type="text"
                       placeholder="Địa Điểm"
                       autoComplete="location"
-                      value={this.state.location}
                       name="location"
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />{' '}
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập địa điểm!
+                      Địa điểm có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>

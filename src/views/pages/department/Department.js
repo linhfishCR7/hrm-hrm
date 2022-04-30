@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input } from 'antd'
-import { TOKEN, BRANCH, COMPANY } from '../../../constants/Config'
+import { Table, Space, message, Input } from 'antd'
+import { TOKEN, BRANCH } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
   CModal,
@@ -43,8 +44,8 @@ class Department extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
-    await axios
+  fetchAPI = async () => {
+    return await axios
       .get('/hrm/departments/?no_pagination=true&branch__id=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
@@ -60,6 +61,10 @@ class Department extends Component {
         })
       })
       .catch((error) => console.log(error))
+  }
+
+  componentDidMount() {
+    this.fetchAPI()
   }
 
   handleInputChange = (event) => {
@@ -89,46 +94,33 @@ class Department extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let departments = this.state.departments
-        departments = [newItem, ...departments]
-        this.setState({ departments: departments })
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: '',
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'success',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })
   }
+
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
   }
@@ -141,6 +133,7 @@ class Department extends Component {
       name: item.name,
     })
   }
+
   openDeleteModal = (item) => {
     this.setState({
       modalDeleteIsOpen: true,
@@ -163,7 +156,6 @@ class Department extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      //   id: this.state.id,
       department: this.state.department,
       name: this.state.name,
       branch: BRANCH,
@@ -178,40 +170,34 @@ class Department extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          departments: prevState.departments.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  department: this.state.department,
-                  name: this.state.name,
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
+        this.closeModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
@@ -229,29 +215,35 @@ class Department extends Component {
         this.setState((prevState) => ({
           departments: prevState.departments.filter((el) => el.id !== this.state.id),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
+
   handleSearch = async (event) => {
     let value = event.target.value
     const REGISTER_URL = '/hrm/departments/?no_pagination=true&search=' + value
@@ -312,9 +304,7 @@ class Department extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              //   defaultValue={search}
-              //   onSearch={}
-              placeholder="Search..."
+              placeholder="Tìm kiếm tên và mã bộ phận"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -334,7 +324,7 @@ class Department extends Component {
             key={this.state.departments}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -344,7 +334,7 @@ class Department extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -356,7 +346,7 @@ class Department extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle>UPDATE</CModalTitle>
+            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -390,10 +380,10 @@ class Department extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -401,7 +391,7 @@ class Department extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>

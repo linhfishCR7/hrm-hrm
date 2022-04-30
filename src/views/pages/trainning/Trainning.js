@@ -74,14 +74,14 @@ class Trainning extends Component {
           branchs: branchs,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
     API({
       REGISTER_URL:
         '/hrm/trainning-requirement/?no_pagination=true&staff__id=' +
@@ -97,14 +97,14 @@ class Trainning extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -173,14 +173,25 @@ class Trainning extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -206,28 +217,29 @@ class Trainning extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          trainning: prevState.trainning.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  date_requirement: this.state.date_requirement,
-                  content: this.state.content,
-                  course_name: this.state.course_name,
-                  organizational_units: this.state.organizational_units,
-                  time_organizational: this.state.time_organizational,
-                  estimated_cost: this.state.estimated_cost,
-                  place: this.state.place,
-                  sign_by: this.state.sign_by,
-                  unit_head: this.state.unit_head,
-                  approved_by: this.state.approved_by,
-                  unit: this.state.unit,
-                  branch: BRANCH,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL:
+            '/hrm/trainning-requirement/?no_pagination=true&staff__id=' +
+            staff_id +
+            '&branch__id=' +
+            BRANCH,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const trainning = res.data
+            this.setState({
+              trainning: trainning,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -235,9 +247,6 @@ class Trainning extends Component {
           placement: 'topRight',
         })
         this.closeModal()
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -283,18 +292,35 @@ class Trainning extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let trainning = this.state.trainning
-        trainning = [newData, ...trainning]
-        this.setState({ trainning: trainning })
+        API({
+          REGISTER_URL:
+            '/hrm/trainning-requirement/?no_pagination=true&staff__id=' +
+            staff_id +
+            '&branch__id=' +
+            BRANCH,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const trainning = res.data
+            this.setState({
+              trainning: trainning,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -319,7 +345,7 @@ class Trainning extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Chương Trình Đào Tạo</h2>
+        <h2>Chương Trình Đào Tạo</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           <CContainer>
             <CRow className="mb-3">

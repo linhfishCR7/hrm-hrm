@@ -473,12 +473,6 @@ class Staff extends Component {
   }
   handleEditSubmit = async (event) => {
     event.preventDefault()
-    // this.fetchDeparmentAPI()
-    // this.fetchNationalityAPI()
-    // this.fetchEthnicityAPI()
-    // this.fetchReligionAPI()
-    // this.fetchLiteracyAPI()
-    // this.fetchPositionAPI()
     const newUpdate = {
       gender: this.state.gender,
       is_active: this.state.is_active,
@@ -553,17 +547,8 @@ class Staff extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          staffs: prevState.staffs.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  // TODO autoload
-                }
-              : elm,
-          ),
-        }))
+        this.fetchStaffAPI()
+
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -571,16 +556,26 @@ class Staff extends Component {
           placement: 'topRight',
         })
         this.closeModal()
-        this.fetchStaffAPI()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Cập nhật dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
@@ -606,14 +601,25 @@ class Staff extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
   handleSearch = async (event) => {
     let value = event.target.value
@@ -641,7 +647,7 @@ class Staff extends Component {
         <h2>Nhân Viên</h2>
         <CRow>
           {/* <CCol md={4}>
-            <CTooltip content="Create data" placement="top">
+            <CTooltip content="Thêm Dữ Liệu" placement="top">
               <Link to="/add-customer">
                 <CButton color="primary">
                   <CIcon icon={cilPlus} />
@@ -651,7 +657,7 @@ class Staff extends Component {
           </CCol> */}
           <CCol md={8}>
             <Input.Search
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm họ tên, email và số điện thoại"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -703,7 +709,7 @@ class Staff extends Component {
             key={this.state.staff}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -713,7 +719,7 @@ class Staff extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -892,7 +898,7 @@ class Staff extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -1844,10 +1850,10 @@ class Staff extends Component {
               </Collapse>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input } from 'antd'
+import { Table, Space, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
   CModal,
@@ -21,11 +22,10 @@ import {
   CInputGroup,
   CInputGroupText,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 
 class EmploymentContractTypes extends Component {
   constructor(props) {
@@ -44,8 +44,8 @@ class EmploymentContractTypes extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  async componentDidMount() {
-    await axios
+  fetchAPI = async () => {
+    return await axios
       .get('/hrm/employment-contract-types/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
@@ -61,6 +61,10 @@ class EmploymentContractTypes extends Component {
         })
       })
       .catch((error) => console.log(error))
+  }
+
+  componentDidMount() {
+    this.fetchAPI()
   }
 
   handleInputChange = (event) => {
@@ -89,42 +93,28 @@ class EmploymentContractTypes extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let employmentContractTypes = this.state.employmentContractTypes
-        employmentContractTypes = [newItem, ...employmentContractTypes]
-        this.setState({ employmentContractTypes: employmentContractTypes })
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })
@@ -177,48 +167,39 @@ class EmploymentContractTypes extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          employmentContractTypes: prevState.employmentContractTypes.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  employment_contract_types: this.state.employment_contract_types,
-                  name: this.state.name,
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
+        this.closeModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
     event.preventDefault()
 
-    const Id = {
-      id: this.state.id,
-    }
     axios
       .delete('/hrm/employment-contract-types/' + this.state.id + '/', {
         headers: {
@@ -233,28 +214,33 @@ class EmploymentContractTypes extends Component {
             (el) => el.id !== this.state.id,
           ),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
   handleSearch = async (event) => {
     let value = event.target.value
@@ -316,7 +302,7 @@ class EmploymentContractTypes extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm tên và loại hợp đồng"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -334,7 +320,7 @@ class EmploymentContractTypes extends Component {
             key={this.state.employmentContractTypes}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -344,7 +330,7 @@ class EmploymentContractTypes extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -356,7 +342,7 @@ class EmploymentContractTypes extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle>UPDATE</CModalTitle>
+            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -390,10 +376,10 @@ class EmploymentContractTypes extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -401,7 +387,7 @@ class EmploymentContractTypes extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>

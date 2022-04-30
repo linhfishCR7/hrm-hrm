@@ -99,7 +99,7 @@ const Login = () => {
             setStatus(false)
             setLoad(false)
             navigate('/login')
-            setError('Your account has been suspended. Contact us for more details')
+            setError('Tại khoản đã bị khoá bởi Admin. Liên hệ Admin để biết thêm chi tiết')
             setVisible(true)
           } else if (results.data.is_staff === false) {
             user.signOut()
@@ -107,7 +107,7 @@ const Login = () => {
             setStatus(false)
             setLoad(false)
             navigate('/login')
-            setError('You do not have permission to access. Contact us for more details')
+            setError('Bạn không có quyền truy cập. Liên hệ Admin để biết thêm chi tiết')
             setVisible(true)
           } else {
             setLoad(false)
@@ -132,7 +132,7 @@ const Login = () => {
                   localStorage.removeItem('token')
                   setStatus(false)
                   setLoad(false)
-                  setError('You do not have permission to access this branch. Please choose again!')
+                  setError('Bạn không có quyền truy cập vào chi nhánh này. Vui lòng thử lại!')
                   setVisible(true)
                 }
               } else {
@@ -140,7 +140,7 @@ const Login = () => {
                 localStorage.removeItem('token')
                 setStatus(false)
                 setLoad(false)
-                setError('You do not have permission to access this company. Please choose again!')
+                setError('Bạn không có quyền truy cập vào công ty này. Vui lòng thử lại!')
                 setVisible(true)
               }
             })

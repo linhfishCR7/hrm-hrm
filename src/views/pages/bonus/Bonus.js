@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Space, Divider, Input, InputNumber } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { Table, Space, Divider } from 'antd'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -21,16 +21,14 @@ import {
   CContainer,
   CFormLabel,
   CFormText,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
-const { TextArea } = Input
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -65,14 +63,14 @@ class Bonus extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -134,14 +132,25 @@ class Bonus extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -160,20 +169,24 @@ class Bonus extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          bonus: prevState.bonus.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  amount_data: this.state.amount_data,
-                  date: this.state.date,
-                  reason: this.state.reason,
-                  note: this.state.note,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/bonuses/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const bonus = res.data
+            this.setState({
+              bonus: bonus,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -219,18 +232,30 @@ class Bonus extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let bonus = this.state.bonus
-        bonus = [newData, ...bonus]
-        this.setState({ bonus: bonus })
+        API({
+          REGISTER_URL: '/hrm/bonuses/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const bonus = res.data
+            this.setState({
+              bonus: bonus,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {

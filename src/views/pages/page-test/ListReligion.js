@@ -183,7 +183,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
           </CRow>
         ) : (
           <>
-            <CTooltip content="Create data" placement="top">
+            <CTooltip content="Thêm Dữ Liệu" placement="top">
               <CButton color="primary" onClick={() => setVisible(true)} className="mb-3">
                 <CIcon icon={cilPlus} />
               </CButton>
@@ -197,7 +197,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                 key="action"
                 render={(text, record) => (
                   <Space size="middle">
-                    <CTooltip content="Edit data" placement="top">
+                    <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                       <CButton
                         color="warning"
                         style={{ marginRight: '10px' }}
@@ -207,7 +207,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                         <CIcon icon={cilPencil} />
                       </CButton>
                     </CTooltip>
-                    <CTooltip content="Remove data" placement="top">
+                    <CTooltip content="Xoá Dữ Liệu" placement="top">
                       <CButton color="danger" onClick={onDelete} key={text.id}>
                         <CIcon icon={cilDelete} />
                       </CButton>
@@ -232,7 +232,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                     <CTableDataCell>{religion.name}</CTableDataCell>
                     <CTableDataCell>
                       <CTableDataCell>
-                        <CTooltip content="Edit data" placement="top">
+                        <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                           <CButton
                             color="warning"
                             onClick={() => setVisible(true)}
@@ -243,7 +243,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                         </CTooltip>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CTooltip content="Remove data" placement="top">
+                        <CTooltip content="Xoá Dữ Liệu" placement="top">
                           <CButton color="danger" onClick={() => setVisible(true)}>
                             <CIcon icon={cilDelete} />
                           </CButton>
@@ -294,7 +294,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                     Close
                   </CButton>
                   <CButton color="primary" type="submit">
-                    Save changes
+                    Cập Nhật
                   </CButton>
                 </CCol>
               </CRow> */}
@@ -303,7 +303,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                   Close
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -313,7 +313,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
               Close
             </CButton>
             <CButton color="primary" typr="submit">
-              Save changes
+              Cập Nhật
             </CButton>
           </CModalFooter> */}
         </CModal>
@@ -369,7 +369,7 @@ export const ListReligion = ({ religions, loading, data = '', status, fetchapi }
                   Close
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

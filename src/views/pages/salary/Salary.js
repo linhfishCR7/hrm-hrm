@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Space, message, Input, Card } from 'antd'
+import { Table, Space, Input, Card } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 // import { Link } from 'react-router-dom'
@@ -95,7 +95,6 @@ class Salary extends Component {
         const staffss = res.data
         const data = []
         staffss.map((item) =>
-          // this.setState({
           data.push({
             text: item.first_name + ' ' + item.last_name,
             value: item.first_name + ' ' + item.last_name,
@@ -319,14 +318,25 @@ class Salary extends Component {
         })
         this.closeModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: error,
-          description: '',
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
@@ -353,14 +363,25 @@ class Salary extends Component {
         this.closeDeleteModal()
         this.fetchSalaryCurrentAPI()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleActive = (event) => {
@@ -485,10 +506,6 @@ class Salary extends Component {
               placement: 'topRight',
             })
           })
-
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -543,7 +560,7 @@ class Salary extends Component {
           <CRow>
             <CCol md={8}>
               <Input.Search
-                placeholder="Search..."
+                placeholder="Tìm kiếm họ tên nhân viên"
                 onChange={(event) => this.handleSearchCurrent(event)}
                 className="mb-3"
               />
@@ -631,7 +648,7 @@ class Salary extends Component {
         <>
           <CRow>
             {/* <CCol md={4}>
-            <CTooltip content="Create data" placement="top">
+            <CTooltip content="Thêm Dữ Liệu" placement="top">
               <Link to="/add-customer">
                 <CButton color="primary">
                   <CIcon icon={cilPlus} />
@@ -641,7 +658,7 @@ class Salary extends Component {
           </CCol> */}
             <CCol md={8}>
               <Input.Search
-                placeholder="Search..."
+                placeholder="Tìm kiếm"
                 onChange={(event) => this.handleSearchPast(event)}
                 className="mb-3"
               />
@@ -718,7 +735,7 @@ class Salary extends Component {
               key={this.state.salaries}
               render={(text, record) => (
                 <Space size="middle">
-                  {/* <CTooltip content="Edit data" placement="top">
+                  {/* <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                     <CButton
                       color="warning"
                       style={{ marginRight: '10px' }}
@@ -728,7 +745,7 @@ class Salary extends Component {
                       <EditOutlined />
                     </CButton>
                   </CTooltip> */}
-                  <CTooltip content="Remove data" placement="top">
+                  <CTooltip content="Xoá Dữ Liệu" placement="top">
                     <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                       {/* <CIcon icon={cilDelete} /> */}
                       <DeleteOutlined />
@@ -762,7 +779,7 @@ class Salary extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -890,7 +907,7 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Ngày nhập phiếu lương bắt buộc có
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -904,23 +921,23 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Hỗ Trợ Khác
+                      Hỗ trợ khác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Khác</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Khoản Khác</CFormLabel>
                     <CFormInput
                       type="number"
-                      placeholder="Khác"
+                      placeholder="Khoản Khác"
                       autoComplete="other"
                       name="other"
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Khoản khác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -934,7 +951,7 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ghi chú
+                      Ghi chú có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -980,7 +997,7 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Ngày nhập phiếu lương bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -995,16 +1012,16 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Hỗ Trợ Khác
+                      Hỗ trợ khác có thể có hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Khác</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Khoản Khác</CFormLabel>
                     <CFormInput
                       type="number"
-                      placeholder="Khác"
+                      placeholder="Khoản Khác"
                       autoComplete="other"
                       name="other"
                       value={this.state.other}
@@ -1012,7 +1029,7 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Khoản khác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -1027,17 +1044,17 @@ class Salary extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ghi chú
+                      Ghi chú có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

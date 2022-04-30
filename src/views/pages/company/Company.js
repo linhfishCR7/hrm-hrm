@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input, Upload } from 'antd'
+import { Table, Space, Button, Input, Upload } from 'antd'
 import { TOKEN } from '../../../constants/Config'
-import { EditOutlined, DeleteOutlined, UploadOutlined, InboxOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import Loading from '../../../utils/loading'
 import openNotificationWithIcon from '../../../utils/notification'
@@ -24,16 +24,14 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
   CFormLabel,
   CFormText,
   CImage,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons'
+import { cilPlus, cilCircle, cilInfo } from '@coreui/icons'
 import Modal from 'react-modal'
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 
 class Company extends Component {
   constructor(props) {
@@ -189,7 +187,6 @@ class Company extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      //   id: this.state.id,
       company: this.state.company,
       name: this.state.name,
       email: this.state.email,
@@ -198,9 +195,7 @@ class Company extends Component {
       fax: this.state.fax,
       website: this.state.website,
       logo: this.state.logo,
-      // logo_key: this.state.logo,
-      // name: this.state.name,
-      // name: this.state.name,
+
       addresses: [
         {
           address: this.state.address,
@@ -234,50 +229,58 @@ class Company extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          companies: prevState.companies.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  company: this.state.company,
-                  name: this.state.name,
-                  email: this.state.email,
-                  phone: this.state.phone,
-                  tax_code: this.state.tax_code,
-                  fax: this.state.fax,
-                  website: this.state.website,
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
+        API({
+          REGISTER_URL: '/hrm/companies/?no_pagination=true',
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const companies = res.data
+            this.setState({
+              companies: companies,
+              logo: res.data.logo,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: error,
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
           description: 'Cập nhật dữ liệu thành công!!!',
           placement: 'topRight',
         })
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
+        this.closeModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Cập nhật dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
     event.preventDefault()
 
-    const Id = {
-      id: this.state.id,
-    }
     API({ REGISTER_URL: '/hrm/companies/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
@@ -286,19 +289,30 @@ class Company extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công',
-          description: 'Xoá dữ liệu thành công',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'success',
-          message: 'Xoá dữ liệu không thành công',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
   handleSearch = async (event) => {
     let value = event.target.value
@@ -320,23 +334,23 @@ class Company extends Component {
         <h2> Công Ty</h2>
         <CRow>
           <CCol md={4}>
-            <CTooltip content="Create data" placement="top">
+            <CTooltip content="Thêm Dữ Liệu" placement="top">
               <Link to="/add-company">
                 <CButton color="primary">
-                  <CIcon icon={cilPlus} />
+                  <CIcon icon={cilPlus} /> Thêm Công Ty
                 </CButton>
               </Link>
             </CTooltip>
           </CCol>
           <CCol md={8}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm tên công ty, mã số công ty"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.companies} bordered scroll={{ y: 240 }}>
+        <Table dataSource={this.state.companies} bordered>
           <Column title="Mã" dataIndex="company" key="nationalty" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column title="Mã số thuế" dataIndex="tax_code" key="tax_code" />
@@ -348,23 +362,8 @@ class Company extends Component {
             title="Hành động"
             key={this.state.companies}
             render={(text, record) => (
-              // <Space size="middle">
-              //   <CTooltip content="Edit data" placement="top">
-              //     <Link to={'/company/' + record.id}>
-              //       <CButton color="warning" style={{ marginRight: '10px' }}>
-              //         <EditOutlined />
-              //       </CButton>
-              //     </Link>
-              //   </CTooltip>
-              //   <CTooltip content="Remove data" placement="top">
-              //     <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-              //       {/* <CIcon icon={cilDelete} /> */}
-              //       <DeleteOutlined />
-              //     </CButton>
-              //   </CTooltip>
-              // </Space>
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -374,7 +373,7 @@ class Company extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -393,7 +392,7 @@ class Company extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="xl">
           <CModalHeader>
-            <CModalTitle>UPDATE</CModalTitle>
+            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -864,10 +863,10 @@ class Company extends Component {
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -875,7 +874,7 @@ class Company extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>

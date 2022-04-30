@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -29,7 +29,7 @@ import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -82,14 +82,14 @@ class Certificate extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -160,19 +160,30 @@ class Certificate extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -196,24 +207,25 @@ class Certificate extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          certificate: prevState.certificate.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  number: this.state.number,
-                  name: this.state.name,
-                  level: this.state.level,
-                  expire: this.state.expire,
-                  place: this.state.place,
-                  note: this.state.note,
-                  attach: this.state.attach,
-                  type_data: this.state.type_data,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/certificate/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const certificate = res.data
+            this.setState({
+              certificate: certificate,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -264,18 +276,31 @@ class Certificate extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let certificate = this.state.certificate
-        certificate = [newData, ...certificate]
-        this.setState({ certificate: certificate })
+        API({
+          REGISTER_URL: '/hrm/certificate/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const certificate = res.data
+            this.setState({
+              certificate: certificate,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {

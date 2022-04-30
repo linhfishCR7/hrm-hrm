@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider, Input } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -30,7 +30,7 @@ import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
 const { TextArea } = Input
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -79,14 +79,14 @@ class Promotion extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -144,19 +144,30 @@ class Promotion extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -176,6 +187,25 @@ class Promotion extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
+        API({
+          REGISTER_URL: '/hrm/promotions/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const promotions = res.data
+            this.setState({
+              promotions: promotions,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -183,9 +213,6 @@ class Promotion extends Component {
           placement: 'topRight',
         })
         this.closeModal()
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -225,18 +252,31 @@ class Promotion extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let promotions = this.state.promotions
-        promotions = [newData, ...promotions]
-        this.setState({ promotions: promotions })
+        API({
+          REGISTER_URL: '/hrm/promotions/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const promotions = res.data
+            this.setState({
+              promotions: promotions,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -277,7 +317,7 @@ class Promotion extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Ngày thăng chức
+                  Ngày thăng chức bắt buộc chọn
                 </CFormText>
               </CCol>
               <CCol>
@@ -298,7 +338,7 @@ class Promotion extends Component {
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn chức vụ!
+                  Chức vụ bắt buộc chọn
                 </CFormText>
               </CCol>
               <CCol>
@@ -312,7 +352,7 @@ class Promotion extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập file nếu có
+                  File có thể nhập hoặc không
                 </CFormText>
               </CCol>
             </CRow>
@@ -329,7 +369,7 @@ class Promotion extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung
+                  Nội dung có thể nhập hoặc không
                 </CFormText>
               </CCol>
               <CCol>
@@ -344,7 +384,7 @@ class Promotion extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập ghi chú nếu có
+                  Ghi chú có thể nhập hoặc không
                 </CFormText>
               </CCol>
             </CRow>
@@ -409,7 +449,7 @@ class Promotion extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày thăng chức
+                      Ngày thăng chức bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -431,7 +471,7 @@ class Promotion extends Component {
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn chức vụ!
+                      Chức vụ bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -446,7 +486,7 @@ class Promotion extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập file nếu có
+                      File có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -464,7 +504,7 @@ class Promotion extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung
+                      Nội dung có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -482,7 +522,7 @@ class Promotion extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập ghi chú nếu có
+                      Ghi chú có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>

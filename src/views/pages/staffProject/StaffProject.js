@@ -63,14 +63,14 @@ class StaffProject extends Component {
           staffs: staffs,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
     API({
       REGISTER_URL: '/hrm/projects/?no_pagination=true',
       ACTION: 'GET',
@@ -81,14 +81,14 @@ class StaffProject extends Component {
           projects: projects,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
     API({
       REGISTER_URL: '/hrm/staff-project/?no_pagination=true',
       ACTION: 'GET',
@@ -100,14 +100,14 @@ class StaffProject extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -166,14 +166,25 @@ class StaffProject extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -316,6 +327,7 @@ class StaffProject extends Component {
                   name="staff"
                   aria-label="Chọn Nhân Viên"
                   onChange={this.handleInputChange}
+                  required
                 >
                   <option key="0" value="">
                     Chọn Nhân Viên
@@ -327,7 +339,7 @@ class StaffProject extends Component {
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn nhân viên!
+                  Nhân viên bắt buộc chọn
                 </CFormText>
               </CCol>
               <CCol>
@@ -336,6 +348,7 @@ class StaffProject extends Component {
                   name="project"
                   aria-label="Chịn Dự Án"
                   onChange={this.handleInputChange}
+                  required
                 >
                   <option key="0" value="">
                     Chọn Dự Án
@@ -347,7 +360,7 @@ class StaffProject extends Component {
                   ))}
                 </CFormSelect>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng chọn dự án!
+                  Dự án bắt buộc chọn
                 </CFormText>
               </CCol>
             </CRow>
@@ -364,7 +377,7 @@ class StaffProject extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm họ tên và tên dự án"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -414,6 +427,7 @@ class StaffProject extends Component {
                       aria-label="Chọn Nhân Viên"
                       value={this.state.staff}
                       onChange={this.handleInputChange}
+                      required
                     >
                       <option key="0" value="">
                         Chọn Nhân Viên
@@ -425,7 +439,7 @@ class StaffProject extends Component {
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn nhân viên!
+                      Nhân viên bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -435,6 +449,7 @@ class StaffProject extends Component {
                       aria-label="Chịn Dự Án"
                       value={this.state.project}
                       onChange={this.handleInputChange}
+                      required
                     >
                       <option key="0" value="">
                         Chọn Dự Án
@@ -446,7 +461,7 @@ class StaffProject extends Component {
                       ))}
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng chọn dự án!
+                      Dự án bắt buộc chọn
                     </CFormText>
                   </CCol>
                 </CRow>

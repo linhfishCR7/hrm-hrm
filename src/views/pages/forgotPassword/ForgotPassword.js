@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { USER_POOL_ID, REGION, CLIENT_ID } from '../../../constants/Config'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
   CButton,
@@ -35,9 +36,7 @@ const ForgotPassword = () => {
         userPoolWebClientId: CLIENT_ID,
       },
     })
-  } catch (error) {
-    console.log(error)
-  }
+  } catch (error) {}
 
   const user_logged = UserPool.getCurrentUser()
   useEffect(() => {
@@ -65,7 +64,7 @@ const ForgotPassword = () => {
     try {
       await Auth.forgotPassword(email)
       setCodeSent(true)
-      setSuccess('Please, get code in your email and use them for confirming')
+      setSuccess('Vui kiểm tra email đến lấy mã code')
     } catch (error) {
       setError(error.message || JSON.stringify(error))
       setIsSendingCode(false)

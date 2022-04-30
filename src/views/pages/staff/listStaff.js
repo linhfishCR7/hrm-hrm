@@ -542,14 +542,17 @@ class ListStaff extends Component {
     this.fetchKindOfWorkAPI()
   }
 
-  handleSearch = (event) => {
+  handleSearch = async (event) => {
     let value = event.target.value
-    API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true&search=' + value,
-      ACTION: 'GET',
-    }).then((res) => {
-      this.setState({ staffs: res.data })
+    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
+    const res = await axios.get(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      withCredentials: true,
     })
+    this.setState({ staffs: res.data })
   }
 
   handleGetStaffDetail = (item) => {
@@ -1061,7 +1064,7 @@ class ListStaff extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm họ tên, email và số điện thoại"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />

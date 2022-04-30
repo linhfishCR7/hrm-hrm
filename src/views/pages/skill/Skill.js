@@ -61,14 +61,14 @@ class Skill extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -128,14 +128,25 @@ class Skill extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -152,18 +163,25 @@ class Skill extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          skill: prevState.skill.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  name: this.state.number,
-                  type: this.state.type,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/skills/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const skill = res.data
+            this.setState({
+              skill: skill,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -207,18 +225,31 @@ class Skill extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let skill = this.state.skill
-        skill = [newData, ...skill]
-        this.setState({ skill: skill })
+        API({
+          REGISTER_URL: '/hrm/skills/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const skill = res.data
+            this.setState({
+              skill: skill,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -259,7 +290,7 @@ class Skill extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên kỹ năng!
+                  Tên kỹ năng bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -274,7 +305,7 @@ class Skill extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập loại kỹ năng
+                  Loại kỹ năng bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -336,7 +367,7 @@ class Skill extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên kỹ năng!
+                      Tên kỹ năng bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -352,7 +383,7 @@ class Skill extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập loại kỹ năng
+                      Loại kỹ năng bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>

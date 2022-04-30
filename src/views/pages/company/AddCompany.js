@@ -4,7 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import openNotificationWithIcon from '../../../utils/notification'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 
-import { message, Form, Select, Button, Upload, Card, Input } from 'antd'
+import { Form, Button, Upload, Card, Input } from 'antd'
 
 import {
   CRow,
@@ -15,12 +15,10 @@ import {
   CContainer,
   CImage,
 } from '@coreui/react'
-import { TOKEN } from '../../../constants/Config'
 import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
 
-const { Option } = Select
 const formItemLayout = {
   labelCol: {
     span: 6,
@@ -29,39 +27,6 @@ const formItemLayout = {
     span: 14,
   },
 }
-
-const normFile = (e) => {
-  console.log('Upload event:', e)
-
-  if (Array.isArray(e)) {
-    console.log('Upload event1:', e)
-    return e
-  }
-
-  return e && e.fileList
-}
-
-// const onFinish = (values) => {
-//   console.log('Received values of form: ', values)
-// }
-
-// function getBase64(img, callback) {
-//   const reader = new FileReader()
-//   reader.addEventListener('load', () => callback(reader.result))
-//   reader.readAsDataURL(img)
-// }
-
-// function beforeUpload(file) {
-//   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-//   if (!isJpgOrPng) {
-//     message.error('You can only upload JPG/PNG file!')
-//   }
-//   const isLt2M = file.size / 1024 / 1024 < 2
-//   if (!isLt2M) {
-//     message.error('Image must smaller than 2MB!')
-//   }
-//   return isJpgOrPng && isLt2M
-// }
 
 class AddCompany extends Component {
   constructor(props) {
@@ -111,22 +76,6 @@ class AddCompany extends Component {
       ],
     }
   }
-
-  // handleChange = (info) => {
-  //   if (info.file.status === 'uploading') {
-  //     this.setState({ loading: true })
-  //     return
-  //   }
-  //   if (info.file.status === 'done') {
-  //     // Get this url from response in real world.
-  //     getBase64(info.file.originFileObj, (imageUrl) =>
-  //       this.setState({
-  //         imageUrl,
-  //         loading: false,
-  //       }),
-  //     )
-  //   }
-  // }
 
   handleInputChange = (event) => {
     const target = event.target
@@ -179,11 +128,11 @@ class AddCompany extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
-          description: 'Thêm dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
           openNotificationWithIcon({
             type: 'error',
@@ -194,7 +143,7 @@ class AddCompany extends Component {
         } else {
           openNotificationWithIcon({
             type: 'error',
-            message: error,
+            message: 'Thêm dữ liệu không thành công!!!',
             description: error,
             placement: 'topRight',
           })

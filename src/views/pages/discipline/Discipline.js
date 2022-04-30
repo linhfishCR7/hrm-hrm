@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider, Input } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -21,7 +21,6 @@ import {
   CContainer,
   CFormLabel,
   CFormText,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
@@ -30,7 +29,7 @@ import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
 const { TextArea } = Input
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -67,14 +66,14 @@ class Discipline extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -138,14 +137,25 @@ class Discipline extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -166,22 +176,25 @@ class Discipline extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          discipline: prevState.discipline.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  content: this.state.content,
-                  date: this.state.date,
-                  expire: this.state.expire,
-                  attach: this.state.attach,
-                  note: this.state.note,
-                  form_of_discipline: this.state.form_of_discipline,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/discipline/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const discipline = res.data
+            this.setState({
+              discipline: discipline,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -229,18 +242,31 @@ class Discipline extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let discipline = this.state.discipline
-        discipline = [newData, ...discipline]
-        this.setState({ discipline: discipline })
+        API({
+          REGISTER_URL: '/hrm/discipline/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const discipline = res.data
+            this.setState({
+              discipline: discipline,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -281,7 +307,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày kỷ luật
+                  Ngày kỷ luật bắt buộc chọn
                 </CFormText>
               </CCol>
               <CCol>
@@ -296,7 +322,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày hết hạn kỷ luật
+                  Ngày hết hạn kỷ luật bắt buộc chọn
                 </CFormText>
               </CCol>
               <CCol>
@@ -312,7 +338,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập hình thức kỷ luật
+                  Hình thức kỷ luật bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -329,7 +355,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung
+                  Nội dung có thể nhập hoặc không
                 </CFormText>
               </CCol>
               <CCol>
@@ -343,7 +369,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung
+                  Đính kèm có thể nhập hoặc không
                 </CFormText>
               </CCol>
               <CCol>
@@ -357,7 +383,7 @@ class Discipline extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập ghi chú
+                  Ghi chú có thể nhập hoặc không
                 </CFormText>
               </CCol>
             </CRow>
@@ -427,7 +453,7 @@ class Discipline extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Chọn ngày kỷ luật
+                      Ngày kỷ luật bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -443,7 +469,7 @@ class Discipline extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Chọn ngày hết hạn kỷ luật
+                      Ngày hết hạn kỷ luật bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -460,7 +486,7 @@ class Discipline extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập hình thức kỷ luật
+                      Hình thức kỷ luật bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -478,7 +504,7 @@ class Discipline extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung
+                      Nội dung có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -487,13 +513,13 @@ class Discipline extends Component {
                       type="text"
                       placeholder="Đính Kèm"
                       autoComplete="attach"
-                      value={this.state.attach}
                       name="attach"
+                      value={this.state.attach}
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung
+                      Đính kèm có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -502,13 +528,13 @@ class Discipline extends Component {
                       type="text"
                       placeholder="Ghi Chú"
                       autoComplete="note"
-                      name="note"
                       value={this.state.note}
+                      name="note"
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập ghi chú
+                      Ghi chú có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>

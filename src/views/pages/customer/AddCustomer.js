@@ -1,24 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import {
-  Table,
-  message,
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Radio,
-  Slider,
-  Button,
-  Upload,
-  Rate,
-  Checkbox,
-  Row,
-  Col,
-  Card,
-  Input,
-} from 'antd'
+import { Card } from 'antd'
 
 import {
   CButton,
@@ -30,13 +13,13 @@ import {
   CContainer,
   CForm,
   CFormLabel,
-  CFormSelect,
   CFormText,
 } from '@coreui/react'
 import { TOKEN } from '../../../constants/Config'
-import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { cilCircle } from '@coreui/icons'
+import openNotificationWithIcon from '../../../utils/notification'
 
 class AddCustomer extends Component {
   constructor(props) {
@@ -70,23 +53,6 @@ class AddCustomer extends Component {
       ],
     }
   }
-  // async componentDidMount() {
-  //   await axios
-  //     .get('/hrm/companies/?no_pagination=true', {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${TOKEN}`,
-  //       },
-  //       withCredentials: true,
-  //     })
-  //     .then((res) => {
-  //       const companies = res.data
-  //       this.setState({
-  //         companies: companies,
-  //       })
-  //     })
-  //     .catch((error) => console.log(error))
-  // }
 
   handleInputChange = (event) => {
     const target = event.target
@@ -131,36 +97,27 @@ class AddCustomer extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 1,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })
@@ -179,7 +136,7 @@ class AddCustomer extends Component {
         <h2>Khách Hàng</h2>
         <Card title="Thêm Khách Hàng" bordered={false}>
           <CForm onSubmit={this.handleInsertSubmit}>
-            <h3>Basic</h3>
+            <h3>Thông Tin Cơ Bản</h3>
             <hr />
             <CContainer>
               <CRow className="mb-3">
@@ -190,7 +147,6 @@ class AddCustomer extends Component {
                     placeholder="Tên Công Ty"
                     autoComplete="company"
                     name="company"
-                    // value={this.state.name}
                     onChange={this.handleInputChange}
                     required
                     aria-describedby="exampleFormControlInputHelpInline"
@@ -204,7 +160,6 @@ class AddCustomer extends Component {
                     placeholder="Tên Khách Hàng"
                     autoComplete="name"
                     name="name"
-                    // value={this.state.name}
                     onChange={this.handleInputChange}
                     required
                     aria-describedby="exampleFormControlInputHelpInline"
@@ -405,7 +360,7 @@ class AddCustomer extends Component {
               </CRow>
             </CContainer>
             <CButton color="primary" type="submit">
-              Submit
+              LƯU
             </CButton>
           </CForm>
         </Card>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider, Input, Collapse } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -30,7 +30,7 @@ import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
 const { TextArea } = Input
 const { Panel } = Collapse
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -97,14 +97,14 @@ class Contract extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -189,19 +189,30 @@ class Contract extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -239,39 +250,25 @@ class Contract extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          contract: prevState.contract.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  name: this.state.name,
-                  from_date: this.state.from_date,
-                  to_date: this.state.to_date,
-                  place_working: this.state.place_working,
-                  number_employee: this.state.number_employee,
-                  content: this.state.content,
-                  time_working: this.state.time_working,
-                  uniform: this.state.uniform,
-                  vehicles: this.state.vehicles,
-                  basic_salary: this.state.basic_salary,
-                  extra: this.state.extra,
-                  other_support: this.state.other_support,
-                  transfer: this.state.transfer,
-                  up_salary: this.state.up_salary,
-                  bonus: this.state.bonus,
-                  training: this.state.training,
-                  resort_mode: this.state.resort_mode,
-                  insurance: this.state.insurance,
-                  sign_day: this.state.sign_day,
-                  status: this.state.status,
-                  employer: this.state.employer,
-                  position: this.state.position,
-                  type: this.state.type,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/employment-contract/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const contract = res.data
+            this.setState({
+              contract: contract,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -279,9 +276,6 @@ class Contract extends Component {
           placement: 'topRight',
         })
         this.closeModal()
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -339,18 +333,31 @@ class Contract extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let contract = this.state.contract
-        contract = [newData, ...contract]
-        this.setState({ contract: contract })
+        API({
+          REGISTER_URL: '/hrm/employment-contract/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const contract = res.data
+            this.setState({
+              contract: contract,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -661,10 +668,10 @@ class Contract extends Component {
                       onChange={this.handleInputChange}
                     >
                       <option key="true" value={true}>
-                        Còn Hiệu Lực
+                        Có Hiệu Lực
                       </option>
                       <option key="false" value={false}>
-                        Hết Hiệu Lực
+                        Chưa Có (Hết) Hiệu Lực
                       </option>
                     </CFormSelect>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">

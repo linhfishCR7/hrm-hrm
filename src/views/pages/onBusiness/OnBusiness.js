@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider, Input } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -21,7 +21,6 @@ import {
   CContainer,
   CFormLabel,
   CFormText,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
@@ -66,14 +65,14 @@ class OnBusiness extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -132,19 +131,30 @@ class OnBusiness extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -164,21 +174,25 @@ class OnBusiness extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          onBusiness: prevState.onBusiness.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  company: this.state.company,
-                  date: this.state.date,
-                  start_date: this.state.start_date,
-                  position: this.state.position,
-                  content: this.state.content,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/on-business/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const onBusiness = res.data
+            this.setState({
+              onBusiness: onBusiness,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -225,18 +239,31 @@ class OnBusiness extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let onBusiness = this.state.onBusiness
-        onBusiness = [newData, ...onBusiness]
-        this.setState({ onBusiness: onBusiness })
+        API({
+          REGISTER_URL: '/hrm/on-business/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const onBusiness = res.data
+            this.setState({
+              onBusiness: onBusiness,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -277,7 +304,7 @@ class OnBusiness extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày bắt đầu đi công tác
+                  Ngày bắt đầu đi công tác bắt buộc chọn
                 </CFormText>
               </CCol>
 
@@ -294,7 +321,7 @@ class OnBusiness extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày kết thúc chuyến công tác
+                  Ngày kết thúc chuyến công tác bắt buộc chọn
                 </CFormText>
               </CCol>
             </CRow>
@@ -311,7 +338,7 @@ class OnBusiness extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập tên công ty
+                  Tên công ty bắc buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -325,7 +352,7 @@ class OnBusiness extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập vị trí công tác
+                  Vị trí công tác có thể nhập hoặc không
                 </CFormText>
               </CCol>
               <CCol>
@@ -340,7 +367,7 @@ class OnBusiness extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />{' '}
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung công việc
+                  Nội dung công việc có thể nhập hoặc không
                 </CFormText>
               </CCol>
             </CRow>
@@ -406,7 +433,7 @@ class OnBusiness extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Chọn ngày bắt đầu đi công tác
+                      Ngày bắt đầu đi công tác bắt buộc chọn
                     </CFormText>
                   </CCol>
 
@@ -424,7 +451,7 @@ class OnBusiness extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Chọn ngày kết thúc chuyến công tác
+                      Ngày kết thúc chuyến công tác bắt buộc chọn
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -442,7 +469,7 @@ class OnBusiness extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập tên công ty
+                      Tên công ty bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -457,7 +484,7 @@ class OnBusiness extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập vị trí công tác
+                      Vị trí công tác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -473,7 +500,7 @@ class OnBusiness extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung công việc
+                      Nội dung công việc có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
