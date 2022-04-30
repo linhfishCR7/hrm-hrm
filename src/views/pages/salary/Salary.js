@@ -68,6 +68,7 @@ class Salary extends Component {
       loadStatusCheck: false,
       loadStatusActive: false,
       modalAddSalaryIsOpen: false,
+      modalAddAllSalaryIsOpen: false,
       first_name: '',
       last_name: '',
       full_name: '',
@@ -76,6 +77,7 @@ class Salary extends Component {
       other_support: 0,
       other: 0,
       note: '',
+      statusLoadProcess: false,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -179,6 +181,7 @@ class Salary extends Component {
       full_name: item.user_fullname,
     })
   }
+
   openDeleteModal = (item) => {
     this.setState({
       modalDeleteIsOpen: true,
@@ -199,7 +202,7 @@ class Salary extends Component {
       first_name: item.first_name,
       last_name: item.last_name,
       staff_id: item.id,
-      modalAddSalaryIsOpen: true,
+      modalAddAllSalaryIsOpen: true,
     })
   }
   // //
@@ -258,12 +261,26 @@ class Salary extends Component {
         })
       })
   }
+
+  openAddAllSalaryModal = () => {
+    this.setState({
+      modalAddAllSalaryIsOpen: true,
+    })
+  }
+
+  // Close Modal //
   closeModal = () => {
     this.setState({
       modalIsOpen: false,
     })
   }
-  // Close Modal //
+
+  closeAddAllSalaryModal = () => {
+    this.setState({
+      modalAddAllSalaryIsOpen: false,
+    })
+  }
+
   closeActiveModal = () => {
     this.setState({
       modalActiveIsOpen: false,
@@ -524,6 +541,59 @@ class Salary extends Component {
           })
         }
       })
+  }
+
+  handleAddAllSalary = (event) => {
+    event.preventDefault()
+    this.state.listStaff.map(async (item) => {
+      const newItem = {
+        date: new Date().toISOString().slice(0, 10),
+        note: '',
+        other: 0.0,
+        other_support: 0.0,
+        staff: item.id,
+      }
+      await axios
+        .post('/hrm/salary/', newItem, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          this.closeAddAllSalaryModal()
+          this.closeCheckModal()
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Thêm phiếu lương không thành công!!!',
+              description: error.response.data.message,
+              placement: 'topRight',
+            })
+            this.closeAddAllSalaryModal()
+            this.closeCheckModal()
+          } else {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Thêm phiếu lương không thành công!!!',
+              description: error,
+              placement: 'topRight',
+            })
+            this.closeAddAllSalaryModal()
+            this.closeCheckModal()
+          }
+        })
+    })
+
+    openNotificationWithIcon({
+      type: 'success',
+      message: 'Thêm phiếu lương thành công!!!',
+      description: '',
+      placement: 'topRight',
+    })
   }
 
   handleSearchCurrent = async (event) => {
@@ -845,6 +915,17 @@ class Salary extends Component {
             <CModalTitle>CHECK PHIẾU LƯƠNG</CModalTitle>
           </CModalHeader>
           <CModalBody>
+            <CRow className="mb-3">
+              <CCol md={8}>
+                <Space>
+                  <CTooltip content="Thêm Phiếu Lương Tất Cả Nhân Viên Còn Lại" placement="top">
+                    <CButton color="info" onClick={() => this.openAddAllSalaryModal()}>
+                      Thêm Phiếu Lương Tất Cả Nhân Viên Còn Lại
+                    </CButton>
+                  </CTooltip>
+                </Space>
+              </CCol>
+            </CRow>
             <Table dataSource={this.state.listStaff} bordered>
               {/* <Column title="Mã" dataIndex="company" key="company" /> */}
               <Column
@@ -1055,6 +1136,36 @@ class Salary extends Component {
                 </CButton>
                 <CButton color="primary" type="submit">
                   Cập Nhật
+                </CButton>
+              </CModalFooter>
+            </CForm>{' '}
+          </CModalBody>
+        </CModal>
+        {/* Add All Salary */}
+        <CModal visible={this.state.modalAddAllSalaryIsOpen} onClose={this.closeAddAllSalaryModal}>
+          <CModalHeader>
+            <CModalTitle>THÊM PHIẾU LƯƠNG CHO TẤT CẢ NHÂN VIÊN</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm onSubmit={this.handleAddAllSalary}>
+              <h2 style={{ textTransform: 'uppercase' }}>
+                Bạn có muốn thêm phiếu lương cho tất cả nhân viên trong tháng{' '}
+                {this.state.currentMonth} năm {this.state.currentYear}
+              </h2>
+
+              <CModalFooter>
+                <CButton color="secondary" onClick={this.closeAddAllSalaryModal}>
+                  HUỶ
+                </CButton>
+                <CButton color="info" type="submit">
+                  {this.state.statusLoadProcess ? (
+                    <>
+                      <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
+                      Đang Tiến Hành Thêm...
+                    </>
+                  ) : (
+                    'OK'
+                  )}
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

@@ -617,7 +617,7 @@ class SalaryStaff extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Ngày nhập phiếu lương bắt buộc chọn
                     </CFormText>
                   </CCol>
                   <CCol>
@@ -631,23 +631,23 @@ class SalaryStaff extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Hỗ Trợ Khác
+                      Hỗ trợ khác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Khác</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Khoản Khác</CFormLabel>
                     <CFormInput
                       type="number"
-                      placeholder="Khác"
+                      placeholder="Khoản Khác"
                       autoComplete="other"
                       name="other"
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày nhập phiếu lương
+                      Khoản khác có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>
