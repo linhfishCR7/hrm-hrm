@@ -45,6 +45,9 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+//Test
+const PageTest = React.lazy(() => import('./views/pages/page-test/ListReligion'))
+
 //################################################################
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Profile = React.lazy(() => import('./views/profile/Profile'))
@@ -72,6 +75,7 @@ const CustomerDetail = React.lazy(() => import('./views/pages/customer/CustomerD
 const AddCustomer = React.lazy(() => import('./views/pages/customer/AddCustomer'))
 const Staff = React.lazy(() => import('./views/pages/staff/Staff'))
 const AddStaff = React.lazy(() => import('./views/pages/staff/addStaff'))
+const AddStaffNew = React.lazy(() => import('./views/pages/staff/addStaffNew'))
 const ListStaff = React.lazy(() => import('./views/pages/staff/listStaff'))
 const Salary = React.lazy(() => import('./views/pages/salary/Salary'))
 const Skill = React.lazy(() => import('./views/pages/skill/Skill'))
@@ -120,6 +124,7 @@ const routes = [
   { path: '/customer/:id', name: 'Chi Tiết Khách Hàng', element: CustomerDetail },
   { path: '/staff', name: 'Nhân Viên', element: Staff },
   { path: '/add-staff', name: 'Thêm Nhân Viên', element: AddStaff },
+  { path: '/add-staff-and-account', name: 'Thêm Nhân Viên', element: AddStaffNew },
   { path: '/list-staff', name: 'Nhân Viên', element: ListStaff },
   { path: '/salary', name: 'Tiền Lương', element: Salary },
   { path: '/staff/skill', name: 'Kỹ Năng', element: Skill },
@@ -139,6 +144,9 @@ const routes = [
   { path: '/staff/timekeeping', name: 'Chấm Công', element: TimeKeeping },
   { path: '/project', name: 'Dự Án', element: Project },
   { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
+
+  //test
+  { path: '/page-test', name: 'Test', element: PageTest },
 
   // #################################################################
 

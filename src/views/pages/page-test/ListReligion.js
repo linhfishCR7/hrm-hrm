@@ -1,381 +1,117 @@
 import React, { useState } from 'react'
-import axios from '../../../utils/axios'
-import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space } from 'antd'
-import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CForm,
-  CButton,
-  CRow,
-  CCol,
-  CTooltip,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
-  CFormFeedback,
-} from '@coreui/react'
-import PropTypes from 'prop-types'
-import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { CContainer, CForm } from '@coreui/react'
+const Addmoreinput = () => {
+  const [inputList, setinputList] = useState([
+    { firstName: '', lastName: '', email: '', department: '' },
+  ])
 
-export const ListReligion = ({ religions, loading, data = '', status, fetchapi }) => {
-  ListReligion.propTypes = {
-    religions: PropTypes.array,
-    loading: PropTypes.bool,
-    data: PropTypes.string,
-    status: PropTypes.bool,
-    fetchapi: PropTypes.func,
+  const handleinputchange = (e, index) => {
+    const { name, value } = e.target
+    const list = [...inputList]
+    list[index][name] = value
+    setinputList(list)
   }
-  // const fetchReligions = async () => {
-  //   const token = localStorage.getItem('token')
-  //   const REGISTER_URL = '/hrm/religions/?no_pagination=true'
-  //   setLoading(true)
-  //   const res = await axios.get(REGISTER_URL, {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     withCredentials: true,
-  //   })
-  //   setReligion(res.data)
-  //   setLoading(false)
-  // }
-  const { Column, ColumnGroup } = Table
 
-  const [visible, setVisible] = useState(false)
-  const [visibleUpdate, setVisibleUpdate] = useState(false)
-  const [visibleDelete, setVisibleDelete] = useState(false)
-  const [religiondata, setReligionData] = useState('')
-  const [namedata, setNameData] = useState('')
-  const [message, setMessage] = useState('')
-  const [isMesage, setIsMesage] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const handleremove = (index) => {
+    const list = [...inputList]
+    list.splice(index, 1)
+    setinputList(list)
+  }
 
-  const onSubmitCreate = async (event) => {
+  const handleaddclick = () => {
+    setinputList([...inputList, { firstName: '', lastName: '', email: '', department: '' }])
+  }
+
+  const onSubmit = (event) => {
     event.preventDefault()
-    const token = localStorage.getItem('token')
-    const REGISTER_URL = '/hrm/religions/'
-    const data = {
-      religion: religiondata,
-      name: namedata,
-    }
-    const res = await axios
-      .post(REGISTER_URL, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((response) => {
-        setVisible(false)
-        setReligionData('')
-        setNameData('')
-        setMessage('You Added Data successfully!')
-        setIsMesage(true)
-        setIsError(false)
-        fetchapi()
-      })
-      .catch(function (error) {
-        if (error.response.status === 400) {
-          setMessage(error.response.data.message)
-          setIsMesage(true)
-          setIsError(true)
-        }
-      })
+    inputList.map((item) => alert(item.email))
   }
-  const onUpdate = async (event) => {
-    const id = event.target.key
-    setVisibleUpdate(true)
-    event.preventDefault()
-    const token = localStorage.getItem('token')
-    const REGISTER_URL = '/hrm/religions/' + id + '/'
-    const data = {
-      religion: religiondata,
-      name: namedata,
-    }
-    const res = await axios
-      .put(REGISTER_URL, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((response) => {
-        setVisibleUpdate(false)
-        setReligionData('')
-        setNameData('')
-        setMessage('You Update Data successfully!')
-        setIsMesage(true)
-        setIsError(false)
-        fetchapi()
-      })
-      .catch(function (error) {
-        if (error.response.status === 400) {
-          setMessage(error.response.data.message)
-          setIsMesage(true)
-          setIsError(true)
-        }
-      })
-  }
-  const onDelete = async (event) => {
-    event.preventDefault()
-    const id = event.target.key
-    setVisibleUpdate(true)
-    const token = localStorage.getItem('token')
-    const REGISTER_URL = '/hrm/religions/' + id + '/'
-    const data = {
-      religion: religiondata,
-      name: namedata,
-    }
-    const res = await axios
-      .put(REGISTER_URL, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((response) => {
-        setVisibleUpdate(false)
-        setReligionData('')
-        setNameData('')
-        setMessage('You Update Data successfully!')
-        setIsMesage(true)
-        setIsError(false)
-        fetchapi()
-      })
-      .catch(function (error) {
-        if (error.response.status === 400) {
-          setMessage(error.response.data.message)
-          setIsMesage(true)
-          setIsError(true)
-        }
-      })
-  }
-
-  if (loading) {
-    return (
-      <CRow className="justify-content-center">
-        <CCol md={2}>
-          <CSpinner />
-        </CCol>
-      </CRow>
-    )
-  } else {
-    return (
-      <>
-        {status ? (
-          <CRow className="justify-content-center">
-            <CCol md={2}>{data}</CCol>
-          </CRow>
-        ) : (
-          <>
-            <CTooltip content="Thêm Dữ Liệu" placement="top">
-              <CButton color="primary" onClick={() => setVisible(true)} className="mb-3">
-                <CIcon icon={cilPlus} />
-              </CButton>
-            </CTooltip>
-            {/* <Table columns={columns} dataSource={religions} bordered scroll={{ y: 24˝0 }} /> */}
-            <Table dataSource={religions} bordered scroll={{ y: 240 }}>
-              <Column title="Mã" dataIndex="religion" key="religion" />
-              <Column title="Tên" dataIndex="name" key="name" />
-              <Column
-                title="Action"
-                key="action"
-                render={(text, record) => (
-                  <Space size="middle">
-                    <CTooltip content="Cập Nhật Dự Liệu" placement="top">
-                      <CButton
-                        color="warning"
-                        style={{ marginRight: '10px' }}
-                        key={record.id}
-                        onClick={onUpdate}
-                      >
-                        <CIcon icon={cilPencil} />
-                      </CButton>
-                    </CTooltip>
-                    <CTooltip content="Xoá Dữ Liệu" placement="top">
-                      <CButton color="danger" onClick={onDelete} key={text.id}>
-                        <CIcon icon={cilDelete} />
-                      </CButton>
-                    </CTooltip>
-                  </Space>
-                )}
-              />
-            </Table>
-
-            {/* <CTable responsive bordered hover>
-              <CTableHead color="dark">
-                <CTableRow>
-                  <CTableHeaderCell scope="col">Region</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {religions.map((religion) => (
-                  <CTableRow key={religion.id}>
-                    <CTableHeaderCell scope="row">{religion.religion}</CTableHeaderCell>
-                    <CTableDataCell>{religion.name}</CTableDataCell>
-                    <CTableDataCell>
-                      <CTableDataCell>
-                        <CTooltip content="Cập Nhật Dự Liệu" placement="top">
-                          <CButton
-                            color="warning"
-                            onClick={() => setVisible(true)}
-                            className="mr-3"
-                          >
-                            <CIcon icon={cilPencil} />
-                          </CButton>
-                        </CTooltip>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CTooltip content="Xoá Dữ Liệu" placement="top">
-                          <CButton color="danger" onClick={() => setVisible(true)}>
-                            <CIcon icon={cilDelete} />
-                          </CButton>
-                        </CTooltip>
-                      </CTableDataCell>
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable> */}
-          </>
-        )}
-        <CModal visible={visible} onClose={() => setVisible(false)}>
-          <CModalHeader>
-            <CModalTitle>Religion</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CForm onSubmit={onSubmitCreate}>
-              <CInputGroup className="mb-3 mt-3">
-                <CInputGroupText>
-                  <CIcon icon={cilCircle} />{' '}
-                </CInputGroupText>{' '}
-                <CFormInput
-                  type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
-                  value={religiondata}
-                  onChange={(event) => setReligionData(event.target.value)}
-                  required
-                />
-              </CInputGroup>{' '}
-              <CInputGroup className="mb-4">
-                <CInputGroupText>
-                  <CIcon icon={cilCircle} />{' '}
-                </CInputGroupText>{' '}
-                <CFormInput
-                  type="text"
-                  placeholder="Name"
-                  autoComplete="name"
-                  value={namedata}
-                  onChange={(event) => setNameData(event.target.value)}
-                  required
-                />
-              </CInputGroup>{' '}
-              {/* <CRow>
-                <CCol md={6}>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
-                    Close
-                  </CButton>
-                  <CButton color="primary" type="submit">
-                    Cập Nhật
-                  </CButton>
-                </CCol>
-              </CRow> */}
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisible(false)}>
-                  Close
-                </CButton>
-                <CButton color="primary" type="submit">
-                  Cập Nhật
-                </CButton>
-              </CModalFooter>
-            </CForm>{' '}
-          </CModalBody>
-          {/* <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-            <CButton color="primary" typr="submit">
-              Cập Nhật
-            </CButton>
-          </CModalFooter> */}
-        </CModal>
-
-        <CModal visible={isMesage} onClose={() => setIsMesage(false)}>
-          <CModalHeader>
-            <CModalTitle>{isError ? 'ERROR' : 'NOTICE'}</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <h2>{message}</h2>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color={isError ? 'danger' : 'primary'} onClick={() => setIsMesage(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-
-        <CModal visible={visibleUpdate} onClose={() => setVisibleUpdate(false)}>
-          <CModalHeader>
-            <CModalTitle>Tôn Giáo</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CForm onSubmit={onUpdate}>
-              <CInputGroup className="mb-3 mt-3">
-                <CInputGroupText>
-                  <CIcon icon={cilCircle} />{' '}
-                </CInputGroupText>{' '}
-                <CFormInput
-                  type="text"
-                  placeholder="Religion"
-                  autoComplete="religion"
-                  value={religiondata}
-                  onChange={(event) => setReligionData(event.target.value)}
-                  required
-                />
-              </CInputGroup>{' '}
-              <CInputGroup className="mb-4">
-                <CInputGroupText>
-                  <CIcon icon={cilCircle} />{' '}
-                </CInputGroupText>{' '}
-                <CFormInput
-                  type="text"
-                  placeholder="Name"
-                  autoComplete="name"
-                  value={namedata}
-                  onChange={(event) => setNameData(event.target.value)}
-                  required
-                />
-              </CInputGroup>{' '}
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisibleUpdate(false)}>
-                  Close
-                </CButton>
-                <CButton color="primary" type="submit">
-                  Cập Nhật
-                </CButton>
-              </CModalFooter>
-            </CForm>{' '}
-          </CModalBody>
-        </CModal>
-      </>
-    )
-  }
+  return (
+    <CContainer className="content">
+      <div className="row">
+        <div className="col-sm-12">
+          <h5 className="mt-3 mb-4 fw-bold">Dynamically add/remove inputs fields reactjs </h5>
+          <CForm onSubmit={onSubmit}>
+            {inputList.map((x, i) => {
+              return (
+                <div className="row mb-3" key={i}>
+                  <div className="form-group col-md-2">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      className="form-control"
+                      placeholder="Enter First Name"
+                      onChange={(e) => handleinputchange(e, i)}
+                    />
+                  </div>
+                  <div className="form-group col-md-2">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      className="form-control"
+                      placeholder="Enter Last Name"
+                      onChange={(e) => handleinputchange(e, i)}
+                    />
+                  </div>
+                  <div className="form-group col-md-3">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="form-control"
+                      placeholder="Enter Email"
+                      onChange={(e) => handleinputchange(e, i)}
+                    />
+                  </div>
+                  <div className="form-group col-md-3">
+                    <label>Department</label>
+                    <select
+                      name="department"
+                      className="form-control"
+                      onChange={(e) => handleinputchange(e, i)}
+                    >
+                      <option value="1" key="1">
+                        1
+                      </option>
+                      <option value="2" key="2">
+                        2
+                      </option>
+                      <option value="3" key="3">
+                        3
+                      </option>
+                      <option value="4" key="4">
+                        4
+                      </option>
+                    </select>
+                  </div>
+                  <div className="form-group col-md-2 mt-4">
+                    {inputList.length !== 1 && (
+                      <button className="btn btn-danger mx-1" onClick={() => handleremove(i)}>
+                        Remove
+                      </button>
+                    )}
+                    {inputList.length - 1 === i && (
+                      <button className="btn btn-success mt-4" onClick={handleaddclick}>
+                        Add More
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+            <div className="row mb-3">
+              <div className="form-group col-md-3">
+                <button className="btn btn-info mt-4" type="submit">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </CForm>
+        </div>
+      </div>
+    </CContainer>
+  )
 }
+export default Addmoreinput
