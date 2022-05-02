@@ -549,7 +549,6 @@ class Staff extends Component {
       })
       .then((res) => {
         this.fetchStaffAPI()
-
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',

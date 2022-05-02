@@ -174,7 +174,7 @@ class ListStaff extends Component {
     }
   }
 
-  openSettingModal = (item) => {
+  openStaffDetailModal = (item) => {
     localStorage.setItem('staffDetail', item.id)
     this.setState({
       staffName: item.first_name + ' ' + item.last_name,
@@ -1048,7 +1048,7 @@ class ListStaff extends Component {
 
     return (
       <>
-        <BackTop />
+        {/* <BackTop /> */}
         {/* <BackTop>
           <div style={style}>UP</div>
         </BackTop> */}
@@ -1079,7 +1079,7 @@ class ListStaff extends Component {
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Chọn" placement="top">
-                  <CButton color="info" onClick={() => this.openSettingModal(record)}>
+                  <CButton color="info" onClick={() => this.openStaffDetailModal(record)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <CIcon icon={cilCloudUpload} />
                   </CButton>

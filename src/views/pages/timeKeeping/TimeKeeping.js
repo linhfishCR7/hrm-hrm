@@ -303,18 +303,24 @@ class TimeKeeping extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let timeKeeping = this.state.timeKeeping
-        timeKeeping = [newData, ...timeKeeping]
-        this.setState({ timeKeeping: timeKeeping })
+        API({
+          REGISTER_URL: '/hrm/timekeeping/?no_pagination=true&staff_project__staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const timeKeeping = res.data
+            this.setState({
+              timeKeeping: timeKeeping,
+              loading: false,
+            })
+          })
+          .catch((error) => console.log(error))
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -440,7 +446,7 @@ class TimeKeeping extends Component {
                   onChange={this.handleInputChange}
                 >
                   <option key="0" value="">
-                    Chọn dự án
+                    Chọn Loại Công
                   </option>
                   {this.state.kindWork.map((item) => (
                     <option key={item.id} value={item.id}>
@@ -534,7 +540,7 @@ class TimeKeeping extends Component {
           <Column title="Ngày Chấm Công" dataIndex="date" key="date" />
           <Column title="Số Lượng" dataIndex="amount_in_project" key="amount_in_project" />
           <Column title="Số Lượng Giờ Làm Thêm" dataIndex="amount_time" key="amount_time" />
-          <Column title="Loại Công" dataIndex="type_work_name" key="type_work_name" />
+          {/* <Column title="Loại Công" dataIndex="type_work_name" key="type_work_name" /> */}
           <Column
             title="Loại Giờ Làm Thêm"
             dataIndex="type_time"
@@ -697,7 +703,7 @@ class TimeKeeping extends Component {
                       value={this.state.type_work}
                     >
                       <option key="0" value="">
-                        Chọn dự án
+                        Chọn Loại Công
                       </option>
                       {this.state.kindWork.map((item) => (
                         <option key={item.id} value={item.id}>
