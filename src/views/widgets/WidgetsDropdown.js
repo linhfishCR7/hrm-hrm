@@ -56,6 +56,7 @@ const WidgetsDropdown = () => {
   const [dataID, setDataID] = useState('')
   const [dataName, setDataName] = useState('')
   const [liststaffs, setListStaffs] = useState([])
+  const [timeKeeping, setTimeKeeping] = useState([])
   // const [listprojects, setListProjects] = useState([])
   const [liststafftimekeeping, setListStaffTimeKeeping] = useState([])
   const [loading, setLoading] = useState(true)
@@ -173,22 +174,21 @@ const WidgetsDropdown = () => {
       .catch((error) => console.log(error))
   }
 
-  // const fetchProjectTimeKeepingAPI = async () => {
-  //   await axios
-  //     .get('/hrm/projects/?no_pagination=true&status=2', {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${TOKEN}`,
-  //       },
-  //       withCredentials: true,
-  //     })
-  //     .then((res) => {
-  //       const data = res.data
-  //       setListProjects(data)
-  //       // data.map((item) => fetchStaffTimeKeepingAPI(item.id))
-  //     })
-  //     .catch((error) => console.log(error))
-  // }
+  const fetchTimeKeepingAPI = async () => {
+    await axios
+      .get('/hrm/timekeeping/?no_pagination=true&date=' + new Date().toISOString().slice(0, 10), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const data = res.data
+        setTimeKeeping(data)
+      })
+      .catch((error) => console.log(error))
+  }
 
   const fetchStaffTimeKeepingAPI = async () => {
     await axios
@@ -348,6 +348,23 @@ const WidgetsDropdown = () => {
     })
   }
 
+  const handleSearchListTimeKeeping = async (event) => {
+    let value = event.target.value
+    const REGISTER_URL =
+      '/hrm/timekeeping/?no_pagination=true&date=' +
+      new Date().toISOString().slice(0, 10) +
+      '&search=' +
+      value
+    const res = await axios.get(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      withCredentials: true,
+    })
+    setTimeKeeping(res.data)
+  }
+
   useEffect(() => {
     fetchDashboardAPI()
     fetchProjectAPI()
@@ -355,8 +372,8 @@ const WidgetsDropdown = () => {
     fetchDepartmentAPI()
     fetchCustomerAPI()
     fetchKindWorkAPI()
-    // fetchProjectTimeKeepingAPI()
     fetchStaffTimeKeepingAPI()
+    fetchTimeKeepingAPI()
   }, [])
   return (
     <>
@@ -658,7 +675,7 @@ const WidgetsDropdown = () => {
       <Divider />
       <CRow className="mb-5">
         <CCol>
-          <CCard>
+          <CCard className="mb-3">
             <CForm className="mb-3" onSubmit={onSubmit}>
               <Collapse
                 bordered={true}
@@ -673,7 +690,7 @@ const WidgetsDropdown = () => {
                   header={
                     <>
                       <Space>
-                        <h5 className="mt-2">CHẤM CÔNG</h5>
+                        <h5 className="mt-2">Chấm Công</h5>
                         {localStorage.getItem('timekeeping') ===
                         new Date().toISOString().slice(0, 10) ? (
                           <CPopover
@@ -908,6 +925,64 @@ const WidgetsDropdown = () => {
               </CContainer>
             </CForm>{' '}
           </CCard>
+          {localStorage.getItem('timekeeping') === new Date().toISOString().slice(0, 10) ? (
+            <CCard>
+              <Collapse bordered={true} className="mb-3">
+                <Panel header={<h5 className="mt-2">Bảng Chấm Công Hôm Nay</h5>}>
+                  <CContainer>
+                    <CRow>
+                      <CCol md={6}>
+                        <Input.Search
+                          placeholder="Tìm kiếm họ tên nhân viên và tên dự án"
+                          onChange={(event) => handleSearchListTimeKeeping(event)}
+                          className="mb-3"
+                        />
+                      </CCol>
+                    </CRow>
+                  </CContainer>
+                  <Table dataSource={timeKeeping} bordered>
+                    <Column title="Ngày Chấm Công" dataIndex="date" key="date" />
+                    <Column
+                      title="Số Lượng"
+                      dataIndex="amount_in_project"
+                      key="amount_in_project"
+                    />
+                    <Column
+                      title="Số Lượng Giờ Làm Thêm"
+                      dataIndex="amount_time"
+                      key="amount_time"
+                    />
+                    <Column
+                      title="Loại Giờ Làm Thêm"
+                      dataIndex="type_time"
+                      key="type_time"
+                      filters={[
+                        { text: 'Giờ Hành Chính', value: 'Giờ Hành Chính' },
+                        { text: 'Làm Thêm Ngày Thường', value: 'Làm Thêm Ngày Thường' },
+                        { text: 'Làm Thêm Ngày Cuối Tuần', value: 'Làm Thêm Ngày Cuối Tuần' },
+                        { text: 'Làm Thêm Ngày Lễ Tết', value: 'Làm Thêm Ngày Lễ Tết' },
+                      ]}
+                      onFilter={(value, record) => record.type_time.startsWith(value)}
+                      filterSearch={true}
+                      width="20%"
+                    />
+                    <Column
+                      title="Dự Án"
+                      dataIndex="project_name"
+                      key="project_name"
+                      filters={liststafftimekeeping.project_name}
+                      onFilter={(value, record) => record.project_name.startsWith(value)}
+                      filterSearch={true}
+                    />
+                    <Column title="Mã Nhân Viên" dataIndex="staff_staff" key="staff_staff" />
+                    <Column title="Nhân Viên" dataIndex="staff_name" key="staff_name" width="20%" />
+                  </Table>
+                </Panel>
+              </Collapse>
+            </CCard>
+          ) : (
+            ''
+          )}
         </CCol>
       </CRow>
       <CRow>
