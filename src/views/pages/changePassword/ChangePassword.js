@@ -71,7 +71,7 @@ const ChangePassword = () => {
       setError(true)
       openNotificationWithIcon({
         type: 'error',
-        message: 'Đổi mật khẩu thành công!!!',
+        message: 'Đổi mật khẩu không thành công!!!',
         description: error.message || JSON.stringify(error),
         placement: 'topRight',
       })

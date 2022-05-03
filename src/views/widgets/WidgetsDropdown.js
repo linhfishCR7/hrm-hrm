@@ -296,7 +296,7 @@ const WidgetsDropdown = () => {
             description: '',
             placement: 'topRight',
           })
-          fetchStaffTimeKeepingAPI()
+          fetchTimeKeepingAPI()
         })
         .catch((error) => {
           if (error.response.status === 400) {
@@ -1061,7 +1061,7 @@ const WidgetsDropdown = () => {
                 }
                 title={item.last_name + ' ' + item.first_name}
                 description={
-                  item.position_data == 'Giám Đốc' ? <h6>Giám Đốc</h6> : item.position_data
+                  item.position_data === 'Giám Đốc' ? <h6>Giám Đốc</h6> : item.position_data
                 }
               />
             </Card>
