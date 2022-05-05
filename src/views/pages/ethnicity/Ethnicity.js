@@ -5,16 +5,9 @@ import { Table, Tag, Space, Button, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
-  CContainer,
   CModal,
   CModalBody,
   CModalFooter,
@@ -28,13 +21,11 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
 } from '@coreui/react'
-import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle } from '@coreui/icons'
+import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 
 class Ethnicity extends Component {
   constructor(props) {
@@ -53,8 +44,8 @@ class Ethnicity extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
 
-  componentDidMount() {
-    axios
+  fetchAPI = async () => {
+    return await axios
       .get('/hrm/ethnicities/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
@@ -72,6 +63,10 @@ class Ethnicity extends Component {
       .catch((error) => console.log(error))
   }
 
+  componentDidMount() {
+    this.fetchAPI()
+  }
+
   handleInputChange = (event) => {
     const target = event.target
     const value = target.value
@@ -81,7 +76,7 @@ class Ethnicity extends Component {
     })
   }
 
-  handleInsertSubmit = (event) => {
+  handleInsertSubmit = async (event) => {
     event.preventDefault()
 
     const newItem = {
@@ -89,7 +84,7 @@ class Ethnicity extends Component {
       name: this.state.name,
     }
 
-    axios
+    await axios
       .post('/hrm/ethnicities/', newItem, {
         headers: {
           'Content-Type': 'application/json',
@@ -98,42 +93,28 @@ class Ethnicity extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let ethnicities = this.state.ethnicities
-        ethnicities = [newItem, ...ethnicities]
-        this.setState({ ethnicities: ethnicities })
-        message.success({
-          content: 'Add data Success!!!',
-          duration: 5,
-          maxCount: 10,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Thêm dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 10,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 10,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
           })
         }
       })
@@ -188,40 +169,34 @@ class Ethnicity extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          ethnicities: prevState.ethnicities.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  ethnicity: this.state.ethnicity,
-                  name: this.state.name,
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 10,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
+        this.closeModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 10,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
@@ -243,7 +218,7 @@ class Ethnicity extends Component {
           ethnicities: prevState.ethnicities.filter((el) => el.id !== this.state.id),
         }))
         message.success({
-          content: 'Delete data Success!!!',
+          content: 'Xoá dữ liệu thành công!!!',
           duration: 5,
           maxCount: 10,
           className: 'custom-class',
@@ -253,17 +228,25 @@ class Ethnicity extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 10,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
   handleSearch = async (event) => {
     let value = event.target.value
@@ -325,7 +308,7 @@ class Ethnicity extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm tên và mã dân tộc"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -339,7 +322,7 @@ class Ethnicity extends Component {
             // key={this.state.ethnicities}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -349,7 +332,7 @@ class Ethnicity extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -361,7 +344,7 @@ class Ethnicity extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle>UPDATE</CModalTitle>
+            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -395,10 +378,10 @@ class Ethnicity extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -406,7 +389,7 @@ class Ethnicity extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>

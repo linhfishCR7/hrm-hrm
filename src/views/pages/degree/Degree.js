@@ -79,14 +79,14 @@ class Degree extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -154,19 +154,30 @@ class Degree extends Component {
         openNotificationWithIcon({
           type: 'success',
           message: 'Xoá dữ liệu thành công!!!',
-          description: 'Xoá dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -187,21 +198,25 @@ class Degree extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          degree: prevState.degree.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  number: this.state.number,
-                  name: this.state.name,
-                  place: this.state.place,
-                  attach: this.state.attach,
-                  type_data: this.state.type_data,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/degree/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const degree = res.data
+            this.setState({
+              degree: degree,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -249,18 +264,31 @@ class Degree extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let degree = this.state.degree
-        degree = [newData, ...degree]
-        this.setState({ degree: degree })
+        API({
+          REGISTER_URL: '/hrm/degree/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const degree = res.data
+            this.setState({
+              degree: degree,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -300,9 +328,9 @@ class Degree extends Component {
                   required
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
-                {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Thông tin này không được chỉnh sửa!
-                    </CFormText> */}
+                <CFormText component="span" id="exampleFormControlInputHelpInline">
+                  Số bằng bắt buộc nhập
+                </CFormText>
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
@@ -316,7 +344,7 @@ class Degree extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập tên Bằng Cấp
+                  Tên bằng bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -333,7 +361,7 @@ class Degree extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Ngày cấp Bằng Cấp
+                  Ngày cấp bắt buộc nhập
                 </CFormText>
               </CCol>
 
@@ -350,7 +378,7 @@ class Degree extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập nơi cấp Bằng Cấp
+                  Nơi cấp bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -366,7 +394,7 @@ class Degree extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập đính kèm nếu có
+                  Đính kèm có thể nhập hoặc không
                 </CFormText>
               </CCol>
               <CCol>
@@ -451,9 +479,9 @@ class Degree extends Component {
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
-                    {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Thông tin này không được chỉnh sửa!
-                    </CFormText> */}
+                    <CFormText component="span" id="exampleFormControlInputHelpInline">
+                      Số bằng bắt buộc nhập
+                    </CFormText>
                   </CCol>
                   <CCol>
                     <CFormLabel htmlFor="exampleFormControlInput1">Tên Bằng Cấp</CFormLabel>
@@ -468,7 +496,7 @@ class Degree extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập tên Bằng Cấp
+                      Tên bằng bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -486,7 +514,7 @@ class Degree extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Ngày cấp Bằng Cấp
+                      Ngày cấp bắt buộc nhập
                     </CFormText>
                   </CCol>
 
@@ -504,7 +532,7 @@ class Degree extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập nơi cấp Bằng Cấp
+                      Nơi cấp bắt buộc nhập
                     </CFormText>
                   </CCol>
                 </CRow>
@@ -521,7 +549,7 @@ class Degree extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập đính kèm nếu có
+                      Đính kèm có thể nhập hoặc không
                     </CFormText>
                   </CCol>
                   <CCol>

@@ -273,7 +273,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Thêm Nhân Viên',
-        to: '/add-staff',
+        to: '/add-staff-and-account',
       },
     ],
   },

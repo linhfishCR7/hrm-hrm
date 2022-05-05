@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { USER_POOL_ID, REGION, CLIENT_ID } from '../../../constants/Config'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
   CButton,
@@ -35,9 +36,7 @@ const ForgotPassword = () => {
         userPoolWebClientId: CLIENT_ID,
       },
     })
-  } catch (error) {
-    console.log(error)
-  }
+  } catch (error) {}
 
   const user_logged = UserPool.getCurrentUser()
   useEffect(() => {
@@ -65,7 +64,7 @@ const ForgotPassword = () => {
     try {
       await Auth.forgotPassword(email)
       setCodeSent(true)
-      setSuccess('Please, get code in your email and use them for confirming')
+      setSuccess('Vui kiểm tra email đến lấy mã code')
     } catch (error) {
       setError(error.message || JSON.stringify(error))
       setIsSendingCode(false)
@@ -116,8 +115,8 @@ const ForgotPassword = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleSendCodeClick} className={success ? 'hide' : ''}>
-                  <h1> Forgot Password</h1>{' '}
-                  <p className="text-medium-emphasis"> Forgot password your account </p>{' '}
+                  <h1> Quên Mật Khẩu</h1>{' '}
+                  <p className="text-medium-emphasis"> Quên Mật Khẩu Tài Khoản </p>{' '}
                   <CToast
                     autohide={error ? false : true}
                     visible={error ? true : false}
@@ -142,14 +141,14 @@ const ForgotPassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="info" type="submit">
-                      Submit{' '}
+                      Quên Mật Khẩu{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
                 <br />
                 <CForm onSubmit={handleConfirmClick} className={success ? '' : 'hide'}>
-                  <h1> Reset Password </h1>{' '}
-                  <p className="text-medium-emphasis"> Reset password your account </p>{' '}
+                  <h1> Reset Mật Khẩu </h1>{' '}
+                  <p className="text-medium-emphasis"> Reset Mật Khẩu Tài Khoản </p>{' '}
                   <CToast
                     autohide={errorcode ? false : true}
                     visible={errorcode ? true : false}
@@ -211,14 +210,14 @@ const ForgotPassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="success" type="submit">
-                      Confirm{' '}
+                      Xác Nhận{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
                 <div className="d-grid">
-                  <Link to="/login">
+                  <Link to={localStorage.getItem('role') === 'admin' ? '/login-admin' : '/login'}>
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                      Back Login{' '}
+                      Quay Về Trang Đăng Nhập{' '}
                     </CButton>{' '}
                   </Link>{' '}
                 </div>{' '}

@@ -4,22 +4,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import LoadingOverlay from 'react-loading-overlay'
 import openNotificationWithIcon from '../../../utils/notification'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
-import {
-  Table,
-  Tag,
-  Space,
-  Button,
-  message,
-  Input,
-  Collapse,
-  Card,
-  Avatar,
-  Spin,
-  Alert,
-  BackTop,
-  Select,
-  Divider,
-} from 'antd'
+import { Table, Space, Button, Input, Collapse, Card, Spin, BackTop, Select, Divider } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -37,6 +22,11 @@ import {
   CTooltip,
   CImage,
   CContainer,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
@@ -180,7 +170,42 @@ class ListStaff extends Component {
       filter: '',
       staffName: '',
       staffId: '',
+      modalSettingIsOpen: false,
     }
+  }
+
+  openStaffDetailModal = (item) => {
+    localStorage.setItem('staffDetail', item.id)
+    this.setState({
+      staffName: item.first_name + ' ' + item.last_name,
+      staffId: item.staff,
+    })
+    const staffDetail = localStorage.getItem('staffDetail')
+    this.fetchStaffDetail(staffDetail)
+    this.fetchUrgentContact(staffDetail)
+    this.fetchCertificate(staffDetail)
+    this.fetchDegree(staffDetail)
+    this.fetchSkill(staffDetail)
+    this.fetchTimeKeeping(staffDetail)
+    this.fetchDayOffYear(staffDetail)
+    this.fetchSalary(staffDetail)
+    this.fetchUpSalary(staffDetail)
+    this.fetchContract(staffDetail)
+    this.fetchTrainning(staffDetail)
+    this.fetchPromotion(staffDetail)
+    this.fetchBonus(staffDetail)
+    this.fetchDiscipline(staffDetail)
+    this.fetchHeathy(staffDetail)
+    this.fetchOnBussiness(staffDetail)
+    this.setState({
+      modalSettingIsOpen: true,
+    })
+  }
+
+  closeSettingModal = () => {
+    this.setState({
+      modalSettingIsOpen: false,
+    })
   }
 
   fetchDeparmentAPI = (event) => {
@@ -542,39 +567,17 @@ class ListStaff extends Component {
     this.fetchKindOfWorkAPI()
   }
 
-  handleSearch = (event) => {
+  handleSearch = async (event) => {
     let value = event.target.value
-    API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true&search=' + value,
-      ACTION: 'GET',
-    }).then((res) => {
-      this.setState({ staffs: res.data })
+    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
+    const res = await axios.get(REGISTER_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      withCredentials: true,
     })
-  }
-
-  handleGetStaffDetail = (item) => {
-    localStorage.setItem('staffDetail', item.id)
-    this.setState({
-      staffName: item.first_name + ' ' + item.last_name,
-      staffId: item.staff,
-    })
-    const staffDetail = localStorage.getItem('staffDetail')
-    this.fetchStaffDetail(staffDetail)
-    this.fetchUrgentContact(staffDetail)
-    this.fetchCertificate(staffDetail)
-    this.fetchDegree(staffDetail)
-    this.fetchSkill(staffDetail)
-    this.fetchTimeKeeping(staffDetail)
-    this.fetchDayOffYear(staffDetail)
-    this.fetchSalary(staffDetail)
-    this.fetchUpSalary(staffDetail)
-    this.fetchContract(staffDetail)
-    this.fetchTrainning(staffDetail)
-    this.fetchPromotion(staffDetail)
-    this.fetchBonus(staffDetail)
-    this.fetchDiscipline(staffDetail)
-    this.fetchHeathy(staffDetail)
-    this.fetchOnBussiness(staffDetail)
+    this.setState({ staffs: res.data })
   }
 
   render() {
@@ -1045,7 +1048,7 @@ class ListStaff extends Component {
 
     return (
       <>
-        <BackTop />
+        {/* <BackTop /> */}
         {/* <BackTop>
           <div style={style}>UP</div>
         </BackTop> */}
@@ -1061,7 +1064,7 @@ class ListStaff extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm họ tên, email và số điện thoại"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
@@ -1076,7 +1079,7 @@ class ListStaff extends Component {
             render={(text, record) => (
               <Space size="middle">
                 <CTooltip content="Chọn" placement="top">
-                  <CButton color="info" onClick={() => this.handleGetStaffDetail(record)}>
+                  <CButton color="info" onClick={() => this.openStaffDetailModal(record)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <CIcon icon={cilCloudUpload} />
                   </CButton>
@@ -1119,24 +1122,41 @@ class ListStaff extends Component {
           />
         </Table>
         <Divider />
-        <h2>
-          Thông Tin Chi Tiết Nhân Viên:{' '}
-          <i>
-            {this.state.staffName} ({this.state.staffId})
-          </i>
-        </h2>
-        <Card
-          style={{ width: '100%' }}
-          tabList={tabListNoTitle}
-          activeTabKey={this.state.activeTabKey2}
-          tabBarExtraContent={<a href="#">More</a>}
-          onTabChange={(key) => {
-            onTab2Change(key)
-          }}
+
+        {/* Detail */}
+        <CModal
+          visible={this.state.modalSettingIsOpen}
+          onClose={this.closeSettingModal}
+          size="xl"
+          scrollable={true}
         >
-          {contentListNoTitle[this.state.activeTabKey2]}
-        </Card>
-        <br />
+          <CModalHeader>
+            <CModalTitle>
+              Thông Tin Chi Tiết Nhân Viên:{' '}
+              <i>
+                {this.state.staffName} ({this.state.staffId})
+              </i>
+            </CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <Card
+              style={{ width: '100%' }}
+              tabList={tabListNoTitle}
+              activeTabKey={this.state.activeTabKey2}
+              // tabBarExtraContent={<a href="#">More</a>}
+              onTabChange={(key) => {
+                onTab2Change(key)
+              }}
+            >
+              {contentListNoTitle[this.state.activeTabKey2]}
+            </Card>
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="secondary" onClick={this.closeSettingModal}>
+              ĐÓNG
+            </CButton>
+          </CModalFooter>
+        </CModal>
       </>
     )
   }

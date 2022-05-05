@@ -72,14 +72,14 @@ class DayOffYear extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -136,14 +136,14 @@ class DayOffYear extends Component {
           dayOffYearDetail: dayOffYearDetail,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
     this.setState({
       status_year_off: item.status,
       year_off_id: item.id,
@@ -198,14 +198,25 @@ class DayOffYear extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditAcceptSubmit = (event) => {
@@ -220,45 +231,50 @@ class DayOffYear extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          dayOffYear: prevState.dayOffYear.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  status_text: 'Đã Phê Duyệt',
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
+        API({
+          REGISTER_URL: '/hrm/day-off-years/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const dayOffYear = res.data
+            this.setState({
+              dayOffYear: dayOffYear,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Chấp nhận đơn xin nghỉ phép thành công!!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
+        this.closeModal()
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          this.closeModal()
           openNotificationWithIcon({
             type: 'error',
             message: 'Chấp nhận đơn xin nghỉ phép không thành công!!!!',
             description: error.response.data.message,
             placement: 'topRight',
           })
-        } else {
           this.closeModal()
+        } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Chấp nhận đơn xin nghỉ phép không thành công!!!!',
             description: error,
             placement: 'topRight',
           })
+          this.closeModal()
         }
       })
   }
@@ -275,45 +291,50 @@ class DayOffYear extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          dayOffYear: prevState.dayOffYear.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  status_text: 'Chờ Phê Duyệt',
-                }
-              : elm,
-          ),
-        }))
-        this.closeRefuseModal()
+        API({
+          REGISTER_URL: '/hrm/day-off-years/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const dayOffYear = res.data
+            this.setState({
+              dayOffYear: dayOffYear,
+              loading: false,
+            })
+          })
+          .catch((error) =>
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            }),
+          )
         openNotificationWithIcon({
           type: 'success',
           message: 'Từ chối đơn xin nghỉ phép thành công!!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
+        this.closeRefuseModal()
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          this.closeRefuseModal()
           openNotificationWithIcon({
             type: 'error',
             message: 'Từ chối đơn xin nghỉ phép không thành công!!!!',
             description: error.response.data.message,
             placement: 'topRight',
           })
-        } else {
           this.closeRefuseModal()
+        } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Từ chối đơn xin nghỉ phép không thành công!!!!',
             description: error,
             placement: 'topRight',
           })
+          this.closeRefuseModal()
         }
       })
   }
@@ -323,7 +344,7 @@ class DayOffYear extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Kỹ Năng</h2>
+        <h2>{staff_name} - Xác Nhận Đơn Nghỉ Phép</h2>
         <Divider />
         <Table dataSource={this.state.dayOffYear} bordered>
           <Column title="Ngày Xin Nghỉ" dataIndex="date" key="date" />
@@ -358,11 +379,6 @@ class DayOffYear extends Component {
                     </CButton>
                   </CTooltip>
                 )}
-                <CTooltip content="Xoá Dữ Liệu" placement="top">
-                  <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-                    <DeleteOutlined />
-                  </CButton>
-                </CTooltip>
                 <CTooltip content="Chi Tiết" placement="top">
                   <CButton color="info" onClick={() => this.openSettingModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Space, Divider, Input } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
+import { Table, Space, Divider } from 'antd'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
 
 import {
@@ -21,16 +21,14 @@ import {
   CContainer,
   CFormLabel,
   CFormText,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCircle } from '@coreui/icons'
 import Modal from 'react-modal'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import openNotificationWithIcon from '../../../utils/notification'
-const { TextArea } = Input
 
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 
@@ -65,14 +63,14 @@ class Health extends Component {
           loading: false,
         })
       })
-      .catch((error) =>
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
           description: error,
           placement: 'topRight',
-        }),
-      )
+        })
+      })
   }
   UNSAFE_componentWillMount() {
     Modal.setAppElement('body')
@@ -134,14 +132,25 @@ class Health extends Component {
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        openNotificationWithIcon({
-          type: 'error',
-          message: 'Xoá dữ liệu không thành công!!!',
-          description: error,
-          placement: 'topRight',
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
 
   handleEditSubmit = (event) => {
@@ -160,20 +169,25 @@ class Health extends Component {
       DATA: newUpdate,
     })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          health: prevState.health.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  place: this.state.place,
-                  date: this.state.date,
-                  health_status: this.state.health_status,
-                  content: this.state.content,
-                }
-              : elm,
-          ),
-        }))
+        API({
+          REGISTER_URL: '/hrm/health-status/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const health = res.data
+            this.setState({
+              health: health,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
@@ -219,18 +233,31 @@ class Health extends Component {
       DATA: newData,
     })
       .then((res) => {
-        let health = this.state.health
-        health = [newData, ...health]
-        this.setState({ health: health })
+        API({
+          REGISTER_URL: '/hrm/health-status/?no_pagination=true&staff__id=' + staff_id,
+          ACTION: 'GET',
+        })
+          .then((res) => {
+            const health = res.data
+            this.setState({
+              health: health,
+              loading: false,
+            })
+          })
+          .catch((error) => {
+            openNotificationWithIcon({
+              type: 'error',
+              message: 'Có lỗi xảy ra',
+              description: error,
+              placement: 'topRight',
+            })
+          })
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
           description: '',
           placement: 'topRight',
         })
-        setTimeout(function () {
-          window.location.reload()
-        }, 3000)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -271,7 +298,7 @@ class Health extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày khám sức khoẻ
+                  Ngày khám sức khoẻ bắt buộc chọn
                 </CFormText>
               </CCol>
 
@@ -288,7 +315,7 @@ class Health extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập ngày khám sức khoẻ
+                  Nơi khám sức khoẻ bắt buộc nhập
                 </CFormText>
               </CCol>
             </CRow>
@@ -305,7 +332,7 @@ class Health extends Component {
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập nội dung khám sức khoẻ
+                  Nội dung khám sức khoẻ bắt buộc nhập
                 </CFormText>
               </CCol>
               <CCol>
@@ -383,7 +410,7 @@ class Health extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Chọn ngày khám sức khoẻ
+                      Ngày khám sức khoẻ bắt buộc chọn
                     </CFormText>
                   </CCol>
 
@@ -421,7 +448,7 @@ class Health extends Component {
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Nhập nội dung khám sức khoẻ
+                      Nội dung khám sức khoẻ bắt buộc nhập
                     </CFormText>
                   </CCol>
                   <CCol>

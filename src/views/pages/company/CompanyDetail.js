@@ -1,26 +1,9 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {
-  Table,
-  message,
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Radio,
-  Slider,
-  Button,
-  Upload,
-  Rate,
-  Checkbox,
-  Row,
-  Col,
-  Card,
-  Input,
-} from 'antd'
+import { Card } from 'antd'
 
 import {
   CButton,
@@ -39,31 +22,10 @@ import {
 import { TOKEN } from '../../../constants/Config'
 import { Link } from 'react-router-dom'
 
-import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle, cilMediaStepBackward } from '@coreui/icons'
+import { cilCircle, cilMediaStepBackward } from '@coreui/icons'
 import Loading from '../../../utils/loading'
-
-const { Option } = Select
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
-
-const normFile = (e) => {
-  console.log('Upload event:', e)
-
-  if (Array.isArray(e)) {
-    console.log('Upload event1:', e)
-    return e
-  }
-
-  return e && e.fileList
-}
+import { useNavigate } from 'react-router-dom'
 
 const CompanyDetail = () => {
   const { id } = useParams()
@@ -72,6 +34,7 @@ const CompanyDetail = () => {
   const [dataLogo, setDataLogo] = useState({})
   const [loading, setLoading] = useState(true)
   const [newData, setNewData] = useState({ ['name']: 'defaultValue' })
+  let navigate = useNavigate()
 
   const fetchAPI = async () => {
     await axios
@@ -92,6 +55,9 @@ const CompanyDetail = () => {
       .catch((error) => console.log(error))
   }
   useEffect(() => {
+    if (localStorage.getItem('role') !== 'admin') {
+      navigate('/404')
+    }
     fetchAPI()
   }, [])
 
@@ -113,7 +79,7 @@ const CompanyDetail = () => {
       <h2>Công Ty</h2>
       <Card title="Chi Tiết Công Ty" bordered={false}>
         <CForm>
-          <h3>Basic</h3>
+          <h3>Thông Tin Cơ Bản</h3>
           <hr />
           <CContainer>
             <CRow className="mb-3">
@@ -216,8 +182,6 @@ const CompanyDetail = () => {
                 <CFormInput
                   type="text"
                   label="Số Fax"
-                  // //placeholder="034266666"
-                  // text="abc"
                   aria-describedby="exampleFormControlInputHelpInline"
                   name="fax"
                   defaultValue={data.fax}
@@ -236,8 +200,6 @@ const CompanyDetail = () => {
                 <CFormInput
                   type="text"
                   label="Website"
-                  // //placeholder="http://example.com/"
-                  // text="Nhập đúng dịnh dạng email"
                   aria-describedby="exampleFormControlInputHelpInline"
                   name="website"
                   defaultValue={data.website}
@@ -250,20 +212,6 @@ const CompanyDetail = () => {
               </CCol>
               <CCol>
                 <CFormLabel htmlFor="exampleFormControlInput1">Logo</CFormLabel>
-                {/* <CFormInput
-                  type="file"
-                  label="Số Fax"
-                  // //placeholder="034266666"
-                  // text="abc"
-                  aria-describedby="exampleFormControlInputHelpInline"
-                  name="logo"
-                  defaultValue={dataLogo.image_key}
-                  onChange={handleInputChange}
-                  className="mb-3"
-                /> */}
-                {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập đúng dịnh dạng SDT
-                </CFormText> */}
                 <CImage rounded thumbnail src={dataLogo.image_s3_url} width={200} height={200} />
               </CCol>
             </CRow>
@@ -288,7 +236,6 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Địa chỉ"
                         autoComplete="company"
                         name="address"
                         defaultValue={n.address}
@@ -306,11 +253,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Quốc gia"
                         autoComplete="country"
                         name="country"
                         defaultValue={n.country}
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -321,11 +266,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Thành phố"
                         autoComplete="city"
                         name="city"
                         defaultValue={n.city}
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -338,12 +281,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Tỉnh"
                         autoComplete="province"
                         name="province"
                         defaultValue={n.province}
-
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -354,12 +294,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Huyện"
                         autoComplete="district"
                         name="district"
                         defaultValue={n.district}
-
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -372,12 +309,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Xã"
                         autoComplete="commune"
                         name="commune"
                         defaultValue={n.commune}
-
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -388,12 +322,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Mã Zip"
                         autoComplete="postcode"
                         name="postcode"
                         defaultValue={n.postcode}
-
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -406,12 +337,9 @@ const CompanyDetail = () => {
                       </CInputGroupText>{' '}
                       <CFormInput
                         type="text"
-                        //placeholder="Loại"
                         autoComplete="type"
                         name="type"
-                        // defaultValue="working_office_address"
                         defaultValue={n.type}
-                        // onChange={this.handleInputChange}
                       />
                     </CInputGroup>{' '}
                   </CCol>
@@ -419,10 +347,10 @@ const CompanyDetail = () => {
               </CContainer>
             </>
           ))}
-          <CTooltip content="Back List Data" placement="top">
+          <CTooltip content=" Quay Về Trang Trước" placement="top">
             <Link to={'/company/'}>
               <CButton color="info" style={{ marginRight: '10px' }}>
-                <CIcon icon={cilMediaStepBackward} />
+                <CIcon icon={cilMediaStepBackward} /> Quay Về
               </CButton>
             </Link>
           </CTooltip>

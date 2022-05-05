@@ -66,12 +66,16 @@ const ChangePassword = () => {
         description: '',
         placement: 'topRight',
       })
-      navigate('/dashboard')
+      if (localStorage.getItem('role') === 'admin') {
+        navigate('/dashboard-admin')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (error) {
       setError(true)
       openNotificationWithIcon({
         type: 'error',
-        message: 'Đổi mật khẩu thành công!!!',
+        message: 'Đổi mật khẩu không thành công!!!',
         description: error.message || JSON.stringify(error),
         placement: 'topRight',
       })
@@ -166,7 +170,11 @@ const ChangePassword = () => {
                   </div>{' '}
                 </CForm>{' '}
                 <div className="d-grid">
-                  <Link to="/dashboard">
+                  <Link
+                    to={
+                      localStorage.getItem('role') === 'admin' ? '/dashboard-admin' : '/dashboard'
+                    }
+                  >
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
                       Trở Về Trang Chủ{' '}
                     </CButton>{' '}

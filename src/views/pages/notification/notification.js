@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import PropTypes from 'prop-types'
-import { Badge } from 'antd'
+import { Badge, Popover } from 'antd'
 
 // ** Third Party Components
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
@@ -118,20 +118,16 @@ const NotificationDropdown = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
-      .then((results) => {
-        setData(results.data.results)
-        setTotalUnread(results.data.total_unread)
-      })
-      .catch(function (error) {
-        console.log(error.response.data.message)
-      })
-  }, [])
-  const handleReadOne = (noti_id) => {
-    API({
-      REGISTER_URL: '/hrm/notification/' + noti_id + '/read-one/' + user.username + '/',
-      ACTION: 'PUT',
-    }).then((res) => {
+    if (localStorage.getItem('role') === 'admin') {
+      API({ REGISTER_URL: '/admin/notification/?no_pagination=true', ACTION: 'GET' })
+        .then((results) => {
+          setData(results.data.results)
+          setTotalUnread(results.data.total_unread)
+        })
+        .catch(function (error) {
+          console.log(error.response.data.message)
+        })
+    } else {
       API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
         .then((results) => {
           setData(results.data.results)
@@ -140,24 +136,73 @@ const NotificationDropdown = () => {
         .catch(function (error) {
           console.log(error.response.data.message)
         })
-    })
+    }
+  }, [])
+
+  const handleReadOne = (noti_id) => {
+    if (localStorage.getItem('role') === 'admin') {
+      API({
+        REGISTER_URL: '/admin/notification/' + noti_id + '/read-one/' + user.username + '/',
+        ACTION: 'PUT',
+      }).then((res) => {
+        API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
+          .then((results) => {
+            setData(results.data.results)
+            setTotalUnread(results.data.total_unread)
+          })
+          .catch(function (error) {
+            console.log(error.response.data.message)
+          })
+      })
+    } else {
+      API({
+        REGISTER_URL: '/hrm/notification/' + noti_id + '/read-one/' + user.username + '/',
+        ACTION: 'PUT',
+      }).then((res) => {
+        API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
+          .then((results) => {
+            setData(results.data.results)
+            setTotalUnread(results.data.total_unread)
+          })
+          .catch(function (error) {
+            console.log(error.response.data.message)
+          })
+      })
+    }
   }
 
   const handleReadAll = () => {
-    API({
-      REGISTER_URL: '/hrm/notification/read-all/' + user.username + '/',
-      ACTION: 'PUT',
-    }).then((res) => {
-      API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
-        .then((results) => {
-          setData(results.data.results)
-          setTotalUnread(results.data.total_unread)
-        })
-        .catch(function (error) {
-          console.log(error.response.data.message)
-        })
-    })
+    if (localStorage.getItem('role') === 'admin') {
+      API({
+        REGISTER_URL: '/admin/notification/read-all/' + user.username + '/',
+        ACTION: 'PUT',
+      }).then((res) => {
+        API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
+          .then((results) => {
+            setData(results.data.results)
+            setTotalUnread(results.data.total_unread)
+          })
+          .catch(function (error) {
+            console.log(error.response.data.message)
+          })
+      })
+    } else {
+      API({
+        REGISTER_URL: '/hrm/notification/read-all/' + user.username + '/',
+        ACTION: 'PUT',
+      }).then((res) => {
+        API({ REGISTER_URL: '/hrm/notification/?no_pagination=true', ACTION: 'GET' })
+          .then((results) => {
+            setData(results.data.results)
+            setTotalUnread(results.data.total_unread)
+          })
+          .catch(function (error) {
+            console.log(error.response.data.message)
+          })
+      })
+    }
   }
+
   return (
     <Fragment>
       <IconButton
@@ -197,29 +242,46 @@ const NotificationDropdown = () => {
         </MenuItem>
         <ScrollWrapper>
           {data.map((item) => (
-            <MenuItem onClick={() => handleReadOne(item.id)} key={item.id}>
-              <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-                <Avatar
-                  alt={item.first_name_data ? item.first_name_data : 'Image'}
-                  src={item.user_image}
-                />
-                <Box
-                  sx={{
-                    mx: 4,
-                    flex: '1 1',
-                    display: 'flex',
-                    overflow: 'hidden',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <MenuItemTitle>{item.title}</MenuItemTitle>
-                  <MenuItemSubtitle variant="body2">{item.body}</MenuItemSubtitle>
+            <Popover
+              key={item.index}
+              placement="left"
+              content={
+                <>
+                  <div>
+                    <p>{item.body}</p>
+                    <p>{item.created_at_data}</p>
+                  </div>
+                </>
+              }
+              title={item.title}
+            >
+              <MenuItem onClick={() => handleReadOne(item.id)} key={item.id}>
+                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                  <Avatar
+                    alt={item.first_name_data ? item.first_name_data : 'Image'}
+                    src={item.user_image}
+                  />
+                  <Box
+                    sx={{
+                      mx: 4,
+                      flex: '1 1',
+                      display: 'flex',
+                      overflow: 'hidden',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <MenuItemTitle>{item.title}</MenuItemTitle>
+                    <MenuItemSubtitle variant="body2">{item.body}</MenuItemSubtitle>
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: 'text.disabled', fontSize: '0.65rem' }}
+                  >
+                    {item.created_at_data}
+                  </Typography>
                 </Box>
-                <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                  {item.created_at_data}
-                </Typography>
-              </Box>
-            </MenuItem>
+              </MenuItem>
+            </Popover>
           ))}
         </ScrollWrapper>
         <MenuItem

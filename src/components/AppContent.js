@@ -23,7 +23,11 @@ const AppContent = () => {
               )
             )
           })}
-          <Route path="/" element={<Navigate to="dashboard" replace />} />
+          {localStorage.getItem('role') === 'admin' ? (
+            <Route path="#/dashboard-admin" element={<Navigate to="dashboard-admin" replace />} />
+          ) : (
+            <Route path="/" element={<Navigate to="dashboard" replace />} />
+          )}
         </Routes>
       </Suspense>
     </CContainer>

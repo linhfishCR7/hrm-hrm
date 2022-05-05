@@ -31,7 +31,7 @@ const LiveDemo = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -54,7 +54,7 @@ const StaticBackdrop = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -154,7 +154,7 @@ const ScrollingLongContent = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -254,7 +254,7 @@ const ScrollingLongContent2 = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -278,7 +278,7 @@ const VerticallyCentered = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -321,7 +321,7 @@ const VerticallyCentered2 = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -363,7 +363,7 @@ const TooltipsPopovers = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Cập Nhật</CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -490,7 +490,7 @@ const Modals = () => {
                 <CModalBody>Modal body text goes here.</CModalBody>
                 <CModalFooter>
                   <CButton color="secondary">Close</CButton>
-                  <CButton color="primary">Save changes</CButton>
+                  <CButton color="primary">Cập Nhật</CButton>
                 </CModalFooter>
               </CModal>
             </DocsExample>

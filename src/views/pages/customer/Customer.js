@@ -1,19 +1,13 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Tag, Space, Button, message, Input } from 'antd'
+import { Table, Space, message, Input } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import openNotificationWithIcon from '../../../utils/notification'
 
 import {
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTable,
-  CSpinner,
   CContainer,
   CModal,
   CModalBody,
@@ -28,17 +22,14 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
   CFormLabel,
   CFormText,
-  CImage,
-  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilPencil, cilPlus, cilCircle, cilInfo } from '@coreui/icons'
+import { cilPlus, cilCircle, cilInfo } from '@coreui/icons'
 import Modal from 'react-modal'
 import Loading from '../../../utils/loading'
-const { Column, ColumnGroup } = Table
+const { Column } = Table
 
 class Customer extends Component {
   constructor(props) {
@@ -71,9 +62,8 @@ class Customer extends Component {
     this.openModal = this.openModal.bind(this)
     this.openDeleteModal = this.openDeleteModal.bind(this)
   }
-
-  async componentDidMount() {
-    await axios
+  fetchAPI = async () => {
+    return await axios
       .get('/hrm/customers/?no_pagination=true', {
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +80,9 @@ class Customer extends Component {
         })
       })
       .catch((error) => console.log(error))
+  }
+  componentDidMount() {
+    this.fetchAPI()
   }
 
   handleInputChange = (event) => {
@@ -194,54 +187,39 @@ class Customer extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        let key = this.state.id
-        this.setState((prevState) => ({
-          companies: prevState.companies.map((elm) =>
-            elm.id === key
-              ? {
-                  ...elm,
-                  name: this.state.name,
-                  email: this.state.email,
-                  phone: this.state.phone,
-                  file: this.state.file,
-                  website: this.state.website,
-                }
-              : elm,
-          ),
-        }))
-        this.closeModal()
-        message.success({
-          content: 'Update data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        this.fetchAPI()
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
-        // setTimeout(function () {
-        //   window.location.reload()
-        // }, 3000)
+        this.closeModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch(function (error) {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Cập nhật dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeModal()
+        }
+      })
   }
 
   handleDelete = (event) => {
     event.preventDefault()
 
-    const Id = {
-      id: this.state.id,
-    }
     axios
       .delete('/hrm/customers/' + this.state.id + '/', {
         headers: {
@@ -254,28 +232,33 @@ class Customer extends Component {
         this.setState((prevState) => ({
           customers: prevState.customers.filter((el) => el.id !== this.state.id),
         }))
-        message.success({
-          content: 'Delete data Success!!!',
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
+        openNotificationWithIcon({
+          type: 'success',
+          message: 'Xoá dữ liệu thành công!!!',
+          description: '',
+          placement: 'topRight',
         })
         this.closeDeleteModal()
       })
-      .catch((error) =>
-        message.error({
-          content: error,
-          duration: 5,
-          maxCount: 1,
-          className: 'custom-class',
-          style: {
-            marginTop: '20vh',
-          },
-        }),
-      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error.response.data.message,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        } else {
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Xoá dữ liệu không thành công!!!',
+            description: error,
+            placement: 'topRight',
+          })
+          this.closeDeleteModal()
+        }
+      })
   }
   handleSearch = async (event) => {
     let value = event.target.value
@@ -296,23 +279,23 @@ class Customer extends Component {
         <h2>Khách Hàng</h2>
         <CRow>
           <CCol md={4}>
-            <CTooltip content="Create data" placement="top">
+            <CTooltip content="Thêm Dữ Liệu" placement="top">
               <Link to="/add-customer">
                 <CButton color="primary">
-                  <CIcon icon={cilPlus} />
+                  <CIcon icon={cilPlus} /> Thêm Khách Hàng
                 </CButton>
               </Link>
             </CTooltip>
           </CCol>
           <CCol md={8}>
             <Input.Search
-              placeholder="Search..."
+              placeholder="Tìm kiếm tên, số điện thoại và email"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.customers} bordered scroll={{ y: 240 }}>
+        <Table dataSource={this.state.customers} bordered>
           {/* <Column title="Mã" dataIndex="company" key="company" /> */}
           <Column title="Tên" dataIndex="name" key="name" />
           <Column title="SĐT" dataIndex="phone" key="phone" />
@@ -324,7 +307,7 @@ class Customer extends Component {
             key={this.state.companies}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Edit data" placement="top">
+                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -334,7 +317,7 @@ class Customer extends Component {
                     <EditOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Remove data" placement="top">
+                <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
@@ -353,7 +336,7 @@ class Customer extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="xl">
           <CModalHeader>
-            <CModalTitle>UPDATE</CModalTitle>
+            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -377,11 +360,11 @@ class Customer extends Component {
                 </CFormText> */}
                   </CCol>
                   <CCol>
-                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Công Ty</CFormLabel>
+                    <CFormLabel htmlFor="exampleFormControlInput1">Tên Khách Hàng</CFormLabel>
 
                     <CFormInput
                       type="text"
-                      placeholder="Tên Công Ty"
+                      placeholder="Tên Khách Hàng"
                       autoComplete="name"
                       name="name"
                       value={this.state.name}
@@ -585,10 +568,10 @@ class Customer extends Component {
 
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  Close
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Save changes
+                  Cập Nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -596,7 +579,7 @@ class Customer extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>DELETE</CModalTitle>
+            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>

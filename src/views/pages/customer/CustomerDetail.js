@@ -1,28 +1,10 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../../../utils/axios'
-import axios1 from 'axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Loading from '../../../utils/loading'
 
-import {
-  Table,
-  message,
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Radio,
-  Slider,
-  Button,
-  Upload,
-  Rate,
-  Checkbox,
-  Row,
-  Col,
-  Card,
-  Input,
-} from 'antd'
+import { Card } from 'antd'
 
 import {
   CButton,
@@ -34,37 +16,13 @@ import {
   CContainer,
   CForm,
   CFormLabel,
-  CFormText,
-  CImage,
   CTooltip,
 } from '@coreui/react'
 import { TOKEN } from '../../../constants/Config'
 import { Link } from 'react-router-dom'
 
-// import { UploadOutlined, InboxOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import { cilCircle, cilMediaStepBackward } from '@coreui/icons'
-
-// const { Option } = Select
-// const formItemLayout = {
-//   labelCol: {
-//     span: 6,
-//   },
-//   wrapperCol: {
-//     span: 14,
-//   },
-// }
-
-// const normFile = (e) => {
-//   console.log('Upload event:', e)
-
-//   if (Array.isArray(e)) {
-//     console.log('Upload event1:', e)
-//     return e
-//   }
-
-//   return e && e.fileList
-// }
 
 const CompanyDetail = () => {
   const { id } = useParams()
@@ -100,7 +58,7 @@ const CompanyDetail = () => {
       <h2>Chi Tiết Khách Hàng</h2>
       <Card title="Chi Tiết Khách Hàng" bordered={false}>
         <CForm>
-          <h3>Basic</h3>
+          <h3>Thông Tin Cơ Bản</h3>
           <hr />
           <CContainer>
             <CRow className="mb-3">
@@ -281,10 +239,10 @@ const CompanyDetail = () => {
               </CRow>
             </CContainer>
           </>
-          <CTooltip content="Back List Data" placement="top">
+          <CTooltip content=" Quay Về Trang Trước" placement="top">
             <Link to={'/customer'}>
               <CButton color="info" style={{ marginRight: '10px' }}>
-                <CIcon icon={cilMediaStepBackward} />
+                <CIcon icon={cilMediaStepBackward} /> Quay Về
               </CButton>
             </Link>
           </CTooltip>
