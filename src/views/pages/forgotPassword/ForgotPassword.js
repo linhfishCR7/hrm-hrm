@@ -215,7 +215,7 @@ const ForgotPassword = () => {
                   </div>{' '}
                 </CForm>{' '}
                 <div className="d-grid">
-                  <Link to="/login">
+                  <Link to={localStorage.getItem('role') === 'admin' ? '/login-admin' : '/login'}>
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
                       Quay Về Trang Đăng Nhập{' '}
                     </CButton>{' '}

@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilCircle, cilMediaStepBackward } from '@coreui/icons'
 import Loading from '../../../utils/loading'
+import { useNavigate } from 'react-router-dom'
 
 const CompanyDetail = () => {
   const { id } = useParams()
@@ -33,6 +34,7 @@ const CompanyDetail = () => {
   const [dataLogo, setDataLogo] = useState({})
   const [loading, setLoading] = useState(true)
   const [newData, setNewData] = useState({ ['name']: 'defaultValue' })
+  let navigate = useNavigate()
 
   const fetchAPI = async () => {
     await axios
@@ -53,6 +55,9 @@ const CompanyDetail = () => {
       .catch((error) => console.log(error))
   }
   useEffect(() => {
+    if (localStorage.getItem('role') !== 'admin') {
+      navigate('/404')
+    }
     fetchAPI()
   }, [])
 

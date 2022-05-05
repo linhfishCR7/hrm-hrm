@@ -23,18 +23,7 @@ import {
   CModalFooter,
   CButton,
 } from '@coreui/react'
-import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
-  cilLockLocked,
-  cilSettings,
-  cilTask,
-  cilUser,
-  cilKeyboard,
-} from '@coreui/icons'
+import { cilFile, cilLockLocked, cilTask, cilUser, cilKeyboard } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
@@ -49,6 +38,9 @@ const AppHeaderDropdown = () => {
   const [visibleprofile, setVisibleProfile] = useState(false)
 
   useEffect(() => {
+    // if (localStorage.getItem('role') !== 'staff') {
+    //   navigate('/404-admin')
+    // }
     getSession().then(() => {
       setStatus(true)
     })
@@ -62,21 +54,26 @@ const AppHeaderDropdown = () => {
           user.signOut()
           localStorage.removeItem('token')
           setStatus(false)
-          navigate('/login')
+          if (localStorage.getItem('role') === 'admin') {
+            navigate('/login-admin')
+          } else {
+            navigate('/login')
+          }
         } else if (results.data.is_staff === false) {
           alert('You do not have permission to access. Contact us for more details')
           setVisible(true)
           user.signOut()
           localStorage.removeItem('token')
           setStatus(false)
-          navigate('/login')
+          if (results.data.is_superuser === true) {
+            navigate('/login-admin')
+          } else {
+            navigate('/login')
+          }
         }
       })
       .catch(function (error) {
         if (error.response) {
-          // console.log(error.response.data.code)
-          // console.log(error.response.status)
-          // console.log(error.response.headers)
           if (error.response.data.code === 'AUTH_0') {
             message.error({
               content: 'Bạn đã hết phiên làm việc. Vui lòng đăng nhập lại',
@@ -89,7 +86,11 @@ const AppHeaderDropdown = () => {
             })
             user.signOut()
             localStorage.removeItem('token')
-            navigate('/login')
+            if (localStorage.getItem('role') === 'admin') {
+              navigate('/login-admin')
+            } else {
+              navigate('/login')
+            }
           }
         }
       })
@@ -100,8 +101,11 @@ const AppHeaderDropdown = () => {
       user.signOut()
       setStatus(false)
       localStorage.removeItem('token')
-      // return <Redirect to="/login" />
-      navigate('/login')
+      if (localStorage.getItem('role') === 'admin') {
+        navigate('/login-admin')
+      } else {
+        navigate('/login')
+      }
     }
   }
   const showDrawer = () => {
@@ -117,15 +121,15 @@ const AppHeaderDropdown = () => {
         <CAvatar src={data} size="xl" shape="rounded" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
+        {/* <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
         <CDropdownItem href="#">
           <CIcon icon={cilTask} className="me-2" />
           Tasks
           <CBadge color="danger" className="ms-2">
             42
           </CBadge>
-        </CDropdownItem>
-        <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
+        </CDropdownItem> */}
+        <CDropdownHeader className="bg-light fw-semibold py-2">Cài Đặt</CDropdownHeader>
         <CDropdownItem onClick={showDrawer}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
@@ -141,14 +145,14 @@ const AppHeaderDropdown = () => {
         >
           <Profile />
         </Drawer>
-        <CDropdownItem href="#">
+        {/* <CDropdownItem href="#">
           <CIcon icon={cilFile} className="me-2" />
           Projects
           <CBadge color="primary" className="ms-2">
             42
           </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#/change-password" target="_blank">
+        </CDropdownItem> */}
+        <CDropdownItem href="#/change-password">
           <CIcon icon={cilKeyboard} className="me-2" />
           Đổi Mật Khẩu
         </CDropdownItem>

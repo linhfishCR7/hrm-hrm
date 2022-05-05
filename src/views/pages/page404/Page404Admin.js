@@ -12,7 +12,7 @@ import CIcon from '@coreui/icons-react'
 import { cilMagnifyingGlass } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
-const Page404 = () => {
+const Page404Admin = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -26,7 +26,7 @@ const Page404 = () => {
               </p>
             </div>
             <CInputGroup className="input-prepend">
-              <Link to="/dashboard">
+              <Link to="/dashboard-admin">
                 <div className="d-grid mb-3">
                   <CButton color="info" style={{ marginRight: '10px' }}>
                     Trở Về Trang Chủ
@@ -41,4 +41,4 @@ const Page404 = () => {
   )
 }
 
-export default Page404
+export default Page404Admin

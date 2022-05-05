@@ -3,6 +3,7 @@ import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import openNotificationWithIcon from '../../../utils/notification'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
+import Page404 from '../page404/Page404'
 
 import { Form, Button, Upload, Card, Input } from 'antd'
 
@@ -35,6 +36,7 @@ class AddCompany extends Component {
       data: {},
       companies: [],
       loading: false,
+      status: true,
       key: '',
       modalIsOpen: false,
       modalDeleteIsOpen: false,
@@ -76,7 +78,13 @@ class AddCompany extends Component {
       ],
     }
   }
-
+  componentDidMount() {
+    if (localStorage.getItem('role') !== 'admin') {
+      this.setState({
+        status: false,
+      })
+    }
+  }
   handleInputChange = (event) => {
     const target = event.target
     const value = target.value
@@ -161,465 +169,471 @@ class AddCompany extends Component {
     )
     return (
       <>
-        <h2>Công Ty</h2>
-        <Card title="Thêm Công Ty" bordered={false}>
-          <Form name="validate_other" {...formItemLayout} onFinish={this.handleInsertSubmit}>
-            <h3>Basic</h3>
-            <hr />
-            <Form.Item
-              name="company"
-              label="Company"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập company!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập company" />
-            </Form.Item>
-            <Form.Item
-              name="name"
-              label="Tên công ty"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập tên công ty!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập tên công ty" />
-            </Form.Item>
-            <Form.Item
-              name="tax_code"
-              label="Mã số thuế"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập mã số thuế!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập mã số thuế" />
-            </Form.Item>
-            <Form.Item
-              name="phone"
-              label="SĐT"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập SDT!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập SDT" type="tel" />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                {
-                  type: 'email',
-                  message: 'Vui lòng nhập đúng định dạng email!',
-                },
-                {
-                  required: true,
-                  message: 'Vui lòng nhập Email!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập Email" />
-            </Form.Item>
-            <Form.Item
-              name="website"
-              label="Website"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập website!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập website" />
-            </Form.Item>
-            <Form.Item
-              name="fax"
-              label="Số Fax"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập fax!',
-                },
-              ]}
-              onChange={this.handleInputChange}
-            >
-              <Input placeholder="Vui lòng nhập fax" />
-            </Form.Item>
-            <Form.Item label="Logo">
-              <Upload
-                disabled={this.state.loading}
-                accept="image/*"
-                customRequest={({ file, onError, onSuccess, onProgress }) => {
-                  const fileType = file.type
-                  const file_name = file.name
-                  // const key = `videos/${generateDateForFileName()}_${fileName}`
-                  // const file_name = { fileName }
+        {this.state.status ? (
+          <>
+            <h2>Công Ty</h2>
+            <Card title="Thêm Công Ty" bordered={false}>
+              <Form name="validate_other" {...formItemLayout} onFinish={this.handleInsertSubmit}>
+                <h3>Basic</h3>
+                <hr />
+                <Form.Item
+                  name="company"
+                  label="Company"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập company!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập company" />
+                </Form.Item>
+                <Form.Item
+                  name="name"
+                  label="Tên công ty"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập tên công ty!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập tên công ty" />
+                </Form.Item>
+                <Form.Item
+                  name="tax_code"
+                  label="Mã số thuế"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập mã số thuế!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập mã số thuế" />
+                </Form.Item>
+                <Form.Item
+                  name="phone"
+                  label="SĐT"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập SDT!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập SDT" type="tel" />
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  label="Email"
+                  rules={[
+                    {
+                      type: 'email',
+                      message: 'Vui lòng nhập đúng định dạng email!',
+                    },
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập Email!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập Email" />
+                </Form.Item>
+                <Form.Item
+                  name="website"
+                  label="Website"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập website!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập website" />
+                </Form.Item>
+                <Form.Item
+                  name="fax"
+                  label="Số Fax"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập fax!',
+                    },
+                  ]}
+                  onChange={this.handleInputChange}
+                >
+                  <Input placeholder="Vui lòng nhập fax" />
+                </Form.Item>
+                <Form.Item label="Logo">
+                  <Upload
+                    disabled={this.state.loading}
+                    accept="image/*"
+                    customRequest={({ file, onError, onSuccess, onProgress }) => {
+                      const fileType = file.type
+                      const file_name = file.name
+                      // const key = `videos/${generateDateForFileName()}_${fileName}`
+                      // const file_name = { fileName }
 
-                  this.setState({
-                    key: file.name,
-                    loading: true,
-                  })
-
-                  axios
-                    .post('/common/upload/policy/', {
-                      file_name,
-                    })
-                    .then((results) => {
-                      var returnData = results.data
-                      var signedRequest = returnData.url
-                      var content = returnData.fields
-                      var formData = new FormData()
-                      Object.keys(returnData.fields).forEach((key) =>
-                        formData.append(key, returnData.fields[key]),
-                      )
-                      formData.append('file', file)
-                      // var t0 = performance.now()
-                      fetch(signedRequest, {
-                        method: 'POST',
-                        body: formData,
+                      this.setState({
+                        key: file.name,
+                        loading: true,
                       })
-                        .then((result) => {
-                          var t1 = performance.now()
-                          // console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
-                          this.setState({
-                            loading: false,
-                            logo: content.key,
-                            logo_url: signedRequest + content.key,
+
+                      axios
+                        .post('/common/upload/policy/', {
+                          file_name,
+                        })
+                        .then((results) => {
+                          var returnData = results.data
+                          var signedRequest = returnData.url
+                          var content = returnData.fields
+                          var formData = new FormData()
+                          Object.keys(returnData.fields).forEach((key) =>
+                            formData.append(key, returnData.fields[key]),
+                          )
+                          formData.append('file', file)
+                          // var t0 = performance.now()
+                          fetch(signedRequest, {
+                            method: 'POST',
+                            body: formData,
                           })
-                          onSuccess(result, file)
-                          openNotificationWithIcon({
-                            type: 'success',
-                            message: 'Upload ảnh thành công!!!',
-                            description: 'Upload ảnh thành công!!!',
-                            placement: 'topRight',
-                          })
+                            .then((result) => {
+                              var t1 = performance.now()
+                              // console.log('Call to doSomething took ' + (t1 - t0) + ' milliseconds.')
+                              this.setState({
+                                loading: false,
+                                logo: content.key,
+                                logo_url: signedRequest + content.key,
+                              })
+                              onSuccess(result, file)
+                              openNotificationWithIcon({
+                                type: 'success',
+                                message: 'Upload ảnh thành công!!!',
+                                description: 'Upload ảnh thành công!!!',
+                                placement: 'topRight',
+                              })
+                            })
+                            .catch((error) => {
+                              this.setState({
+                                loading: false,
+                              })
+                              onError(error)
+                              openNotificationWithIcon({
+                                type: 'error',
+                                message: 'Upload ảnh không thành công!!!',
+                                description: JSON.stringify(error),
+                                placement: 'topRight',
+                              })
+                            })
                         })
                         .catch((error) => {
                           this.setState({
                             loading: false,
                           })
-                          onError(error)
                           openNotificationWithIcon({
                             type: 'error',
                             message: 'Upload ảnh không thành công!!!',
-                            description: JSON.stringify(error),
+                            description:
+                              'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
                             placement: 'topRight',
                           })
                         })
-                    })
-                    .catch((error) => {
-                      this.setState({
-                        loading: false,
-                      })
-                      openNotificationWithIcon({
-                        type: 'error',
-                        message: 'Upload ảnh không thành công!!!',
-                        description:
-                          'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                        placement: 'topRight',
-                      })
-                    })
-                }}
-              >
-                <Button loading={this.state.loading}>
-                  <UploadOutlined /> Click to Upload
+                    }}
+                  >
+                    <Button loading={this.state.loading}>
+                      <UploadOutlined /> Click to Upload
+                    </Button>
+                  </Upload>
+                  {this.state.logo_url ? (
+                    <CImage rounded thumbnail src={this.state.logo_url} width={200} height={200} />
+                  ) : (
+                    ''
+                  )}
+                </Form.Item>
+
+                <Form.Item
+                  wrapperCol={{
+                    span: 12,
+                    offset: 6,
+                  }}
+                >
+                  {' '}
+                </Form.Item>
+                <h3>Địa chỉ</h3>
+
+                <hr />
+                <h4>Địa Chỉ Văn Phòng Làm Việc</h4>
+                <CContainer>
+                  {' '}
+                  <CRow>
+                    <CCol md={12}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Địa chỉ"
+                          autoComplete="company"
+                          name="address"
+                          onChange={this.handleInputChange}
+                          required
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Quốc gia"
+                          autoComplete="country"
+                          name="country"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Thành phố"
+                          autoComplete="city"
+                          name="city"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Tỉnh"
+                          autoComplete="province"
+                          name="province"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Huyện"
+                          autoComplete="district"
+                          name="district"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Xã"
+                          autoComplete="commune"
+                          name="commune"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Mã Zip"
+                          autoComplete="postcode"
+                          name="postcode"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow style={{ display: 'none' }}>
+                    <CCol md={6} style={{ display: 'none' }}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Loại"
+                          autoComplete="type"
+                          name="type"
+                          value="working_office_address"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                </CContainer>
+                <CContainer>
+                  {' '}
+                  <h4>Địa Chỉ Trụ Sở Chính</h4>
+                  <CRow>
+                    <CCol md={12}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Địa chỉ"
+                          autoComplete="company"
+                          name="address2"
+                          onChange={this.handleInputChange}
+                          required
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Quốc gia"
+                          autoComplete="country"
+                          name="country2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Thành phố"
+                          autoComplete="city"
+                          name="city2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Tỉnh"
+                          autoComplete="province"
+                          name="province2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Huyện"
+                          autoComplete="district"
+                          name="district2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Xã"
+                          autoComplete="commune"
+                          name="commune2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                    <CCol md={6}>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Mã Zip"
+                          autoComplete="postcode"
+                          name="postcode2"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                  <CRow style={{ display: 'none' }}>
+                    <CCol md={6} style={{ display: 'none' }}>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilCircle} />{' '}
+                        </CInputGroupText>{' '}
+                        <CFormInput
+                          type="text"
+                          placeholder="Loại"
+                          autoComplete="type"
+                          name="type2"
+                          value="working_office_address"
+                          onChange={this.handleInputChange}
+                        />
+                      </CInputGroup>{' '}
+                    </CCol>
+                  </CRow>
+                </CContainer>
+                <Button type="primary" htmlType="submit">
+                  Submit
                 </Button>
-              </Upload>
-              {this.state.logo_url ? (
-                <CImage rounded thumbnail src={this.state.logo_url} width={200} height={200} />
-              ) : (
-                ''
-              )}
-            </Form.Item>
-
-            <Form.Item
-              wrapperCol={{
-                span: 12,
-                offset: 6,
-              }}
-            >
-              {' '}
-            </Form.Item>
-            <h3>Địa chỉ</h3>
-
-            <hr />
-            <h4>Địa Chỉ Văn Phòng Làm Việc</h4>
-            <CContainer>
-              {' '}
-              <CRow>
-                <CCol md={12}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Địa chỉ"
-                      autoComplete="company"
-                      name="address"
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Quốc gia"
-                      autoComplete="country"
-                      name="country"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Thành phố"
-                      autoComplete="city"
-                      name="city"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Tỉnh"
-                      autoComplete="province"
-                      name="province"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Huyện"
-                      autoComplete="district"
-                      name="district"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Xã"
-                      autoComplete="commune"
-                      name="commune"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Mã Zip"
-                      autoComplete="postcode"
-                      name="postcode"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow style={{ display: 'none' }}>
-                <CCol md={6} style={{ display: 'none' }}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Loại"
-                      autoComplete="type"
-                      name="type"
-                      value="working_office_address"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-            </CContainer>
-            <CContainer>
-              {' '}
-              <h4>Địa Chỉ Trụ Sở Chính</h4>
-              <CRow>
-                <CCol md={12}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Địa chỉ"
-                      autoComplete="company"
-                      name="address2"
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Quốc gia"
-                      autoComplete="country"
-                      name="country2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Thành phố"
-                      autoComplete="city"
-                      name="city2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Tỉnh"
-                      autoComplete="province"
-                      name="province2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Huyện"
-                      autoComplete="district"
-                      name="district2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md={6}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Xã"
-                      autoComplete="commune"
-                      name="commune2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-                <CCol md={6}>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Mã Zip"
-                      autoComplete="postcode"
-                      name="postcode2"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-              <CRow style={{ display: 'none' }}>
-                <CCol md={6} style={{ display: 'none' }}>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilCircle} />{' '}
-                    </CInputGroupText>{' '}
-                    <CFormInput
-                      type="text"
-                      placeholder="Loại"
-                      autoComplete="type"
-                      name="type2"
-                      value="working_office_address"
-                      onChange={this.handleInputChange}
-                    />
-                  </CInputGroup>{' '}
-                </CCol>
-              </CRow>
-            </CContainer>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form>
-        </Card>
+              </Form>
+            </Card>
+          </>
+        ) : (
+          <Page404 />
+        )}
       </>
     )
   }

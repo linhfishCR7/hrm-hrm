@@ -68,7 +68,7 @@ import { Divider } from 'antd'
 
 const { Meta } = Card
 
-const Dashboard = () => {
+const DashboardAdmin = () => {
   let navigate = useNavigate()
 
   const getSession = async () => {
@@ -112,8 +112,8 @@ const Dashboard = () => {
 
   const [status, setStatus] = useState(false)
   useEffect(() => {
-    if (localStorage.getItem('role') !== 'staff') {
-      navigate('/404-admin')
+    if (localStorage.getItem('role') !== 'admin') {
+      navigate('/404')
     }
     getSession().then(() => {
       setStatus(true)
@@ -123,19 +123,14 @@ const Dashboard = () => {
   useEffect(() => {
     if (!user) {
       navigate('/login')
-      return
     } else {
-      if (localStorage.getItem('role') !== 'staff') {
-        navigate('/404-admin')
+      if (localStorage.getItem('role') !== 'admin') {
+        navigate('/404')
       }
     }
   }, [])
 
-  return (
-    <>
-      <WidgetsDropdown />
-    </>
-  )
+  return <>{/* <WidgetsDropdown /> */}</>
 }
 
-export default Dashboard
+export default DashboardAdmin

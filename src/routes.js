@@ -50,6 +50,7 @@ const PageTest = React.lazy(() => import('./views/pages/page-test/ListReligion')
 
 //################################################################
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const DashboardAdmin = React.lazy(() => import('./views/dashboard/DashboardAdmin'))
 const Profile = React.lazy(() => import('./views/profile/Profile'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -99,6 +100,7 @@ const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffPr
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard-admin', name: 'Dashboard Admin', element: DashboardAdmin },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/religion', name: 'Tôn Giáo', element: Religion },
   { path: '/nationality', name: 'Quốc Tịch', element: Nationality },

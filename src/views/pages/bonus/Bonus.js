@@ -3,6 +3,7 @@ import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Divider } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Loading from '../../../utils/loading'
+import Page404Admin from '../page404/Page404Admin'
 
 import {
   CModal,
@@ -45,6 +46,7 @@ class Bonus extends Component {
       date: null,
       reason: '',
       note: '',
+      status: true,
     }
 
     this.openModal = this.openModal.bind(this)
@@ -52,6 +54,11 @@ class Bonus extends Component {
   }
 
   componentDidMount() {
+    if (localStorage.getItem('role') !== 'staff') {
+      this.setState({
+        status: false,
+      })
+    }
     API({
       REGISTER_URL: '/hrm/bonuses/?no_pagination=true&staff__id=' + staff_id,
       ACTION: 'GET',
@@ -278,121 +285,11 @@ class Bonus extends Component {
   render() {
     return (
       <>
-        {' '}
-        <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Khen Thưởng</h2>
-        <CForm onSubmit={this.handleAddSubmit}>
-          <CContainer>
-            <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Ngày Khen Thưởng</CFormLabel>
-                <CFormInput
-                  type="date"
-                  placeholder="Ngày Khen Thưởng"
-                  autoComplete="date"
-                  name="date"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Chọn ngày khen thưởng
-                </CFormText>
-              </CCol>
-
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Lí Do Khen Thưởng</CFormLabel>
-
-                <CFormInput
-                  type="text"
-                  placeholder="Lí Do Khen Thưởng"
-                  autoComplete="reason"
-                  name="reason"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập lí do khen thưởng
-                </CFormText>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
-                <CFormInput
-                  type="text"
-                  placeholder="Ghi Chú"
-                  autoComplete="note"
-                  name="note"
-                  onChange={this.handleInputChange}
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập Ghi Chú
-                </CFormText>
-              </CCol>
-              <CCol>
-                <CFormLabel htmlFor="exampleFormControlInput1">Số Lượng</CFormLabel>
-                <CFormInput
-                  type="number"
-                  placeholder="Số Lượng"
-                  autoComplete="amount_data"
-                  name="amount_data"
-                  onChange={this.handleInputChange}
-                  required
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập số lượng
-                </CFormText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol>
-                <CButton color="primary" type="submit">
-                  LƯU
-                </CButton>
-              </CCol>
-            </CRow>
-          </CContainer>
-        </CForm>{' '}
-        <Divider />
-        <Table dataSource={this.state.bonus} bordered>
-          <Column title="Ngày Khen Thưởng" dataIndex="date" key="date" />
-          <Column title="Lí Do" dataIndex="reason" key="reason" />
-          <Column title="Ghi Chú" dataIndex="note" key="note" />
-          <Column title="Số Lượng" dataIndex="amount_data" key="amount_data" />
-          <Column
-            title="Hành động"
-            key={this.state.bonus}
-            render={(text, record) => (
-              <Space size="middle">
-                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
-                  <CButton
-                    color="warning"
-                    style={{ marginRight: '10px' }}
-                    onClick={() => this.openModal(record)}
-                  >
-                    <EditOutlined />
-                  </CButton>
-                </CTooltip>
-                <CTooltip content="Xoá Dữ Liệu" placement="top">
-                  <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-                    <DeleteOutlined />
-                  </CButton>
-                </CTooltip>
-              </Space>
-            )}
-          />
-        </Table>
-        {/* Update */}
-        <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
-          <CModalHeader>
-            <CModalTitle>CẬP NHẬT</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CForm onSubmit={this.handleEditSubmit}>
+        {this.state.status ? (
+          <>
+            <Loading loading={this.state.loading} />
+            <h2>{staff_name} - Khen Thưởng</h2>
+            <CForm onSubmit={this.handleAddSubmit}>
               <CContainer>
                 <CRow className="mb-3">
                   <CCol>
@@ -402,7 +299,6 @@ class Bonus extends Component {
                       placeholder="Ngày Khen Thưởng"
                       autoComplete="date"
                       name="date"
-                      value={this.state.date}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
@@ -420,7 +316,6 @@ class Bonus extends Component {
                       placeholder="Lí Do Khen Thưởng"
                       autoComplete="reason"
                       name="reason"
-                      value={this.state.reason}
                       onChange={this.handleInputChange}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
@@ -438,7 +333,6 @@ class Bonus extends Component {
                       placeholder="Ghi Chú"
                       autoComplete="note"
                       name="note"
-                      value={this.state.note}
                       onChange={this.handleInputChange}
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
@@ -454,7 +348,6 @@ class Bonus extends Component {
                       autoComplete="amount_data"
                       name="amount_data"
                       onChange={this.handleInputChange}
-                      value={this.state.amount_data}
                       required
                       aria-describedby="exampleFormControlInputHelpInline"
                     />
@@ -463,54 +356,175 @@ class Bonus extends Component {
                     </CFormText>
                   </CCol>
                 </CRow>
+                <CRow>
+                  <CCol>
+                    <CButton color="primary" type="submit">
+                      LƯU
+                    </CButton>
+                  </CCol>
+                </CRow>
               </CContainer>
-              <CModalFooter>
-                <CButton color="secondary" onClick={this.closeModal}>
-                  ĐÓNG
-                </CButton>
-                <CButton color="primary" type="submit">
-                  CẬP NHẬT
-                </CButton>
-              </CModalFooter>
             </CForm>{' '}
-          </CModalBody>
-        </CModal>
-        {/* Delete */}
-        <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
-          <CModalHeader>
-            <CModalTitle>XOÁ</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            {' '}
-            <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.date}?
-              </h2>
-              <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
-                <CInputGroupText>
-                  <CIcon icon={cilCircle} />{' '}
-                </CInputGroupText>{' '}
-                <CFormInput
-                  type="text"
-                  placeholder="bonus_types"
-                  autoComplete="bonus_types"
-                  name="id"
-                  value={this.state.id}
-                  onChange={this.handleInputChange}
-                  required
-                />
-              </CInputGroup>{' '}
-              <CModalFooter>
-                <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
-                </CButton>
-                <CButton color="danger" type="submit">
-                  ĐỒNG Ý
-                </CButton>
-              </CModalFooter>
-            </CForm>{' '}
-          </CModalBody>
-        </CModal>
+            <Divider />
+            <Table dataSource={this.state.bonus} bordered>
+              <Column title="Ngày Khen Thưởng" dataIndex="date" key="date" />
+              <Column title="Lí Do" dataIndex="reason" key="reason" />
+              <Column title="Ghi Chú" dataIndex="note" key="note" />
+              <Column title="Số Lượng" dataIndex="amount_data" key="amount_data" />
+              <Column
+                title="Hành động"
+                key={this.state.bonus}
+                render={(text, record) => (
+                  <Space size="middle">
+                    <CTooltip content="Cập Nhật Dự Liệu" placement="top">
+                      <CButton
+                        color="warning"
+                        style={{ marginRight: '10px' }}
+                        onClick={() => this.openModal(record)}
+                      >
+                        <EditOutlined />
+                      </CButton>
+                    </CTooltip>
+                    <CTooltip content="Xoá Dữ Liệu" placement="top">
+                      <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
+                        <DeleteOutlined />
+                      </CButton>
+                    </CTooltip>
+                  </Space>
+                )}
+              />
+            </Table>
+            {/* Update */}
+            <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
+              <CModalHeader>
+                <CModalTitle>CẬP NHẬT</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <CForm onSubmit={this.handleEditSubmit}>
+                  <CContainer>
+                    <CRow className="mb-3">
+                      <CCol>
+                        <CFormLabel htmlFor="exampleFormControlInput1">Ngày Khen Thưởng</CFormLabel>
+                        <CFormInput
+                          type="date"
+                          placeholder="Ngày Khen Thưởng"
+                          autoComplete="date"
+                          name="date"
+                          value={this.state.date}
+                          onChange={this.handleInputChange}
+                          required
+                          aria-describedby="exampleFormControlInputHelpInline"
+                        />
+                        <CFormText component="span" id="exampleFormControlInputHelpInline">
+                          Chọn ngày khen thưởng
+                        </CFormText>
+                      </CCol>
+
+                      <CCol>
+                        <CFormLabel htmlFor="exampleFormControlInput1">
+                          Lí Do Khen Thưởng
+                        </CFormLabel>
+
+                        <CFormInput
+                          type="text"
+                          placeholder="Lí Do Khen Thưởng"
+                          autoComplete="reason"
+                          name="reason"
+                          value={this.state.reason}
+                          onChange={this.handleInputChange}
+                          required
+                          aria-describedby="exampleFormControlInputHelpInline"
+                        />
+                        <CFormText component="span" id="exampleFormControlInputHelpInline">
+                          Nhập lí do khen thưởng
+                        </CFormText>
+                      </CCol>
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol>
+                        <CFormLabel htmlFor="exampleFormControlInput1">Ghi Chú</CFormLabel>
+                        <CFormInput
+                          type="text"
+                          placeholder="Ghi Chú"
+                          autoComplete="note"
+                          name="note"
+                          value={this.state.note}
+                          onChange={this.handleInputChange}
+                          aria-describedby="exampleFormControlInputHelpInline"
+                        />
+                        <CFormText component="span" id="exampleFormControlInputHelpInline">
+                          Nhập Ghi Chú
+                        </CFormText>
+                      </CCol>
+                      <CCol>
+                        <CFormLabel htmlFor="exampleFormControlInput1">Số Lượng</CFormLabel>
+                        <CFormInput
+                          type="number"
+                          placeholder="Số Lượng"
+                          autoComplete="amount_data"
+                          name="amount_data"
+                          onChange={this.handleInputChange}
+                          value={this.state.amount_data}
+                          required
+                          aria-describedby="exampleFormControlInputHelpInline"
+                        />
+                        <CFormText component="span" id="exampleFormControlInputHelpInline">
+                          Nhập số lượng
+                        </CFormText>
+                      </CCol>
+                    </CRow>
+                  </CContainer>
+                  <CModalFooter>
+                    <CButton color="secondary" onClick={this.closeModal}>
+                      ĐÓNG
+                    </CButton>
+                    <CButton color="primary" type="submit">
+                      CẬP NHẬT
+                    </CButton>
+                  </CModalFooter>
+                </CForm>{' '}
+              </CModalBody>
+            </CModal>
+            {/* Delete */}
+            <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
+              <CModalHeader>
+                <CModalTitle>XOÁ</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                {' '}
+                <CForm onSubmit={this.handleDelete}>
+                  <h2 style={{ textTransform: 'uppercase' }}>
+                    Bạn có chắc chắn xoá {this.state.date}?
+                  </h2>
+                  <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
+                    <CInputGroupText>
+                      <CIcon icon={cilCircle} />{' '}
+                    </CInputGroupText>{' '}
+                    <CFormInput
+                      type="text"
+                      placeholder="bonus_types"
+                      autoComplete="bonus_types"
+                      name="id"
+                      value={this.state.id}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </CInputGroup>{' '}
+                  <CModalFooter>
+                    <CButton color="secondary" onClick={this.closeDeleteModal}>
+                      HUỶ
+                    </CButton>
+                    <CButton color="danger" type="submit">
+                      ĐỒNG Ý
+                    </CButton>
+                  </CModalFooter>
+                </CForm>{' '}
+              </CModalBody>
+            </CModal>
+          </>
+        ) : (
+          <Page404Admin />
+        )}
       </>
     )
   }
