@@ -38,7 +38,7 @@ const CompanyDetail = () => {
 
   const fetchAPI = async () => {
     await axios
-      .get('/hrm/companies/' + id + '/', {
+      .get('/admin/companies/' + id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,

@@ -37,6 +37,28 @@ const _navAdmin = [
     //   text: 'NEW',
     // },
   },
+  {
+    component: CNavTitle,
+    name: 'Cập Nhật',
+  },
+  {
+    component: CNavGroup,
+    name: 'Công ty',
+    to: '/company',
+    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Danh sách Công Ty',
+        to: '/company',
+      },
+      {
+        component: CNavItem,
+        name: 'Thêm Công Ty',
+        to: '/add-company',
+      },
+    ],
+  },
 ]
 
 export default _navAdmin

@@ -131,7 +131,7 @@ class AddCompany extends Component {
         },
       ],
     }
-    API({ REGISTER_URL: '/hrm/companies/', ACTION: 'POST', DATA: newItem })
+    API({ REGISTER_URL: '/admin/companies/', ACTION: 'POST', DATA: newItem })
       .then((res) => {
         openNotificationWithIcon({
           type: 'success',

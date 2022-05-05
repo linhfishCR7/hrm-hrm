@@ -86,7 +86,7 @@ class Company extends Component {
       })
     }
     API({
-      REGISTER_URL: '/hrm/companies/?no_pagination=true',
+      REGISTER_URL: '/admin/companies/?no_pagination=true',
       ACTION: 'GET',
     })
       .then((res) => {
@@ -122,7 +122,7 @@ class Company extends Component {
 
   openModal = (item) => {
     API({
-      REGISTER_URL: '/hrm/companies/' + item.id + '/',
+      REGISTER_URL: '/admin/companies/' + item.id + '/',
       ACTION: 'GET',
     })
       .then((res) => {
@@ -230,13 +230,13 @@ class Company extends Component {
       ],
     }
     API({
-      REGISTER_URL: '/hrm/companies/' + this.state.id + '/',
+      REGISTER_URL: '/admin/companies/' + this.state.id + '/',
       ACTION: 'PUT',
       DATA: newUpdate,
     })
       .then((res) => {
         API({
-          REGISTER_URL: '/hrm/companies/?no_pagination=true',
+          REGISTER_URL: '/admin/companies/?no_pagination=true',
           ACTION: 'GET',
         })
           .then((res) => {
@@ -287,7 +287,7 @@ class Company extends Component {
   handleDelete = (event) => {
     event.preventDefault()
 
-    API({ REGISTER_URL: '/hrm/companies/' + this.state.id + '/', ACTION: 'DELETE' })
+    API({ REGISTER_URL: '/admin/companies/' + this.state.id + '/', ACTION: 'DELETE' })
       .then((res) => {
         this.setState((prevState) => ({
           companies: prevState.companies.filter((el) => el.id !== this.state.id),
@@ -322,7 +322,7 @@ class Company extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/companies/?no_pagination=true&search=' + value
+    const REGISTER_URL = '/admin/companies/?no_pagination=true&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
