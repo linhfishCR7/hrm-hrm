@@ -127,68 +127,87 @@ const Profile = () => {
       <CCard className="mb-4">
         <CCardBody>
           <h1> My Profile </h1> <p className="text-medium-emphasis"></p>{' '}
-          {image ? (
-            <CImage src={image} width={160} height={160} className="rounded-circle mb-5" />
-          ) : (
-            <CImage
-              src="https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png"
-              width={160}
-              height={160}
-              className="rounded-circle"
-            />
-          )}
-          <Upload
-            disabled={loading}
-            accept="image/*"
-            customRequest={({ file, onError, onSuccess, onProgress }) => {
-              const fileType = file.type
-              const file_name = file.name
-              setLoading(true)
-              setKey(file.name)
+          <CRow className="mb-3">
+            <CCol md={4}></CCol>
+            <CCol md={8}>
+              {' '}
+              {image ? (
+                <CImage src={image} width={160} height={160} className="rounded-circle mb-5" />
+              ) : (
+                <CImage
+                  src="https://hrm-s3.s3.amazonaws.com/6e98775b-4d5hrm-profile.png"
+                  width={160}
+                  height={160}
+                  className="rounded-circle"
+                />
+              )}
+              <Upload
+                disabled={loading}
+                accept="image/*"
+                customRequest={({ file, onError, onSuccess, onProgress }) => {
+                  const fileType = file.type
+                  const file_name = file.name
+                  setLoading(true)
+                  setKey(file.name)
 
-              axios
-                .post('/common/upload/policy/', {
-                  file_name,
-                })
-                .then((results) => {
-                  var returnData = results.data
-                  var signedRequest = returnData.url
-                  var content = returnData.fields
-                  var key = content.key
-                  var formData = new FormData()
-                  Object.keys(returnData.fields).forEach((key) =>
-                    formData.append(key, returnData.fields[key]),
-                  )
-                  formData.append('file', file)
+                  axios
+                    .post('/common/upload/policy/', {
+                      file_name,
+                    })
+                    .then((results) => {
+                      var returnData = results.data
+                      var signedRequest = returnData.url
+                      var content = returnData.fields
+                      var key = content.key
+                      var formData = new FormData()
+                      Object.keys(returnData.fields).forEach((key) =>
+                        formData.append(key, returnData.fields[key]),
+                      )
+                      formData.append('file', file)
 
-                  fetch(signedRequest, {
-                    method: 'POST',
-                    body: formData,
-                  })
-                    .then(async (result) => {
-                      setLoading(false)
-                      setLogo(key)
-                      setLogoUrl(signedRequest + key)
-                      setImage(signedRequest + key)
-                      const key_data = { image: key }
-                      updateProfile(key_data)
-                      onSuccess(result, file)
-                      message.success({
-                        content: 'Upload ảnh thành công!!!',
-                        duration: 5,
-                        maxCount: 1,
-                        className: 'custom-class',
-                        style: {
-                          marginTop: '20vh',
-                        },
+                      fetch(signedRequest, {
+                        method: 'POST',
+                        body: formData,
                       })
+                        .then(async (result) => {
+                          setLoading(false)
+                          setLogo(key)
+                          setLogoUrl(signedRequest + key)
+                          setImage(signedRequest + key)
+                          const key_data = { image: key }
+                          updateProfile(key_data)
+                          onSuccess(result, file)
+                          message.success({
+                            content: 'Upload ảnh thành công!!!',
+                            duration: 5,
+                            maxCount: 1,
+                            className: 'custom-class',
+                            style: {
+                              marginTop: '20vh',
+                            },
+                          })
+                        })
+                        .catch((error) => {
+                          setLoading(false)
+
+                          onError(error)
+                          message.error({
+                            content: JSON.stringify(error),
+                            duration: 5,
+                            maxCount: 1,
+                            className: 'custom-class',
+                            style: {
+                              marginTop: '20vh',
+                            },
+                          })
+                        })
                     })
                     .catch((error) => {
                       setLoading(false)
 
-                      onError(error)
                       message.error({
-                        content: JSON.stringify(error),
+                        content:
+                          'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
                         duration: 5,
                         maxCount: 1,
                         className: 'custom-class',
@@ -197,27 +216,14 @@ const Profile = () => {
                         },
                       })
                     })
-                })
-                .catch((error) => {
-                  setLoading(false)
-
-                  message.error({
-                    content: 'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                    duration: 5,
-                    maxCount: 1,
-                    className: 'custom-class',
-                    style: {
-                      marginTop: '20vh',
-                    },
-                  })
-                })
-            }}
-          >
-            <Button loading={loading}>
-              <UploadOutlined />
-            </Button>
-          </Upload>
-          <br />
+                }}
+              >
+                <Button loading={loading}>
+                  <UploadOutlined />
+                </Button>
+              </Upload>
+            </CCol>
+          </CRow>
           <CForm onSubmit={onSubmit}>
             <CRow>
               <CCol>

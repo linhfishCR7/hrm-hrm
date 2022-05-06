@@ -96,6 +96,7 @@ const TrainningDetail = React.lazy(() => import('./views/pages/trainningDetail/T
 const TimeKeeping = React.lazy(() => import('./views/pages/timeKeeping/TimeKeeping'))
 const Project = React.lazy(() => import('./views/pages/project/Project'))
 const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffProject'))
+const ListUser = React.lazy(() => import('./views/pages/user/ListUser'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -146,6 +147,7 @@ const routes = [
   { path: '/staff/timekeeping', name: 'Chấm Công', element: TimeKeeping },
   { path: '/project', name: 'Dự Án', element: Project },
   { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
+  { path: '/list-user', name: 'Danh Sách Người Dùng', element: ListUser },
 
   //test
   { path: '/page-test', name: 'Test', element: PageTest },
