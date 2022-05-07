@@ -483,14 +483,12 @@ class UpSalary extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>XOÁ</CModalTitle>
+            <CModalTitle>XOÁ DỮ LIỆU</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.date}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.date}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

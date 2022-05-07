@@ -70,6 +70,7 @@ const EmploymentContractType = React.lazy(() =>
 const KindOffWork = React.lazy(() => import('./views/pages/kindOffWork/KindOffWork'))
 const AddCompany = React.lazy(() => import('./views/pages/company/AddCompany'))
 const Company = React.lazy(() => import('./views/pages/company/Company'))
+const Branch = React.lazy(() => import('./views/pages/branch/Branch'))
 const CompanyDetail = React.lazy(() => import('./views/pages/company/CompanyDetail'))
 const Customer = React.lazy(() => import('./views/pages/customer/Customer'))
 const CustomerDetail = React.lazy(() => import('./views/pages/customer/CustomerDetail'))
@@ -97,6 +98,7 @@ const TimeKeeping = React.lazy(() => import('./views/pages/timeKeeping/TimeKeepi
 const Project = React.lazy(() => import('./views/pages/project/Project'))
 const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffProject'))
 const ListUser = React.lazy(() => import('./views/pages/user/ListUser'))
+const ReportSalary = React.lazy(() => import('./views/pages/salary/ReportSalary'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -121,6 +123,7 @@ const routes = [
   { path: '/kind-off-work', name: 'Công', element: KindOffWork },
   { path: '/add-company', name: 'Thêm Công Ty', element: AddCompany },
   { path: '/company', name: 'Công Ty', element: Company },
+  { path: '/branch', name: 'Chi Nhánh', element: Branch },
   { path: '/company/:id', name: 'Chi Tiết Công Ty', element: CompanyDetail },
   { path: '/customer', name: 'Khách Hàng', element: Customer },
   { path: '/add-customer', name: 'Thêm Khách Hàng', element: AddCustomer },
@@ -148,6 +151,11 @@ const routes = [
   { path: '/project', name: 'Dự Án', element: Project },
   { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
   { path: '/list-user', name: 'Danh Sách Người Dùng', element: ListUser },
+  {
+    path: '/report-salary',
+    name: 'Danh Sách Bảng Lương Nhân Viên Theo Tháng',
+    element: ReportSalary,
+  },
 
   //test
   { path: '/page-test', name: 'Test', element: PageTest },

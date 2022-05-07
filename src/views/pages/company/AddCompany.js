@@ -15,6 +15,7 @@ import {
   CInputGroupText,
   CContainer,
   CImage,
+  CButton,
 } from '@coreui/react'
 import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
@@ -171,27 +172,35 @@ class AddCompany extends Component {
       <>
         {this.state.status ? (
           <>
-            <h2>Công Ty</h2>
-            <Card title="Thêm Công Ty" bordered={false}>
+            <h2>Thêm Công Ty</h2>
+            <Card title="" bordered={false}>
               <Form name="validate_other" {...formItemLayout} onFinish={this.handleInsertSubmit}>
-                <h3>Basic</h3>
+                <h3>Thông Tin Cơ Bản</h3>
                 <hr />
                 <Form.Item
                   name="company"
-                  label="Company"
+                  label={
+                    <>
+                      <b>Mã công ty</b>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,
-                      message: 'Vui lòng nhập company!',
+                      message: 'Vui lòng nhập mã công ty!',
                     },
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập company" />
+                  <Input placeholder="vd: ITR" />
                 </Form.Item>
                 <Form.Item
                   name="name"
-                  label="Tên công ty"
+                  label={
+                    <>
+                      <b>Tên công ty</b>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,
@@ -200,11 +209,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập tên công ty" />
+                  <Input placeholder="vd: Công ty cổng phần ITR" />
                 </Form.Item>
                 <Form.Item
                   name="tax_code"
-                  label="Mã số thuế"
+                  label={
+                    <>
+                      <b>Mã số thuế</b>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,
@@ -213,11 +226,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập mã số thuế" />
+                  <Input placeholder="vd: 123456789" />
                 </Form.Item>
                 <Form.Item
                   name="phone"
-                  label="SĐT"
+                  label={
+                    <>
+                      <b>Số điện thoại</b>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,
@@ -226,11 +243,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập SDT" type="tel" />
+                  <Input placeholder="vd: +84342666676" type="tel" />
                 </Form.Item>
                 <Form.Item
                   name="email"
-                  label="Email"
+                  label={
+                    <>
+                      <b>Email</b>
+                    </>
+                  }
                   rules={[
                     {
                       type: 'email',
@@ -243,11 +264,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập Email" />
+                  <Input placeholder="vd: info@gmail.com" />
                 </Form.Item>
                 <Form.Item
+                  label={
+                    <>
+                      <b>Link website</b>
+                    </>
+                  }
                   name="website"
-                  label="Website"
                   rules={[
                     {
                       required: true,
@@ -256,11 +281,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập website" />
+                  <Input placeholder="vd: http://example.com" />
                 </Form.Item>
                 <Form.Item
+                  label={
+                    <>
+                      <b>Số fax</b>
+                    </>
+                  }
                   name="fax"
-                  label="Số Fax"
                   rules={[
                     {
                       required: true,
@@ -269,9 +298,15 @@ class AddCompany extends Component {
                   ]}
                   onChange={this.handleInputChange}
                 >
-                  <Input placeholder="Vui lòng nhập fax" />
+                  <Input placeholder="vd: 123456789" />
                 </Form.Item>
-                <Form.Item label="Logo">
+                <Form.Item
+                  label={
+                    <>
+                      <b>Logo</b>
+                    </>
+                  }
+                >
                   <Upload
                     disabled={this.state.loading}
                     accept="image/*"
@@ -339,7 +374,7 @@ class AddCompany extends Component {
                           })
                           openNotificationWithIcon({
                             type: 'error',
-                            message: 'Upload ảnh không thành công!!!',
+                            message: 'Tải ảnh không thành công!!!',
                             description:
                               'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
                             placement: 'topRight',
@@ -348,7 +383,7 @@ class AddCompany extends Component {
                     }}
                   >
                     <Button loading={this.state.loading}>
-                      <UploadOutlined /> Click to Upload
+                      <UploadOutlined /> Bấm vào để tải ảnh lên
                     </Button>
                   </Upload>
                   {this.state.logo_url ? (
@@ -366,7 +401,7 @@ class AddCompany extends Component {
                 >
                   {' '}
                 </Form.Item>
-                <h3>Địa chỉ</h3>
+                <h3>Thông Tin Địa chỉ</h3>
 
                 <hr />
                 <h4>Địa Chỉ Văn Phòng Làm Việc</h4>
@@ -625,9 +660,9 @@ class AddCompany extends Component {
                     </CCol>
                   </CRow>
                 </CContainer>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                <CButton color="primary" type="submit">
+                  LƯU
+                </CButton>
               </Form>
             </Card>
           </>

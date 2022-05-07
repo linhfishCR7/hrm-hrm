@@ -524,7 +524,7 @@ class OnBusiness extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
+              <h2>
                 Bạn có chắc chắn xoá {this.state.start_date} đến {this.state.date}?
               </h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>

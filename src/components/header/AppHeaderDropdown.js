@@ -159,7 +159,7 @@ const AppHeaderDropdown = () => {
         <CDropdownDivider />
         <CDropdownItem onClick={logout}>
           <CIcon icon={cilLockLocked} className="me-2" />
-          {status ? 'Logout' : 'Login'}
+          {status ? 'Đăng Xuất' : 'Đăng Nhập'}
         </CDropdownItem>
       </CDropdownMenu>
       <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>

@@ -346,6 +346,19 @@ const _nav = [
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Tiền Lương',
+    to: '/report-salary',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Bảng lương',
+        to: '/report-salary',
+      },
+    ],
+  },
 
   // {
   //   component: CNavGroup,

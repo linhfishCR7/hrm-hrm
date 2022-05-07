@@ -549,9 +549,7 @@ class Contact extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.full_name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.full_name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

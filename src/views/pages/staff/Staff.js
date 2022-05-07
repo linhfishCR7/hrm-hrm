@@ -750,7 +750,7 @@ class Staff extends Component {
               <h3 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
                 Mã nhân viên: {this.state.staff}
               </h3>
-              {/* <h2 style={{ textTransform: 'uppercase' }}>{this.state.name}</h2> */}
+              {/* <h2>{this.state.name}</h2> */}
 
               <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
                 <Link to="/staff/contact" target="_blank">
@@ -902,7 +902,7 @@ class Staff extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
+              <h2>
                 Bạn có chắc chắn xoá {this.state.last_name} {this.state.first_name}?
               </h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>

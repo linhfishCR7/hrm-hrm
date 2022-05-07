@@ -1,30 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDrop,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilSpeedometer,
-  cilStar,
-  cilHome,
-  cilImage,
-  cilImagePlus,
-  cilAirplaneModeOff,
-  cilContrast,
-  cilCheck,
-  cilPeople,
-  cilContact,
-  cilMoney,
-  cilCalendar,
-  cilSatelite,
-  cilRunning,
-  cilUser,
-} from '@coreui/icons'
+import { cilSpeedometer, cilBuilding, cilHome, cilUser, cilLibraryBuilding } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _navAdmin = [
@@ -43,36 +19,22 @@ const _navAdmin = [
     name: 'Cập Nhật',
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Công ty',
     to: '/company',
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách Công Ty',
-        to: '/company',
-      },
-      {
-        component: CNavItem,
-        name: 'Thêm Công Ty',
-        to: '/add-company',
-      },
-    ],
+    icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
   },
-  ,
   {
-    component: CNavGroup,
+    component: CNavItem,
+    name: 'Chi Nhánh',
+    to: '/branch',
+    icon: <CIcon icon={cilLibraryBuilding} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Người Dùng',
     to: '/list-user',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách Người Dùng',
-        to: '/list-user',
-      },
-    ],
   },
 ]
 

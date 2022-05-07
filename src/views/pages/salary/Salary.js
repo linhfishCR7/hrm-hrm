@@ -202,7 +202,7 @@ class Salary extends Component {
       first_name: item.first_name,
       last_name: item.last_name,
       staff_id: item.id,
-      modalAddAllSalaryIsOpen: true,
+      modalAddSalaryIsOpen: true,
     })
   }
   // //
@@ -853,7 +853,7 @@ class Salary extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>Bạn có chắc chắn xoá?</h2>
+              <h2>Bạn có chắc chắn xoá?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -885,8 +885,8 @@ class Salary extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleActive}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có muốn active phiếu lương tháng {this.state.currentMonth} năm{' '}
+              <h2>
+                Bạn có muốn active phiếu lương tháng {this.state.currentMonth + 1} năm{' '}
                 {this.state.currentYear}
               </h2>
 
@@ -1148,9 +1148,9 @@ class Salary extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleAddAllSalary}>
-              <h2 style={{ textTransform: 'uppercase' }}>
+              <h2>
                 Bạn có muốn thêm phiếu lương cho tất cả nhân viên trong tháng{' '}
-                {this.state.currentMonth} năm {this.state.currentYear}
+                {this.state.currentMonth + 1} năm {this.state.currentYear}
               </h2>
 
               <CModalFooter>

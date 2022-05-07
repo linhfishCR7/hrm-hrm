@@ -1084,7 +1084,7 @@ const WidgetsDropdown = () => {
             <h3 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
               Mã nhân viên: {ListStaffModal.staff}
             </h3>
-            {/* <h2 style={{ textTransform: 'uppercase' }}>{this.state.name}</h2> */}
+            {/* <h2>{this.state.name}</h2> */}
 
             <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
               <Link to="/staff/contact" target="_blank">

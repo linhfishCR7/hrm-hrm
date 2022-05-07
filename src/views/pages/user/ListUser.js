@@ -307,7 +307,7 @@ class ListUser extends Component {
                     {record.is_active_data === 'Hoạt Động' ? (
                       <CTooltip content="Khoá Người Dùng Người Dùng" placement="top">
                         <CButton
-                          color="info"
+                          color="success"
                           style={{ marginRight: '10px' }}
                           onClick={() => this.openStatusModal(record)}
                         >
@@ -315,7 +315,7 @@ class ListUser extends Component {
                         </CButton>
                       </CTooltip>
                     ) : (
-                      <CTooltip content="Active Người Dùng" placement="top">
+                      <CTooltip content="Kích Hoạt Người Dùng" placement="top">
                         <CButton
                           color="secondary"
                           style={{ marginRight: '10px' }}
@@ -346,50 +346,49 @@ class ListUser extends Component {
                     value: 'NHÂN VIÊN',
                   },
                 ]}
+                // cursor:pointer;
                 onFilter={(value, record) => record.role_data.startsWith(value)}
                 render={(text, record) => (
                   <>
-                    {record.role_data === 'QLNS' ? (
-                      <Tag color="geekblue" key="QLNS">
-                        {record.role_data}
-                      </Tag>
-                    ) : record.role_data === 'ADMIN' ? (
-                      <Tag color="gold" key="ADMIN">
-                        {record.role_data}
-                      </Tag>
-                    ) : (
-                      <Tag color="green" key="NHÂN VIÊN">
-                        {record.role_data}
-                      </Tag>
-                    )}
+                    <Space size="middle">
+                      <CTooltip content="Cập Nhật Vai Trò Người Dùng" placement="top">
+                        {record.role_data === 'QLNS' ? (
+                          <Tag
+                            color="geekblue"
+                            key="QLNS"
+                            onClick={() => this.openModal(record)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {record.role_data}
+                          </Tag>
+                        ) : record.role_data === 'ADMIN' ? (
+                          <Tag
+                            color="gold"
+                            key="ADMIN"
+                            onClick={() => this.openModal(record)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {record.role_data}
+                          </Tag>
+                        ) : (
+                          <Tag
+                            color="green"
+                            key="NHÂN VIÊN"
+                            onClick={() => this.openModal(record)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {record.role_data}
+                          </Tag>
+                        )}
+                      </CTooltip>
+                    </Space>
                   </>
-                )}
-              />
-              <Column
-                title="Hành động"
-                render={(text, record) => (
-                  <Space size="middle">
-                    <CTooltip content="Cập Nhật Dự Liệu" placement="top">
-                      <CButton
-                        color="warning"
-                        style={{ marginRight: '10px' }}
-                        onClick={() => this.openModal(record)}
-                      >
-                        <EditOutlined />
-                      </CButton>
-                    </CTooltip>
-                    {/* <CTooltip content="Xoá Dữ Liệu" placement="top">
-                  <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-                    <DeleteOutlined />
-                  </CButton>
-                </CTooltip> */}
-                  </Space>
                 )}
               />
             </Table>
             <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
               <CModalHeader>
-                <CModalTitle>CẬP NHẬT DỮ LIỆU</CModalTitle>
+                <CModalTitle>CẬP NHẬT VAI TRÒ NGƯỜI DÙNG</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <CForm onSubmit={this.handleEditSubmit}>
@@ -475,23 +474,29 @@ class ListUser extends Component {
                   <CRow>
                     <CCol md={6}>
                       <CFormSwitch
-                        label="Là Người Dùng QLNS"
+                        label={
+                          <>
+                            <b>Người Dùng QLNS</b>
+                          </>
+                        }
                         id="is_staff"
                         name="is_staff"
                         checked={this.state.is_staff}
-                        // defaultChecked={this.state.is_staff}
-                        // value={this.state.is_staff}
+                        size="lg"
                         onChange={(event) => this.setState({ is_staff: event.target.checked })}
                       />
                     </CCol>
                     <CCol md={6}>
                       <CFormSwitch
-                        label="Là Người Dùng Admin"
+                        label={
+                          <>
+                            <b>Người Dùng Admin</b>
+                          </>
+                        }
                         id="is_superuser"
                         name="is_superuser"
                         checked={this.state.is_superuser}
-                        // defaultChecked={this.state.is_superuser}
-                        // value={this.state.is_superuser}
+                        size="lg"
                         onChange={(event) => this.setState({ is_superuser: event.target.checked })}
                       />
                     </CCol>
@@ -511,15 +516,15 @@ class ListUser extends Component {
               <CModalHeader>
                 <CModalTitle>
                   {this.state.is_active_data === 'Bị Khoá'
-                    ? 'ACTIVE NGƯỜI DÙNG'
+                    ? 'KÍCH HOẠT NGƯỜI DÙNG'
                     : 'KHOÁ NGƯỜI DÙNG'}
                 </CModalTitle>
               </CModalHeader>
               {this.state.is_active_data === 'Bị Khoá' ? (
                 <CModalBody>
                   <CForm onSubmit={this.handleStatus}>
-                    <h2 style={{ textTransform: 'uppercase' }}>
-                      Bạn có chắc chắn active người dùng {this.state.last_name}{' '}
+                    <h2>
+                      Bạn có chắc chắn kích hoạt người dùng {this.state.last_name}{' '}
                       {this.state.first_name}?
                     </h2>
                     <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
@@ -549,7 +554,7 @@ class ListUser extends Component {
               ) : (
                 <CModalBody>
                   <CForm onSubmit={this.handleStatus}>
-                    <h2 style={{ textTransform: 'uppercase' }}>
+                    <h2>
                       Bạn có chắc chắn khoá người dùng {this.state.last_name}{' '}
                       {this.state.first_name}?
                     </h2>

@@ -396,9 +396,7 @@ class DayOffYear extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditAcceptSubmit}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn chấp nhận đơn xin nghỉ?
-              </h2>
+              <h2>Bạn có chắc chắn chấp nhận đơn xin nghỉ?</h2>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
                   ĐÓNG
@@ -417,7 +415,7 @@ class DayOffYear extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditRefuseSubmit}>
-              <h2 style={{ textTransform: 'uppercase' }}>Bạn có chắc chắn từ chối đơn xin nghỉ?</h2>
+              <h2>Bạn có chắc chắn từ chối đơn xin nghỉ?</h2>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeRefuseModal}>
                   ĐÓNG
@@ -437,9 +435,7 @@ class DayOffYear extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
