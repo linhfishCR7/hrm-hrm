@@ -344,6 +344,11 @@ const _nav = [
         name: 'Danh sách nhân viên',
         to: '/list-staff',
       },
+      {
+        component: CNavItem,
+        name: 'CV nhân viên',
+        to: '/list-cv',
+      },
     ],
   },
   {

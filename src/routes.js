@@ -99,6 +99,7 @@ const Project = React.lazy(() => import('./views/pages/project/Project'))
 const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffProject'))
 const ListUser = React.lazy(() => import('./views/pages/user/ListUser'))
 const ReportSalary = React.lazy(() => import('./views/pages/salary/ReportSalary'))
+const ListCV = React.lazy(() => import('./views/pages/staff/listCV'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -151,6 +152,7 @@ const routes = [
   { path: '/project', name: 'Dự Án', element: Project },
   { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
   { path: '/list-user', name: 'Danh Sách Người Dùng', element: ListUser },
+  { path: '/list-cv', name: 'CV Nhân Viên', element: ListCV },
   {
     path: '/report-salary',
     name: 'Danh Sách Bảng Lương Nhân Viên Theo Tháng',
