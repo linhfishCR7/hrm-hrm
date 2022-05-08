@@ -1,72 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Pool from '../../utils/UserPool'
 import { useNavigate } from 'react-router-dom'
-
-import {
-  CAvatar,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CContainer,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import {
-  Table,
-  Tag,
-  Space,
-  Button,
-  message,
-  Input,
-  Collapse,
-  Card,
-  Avatar,
-  Spin,
-  Alert,
-} from 'antd'
-import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import '../../assets/style.css'
 
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
-
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import Loading from '../../utils/loading'
-import { Divider } from 'antd'
-
-const { Meta } = Card
+import WidgetsDropdownAdmin from '../widgets/WidgetsDropdownAdmin'
 
 const DashboardAdmin = () => {
   let navigate = useNavigate()
@@ -130,7 +67,11 @@ const DashboardAdmin = () => {
     }
   }, [])
 
-  return <>{/* <WidgetsDropdown /> */}</>
+  return (
+    <>
+      <WidgetsDropdownAdmin />
+    </>
+  )
 }
 
 export default DashboardAdmin
