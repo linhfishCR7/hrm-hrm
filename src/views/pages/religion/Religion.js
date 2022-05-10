@@ -109,14 +109,14 @@ class Religion extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -185,7 +185,7 @@ class Religion extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -193,7 +193,7 @@ class Religion extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -229,7 +229,7 @@ class Religion extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -237,7 +237,7 @@ class Religion extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -304,21 +304,13 @@ class Religion extends Component {
         <CRow>
           <CCol md={4}>
             <Input.Search
-              //   defaultValue={search}
-              //   onSearch={}
               placeholder="Tìm kiếm tên và mã tôn giáo"
               onChange={(event) => this.handleSearch(event)}
               className="mb-3"
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.religions} bordered>
-          {/* <Column
-            title="#"
-            key="#"
-            render={() => (_, __, index) => (page - 1) * pageSize + (index + 1)}
-            width="70"
-          /> */}
+        <Table dataSource={this.state.religions} bordered scroll={{ y: 540 }}>
           <Column title="Mã" dataIndex="religion" key="nationalty" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
@@ -348,7 +340,7 @@ class Religion extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+            <CModalTitle>Cập nhật</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -385,7 +377,7 @@ class Religion extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -393,13 +385,11 @@ class Religion extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -430,10 +420,10 @@ class Religion extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

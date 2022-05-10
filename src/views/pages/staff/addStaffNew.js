@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { CContainer, CForm, CSpinner } from '@coreui/react'
+import {
+  CContainer,
+  CForm,
+  CSpinner,
+  CRow,
+  CCol,
+  CFormInput,
+  CFormSelect,
+  CAlert,
+} from '@coreui/react'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import { BRANCH } from '../../../constants/Config'
 import openNotificationWithIcon from '../../../utils/notification'
@@ -72,12 +81,16 @@ const AddStaff = () => {
             description: '',
             placement: 'topRight',
           })
+          setTimeout(function () {
+            window.location.reload()
+          }, 3000)
         })
         .catch((error) => {
+          setLoadStatusCreate(false)
           openNotificationWithIcon({
             type: 'error',
             message: 'Có lỗi xảy ra',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         })
@@ -86,84 +99,85 @@ const AddStaff = () => {
   return (
     <>
       <Loading loading={loading} />
-      <h5 className="mt-3 mb-4 fw-bold">THÊM MỚI NHÂN VIÊN</h5>
-      <p className="mb-5">
-        Sau khi tạo nhân viên thành công tài khoản nhân viên được lưu vào file ở thư mục Downloads
-      </p>
+      <h2>Thêm Mới Nhân Viên</h2>
+      <CContainer>
+        <CRow>
+          <CCol md={8}>
+            <CAlert color="info" className="mb-3">
+              Sau khi tạo nhân viên thành công thông tin đăng nhập của tài khoản được gửi đến email
+              vừa đăng ký
+            </CAlert>
+          </CCol>
+        </CRow>
+      </CContainer>
+
       <CForm onSubmit={onSubmit}>
         {inputList.map((x, i) => {
           return (
             <>
               <h6 className="mb-3">Nhân Viên Số {i + 1}</h6>
               <CContainer className="content mb-5" key={i}>
-                <div className="row mb-4">
-                  <div className="col-md-5 col-sm-12">
-                    <label>Họ Nhân Viên</label>
-                    <input
-                      type="text"
+                <CRow>
+                  <CCol md={2}>
+                    <CFormInput
+                      className="mb-3"
+                      placeholder="Nhập Họ"
                       name="last_name"
-                      className="form-control"
-                      placeholder="Nhập Họ Nhân Viên"
                       onChange={(e) => handleinputchange(e, i)}
                       required
-                    />
-                  </div>
-                  <div className="col-md-5 col-sm-12">
-                    <label>Tên Nhân Viên</label>
-                    <input
                       type="text"
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CFormInput
+                      placeholder="Nhập Tên"
+                      type="text"
+                      className="mb-3"
                       name="first_name"
-                      className="form-control"
-                      placeholder="Nhập Tên Nhân Viên"
                       onChange={(e) => handleinputchange(e, i)}
                       required
                     />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-5 col-sm-12">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      className="form-control"
-                      placeholder="Nhập Email"
-                      onChange={(e) => handleinputchange(e, i)}
-                      required
-                    />
-                  </div>
-                  <div className="col-md-5 col-sm-12">
-                    <label>Chọn Bộ Phận</label>
-                    <select
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormSelect
+                      className="mb-3"
                       name="department"
-                      className="form-control"
+                      aria-label="Chọn Bộ Phận Làm Việc"
                       onChange={(e) => handleinputchange(e, i)}
-                      required
                     >
-                      <option value="" key="0">
-                        Chọn Bộ Phận
+                      <option key="0" value="">
+                        Chọn bộ phận làm việc
                       </option>
                       {departments.map((item) => (
-                        <option value={item.id} key={item.id}>
+                        <option key={item.id} value={item.id}>
                           {item.name}
                         </option>
                       ))}
-                    </select>
-                  </div>
-                  <div className="col-md-2 col-sm-12">
+                    </CFormSelect>
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormInput
+                      placeholder="Nhập Email"
+                      className="mb-3"
+                      onChange={(e) => handleinputchange(e, i)}
+                      required
+                      name="email"
+                      type="email"
+                    />
+                  </CCol>
+                  <CCol md={2} className="mb-3">
                     {inputList.length !== 1 && (
                       <button className="btn btn-danger mx-1" onClick={() => handleremove(i)}>
-                        <CIcon icon={cilDelete} /> Xoá Nhân Viên
+                        <CIcon icon={cilDelete} />
                       </button>
                     )}
-                    {inputList.length - 1 === i && (
-                      <button className="btn btn-success mt-4" onClick={handleaddclick}>
-                        <CIcon icon={cilPlus} />
-                        Thêm Nhân Viên
-                      </button>
-                    )}
-                  </div>
-                </div>
+                  </CCol>
+                </CRow>
+                {inputList.length - 1 === i && (
+                  <button className="btn btn-success mt-4" onClick={handleaddclick}>
+                    <CIcon icon={cilPlus} />
+                  </button>
+                )}
               </CContainer>
             </>
           )
@@ -175,10 +189,10 @@ const AddStaff = () => {
                 {loadStatusCreate ? (
                   <>
                     <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
-                    Vui Lòng Chờ...
+                    Vui lòng chờ...
                   </>
                 ) : (
-                  <>Tạo Nhân Viên</>
+                  <>Tạo nhân viên</>
                 )}
               </button>
             </div>

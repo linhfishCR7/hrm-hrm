@@ -20,16 +20,16 @@ const Page404 = () => {
           <CCol md={6}>
             <div className="clearfix">
               <h1 className="float-start display-3 me-4">404</h1>
-              <h4 className="pt-3">Oops! You{"'"}re lost.</h4>
+              <h4 className="pt-3">Oops! Có sự cố xảy ra.</h4>
               <p className="text-medium-emphasis float-start">
-                The page you are looking for was not found.
+                Trang bạn đang tìm kiếm không tìm thấy.
               </p>
             </div>
             <CInputGroup className="input-prepend">
               <Link to="/dashboard">
                 <div className="d-grid mb-3">
                   <CButton color="info" style={{ marginRight: '10px' }}>
-                    Trở Về Trang Chủ
+                    Trở về trang chủ
                   </CButton>
                 </div>{' '}
               </Link>

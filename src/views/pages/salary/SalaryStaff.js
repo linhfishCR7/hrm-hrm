@@ -27,7 +27,7 @@ import {
   CFormText,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCircle } from '@coreui/icons'
+import { cilCircle, cilPlus } from '@coreui/icons'
 import Modal from 'react-modal'
 import Loading from '../../../utils/loading'
 import openNotificationWithIcon from '../../../utils/notification'
@@ -214,14 +214,14 @@ class SalaryStaff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -260,7 +260,7 @@ class SalaryStaff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -268,7 +268,7 @@ class SalaryStaff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -302,7 +302,7 @@ class SalaryStaff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -310,7 +310,7 @@ class SalaryStaff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -341,8 +341,8 @@ class SalaryStaff extends Component {
               <Space size="middle">
                 <CTooltip content="Thêm Phiếu Lương" placement="top">
                   <CButton color="info" onClick={() => this.openAddSalaryModal(staff_id)}>
-                    {/* <CIcon icon={cilDelete} /> */}
-                    Thêm Phiếu Lương
+                    <CIcon icon={cilPlus} />
+                    Thêm phiếu lương
                   </CButton>
                 </CTooltip>
               </Space>
@@ -560,11 +560,11 @@ class SalaryStaff extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>Bạn có chắc chắn xoá?</h2>
+              <h2>Bạn có chắc chắn xoá?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -580,10 +580,10 @@ class SalaryStaff extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -596,10 +596,7 @@ class SalaryStaff extends Component {
           size="lg"
         >
           <CModalHeader>
-            <CModalTitle>
-              THÊM PHIẾU LƯƠNG - NHÂN VIÊN{' '}
-              <span style={{ textTransform: 'uppercase' }}>{staff_name}</span>
-            </CModalTitle>
+            <CModalTitle>Thêm phiếu lương - nhân viên: {staff_name}</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleAddSalary}>
@@ -668,10 +665,10 @@ class SalaryStaff extends Component {
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeAddSalaryModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="info" type="submit">
-                  LƯU
+                  Lưu
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -686,10 +683,7 @@ class SalaryStaff extends Component {
           scrollable={true}
         >
           <CModalHeader>
-            <CModalTitle style={{ textTransform: 'uppercase' }}>
-              CẬP NHẬT PHIẾU LƯƠNG - NHÂN VIÊN{' '}
-              <span style={{ textTransform: 'uppercase' }}>{staff_name}</span>
-            </CModalTitle>
+            <CModalTitle>Cập nhật phiếu lương - nhân viên: {staff_name}</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -765,7 +759,7 @@ class SalaryStaff extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

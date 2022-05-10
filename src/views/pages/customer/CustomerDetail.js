@@ -242,7 +242,7 @@ const CompanyDetail = () => {
           <CTooltip content=" Quay Về Trang Trước" placement="top">
             <Link to={'/customer'}>
               <CButton color="info" style={{ marginRight: '10px' }}>
-                <CIcon icon={cilMediaStepBackward} /> Quay Về
+                <CIcon icon={cilMediaStepBackward} /> Quay về
               </CButton>
             </Link>
           </CTooltip>

@@ -141,7 +141,7 @@ const ForgotPassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="info" type="submit">
-                      Quên Mật Khẩu{' '}
+                      Quên mật khẩu{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
@@ -210,14 +210,14 @@ const ForgotPassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="success" type="submit">
-                      Xác Nhận{' '}
+                      Xác nhận{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
                 <div className="d-grid">
                   <Link to={localStorage.getItem('role') === 'admin' ? '/login-admin' : '/login'}>
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                      Quay Về Trang Đăng Nhập{' '}
+                      Quay về trang đăng nhập{' '}
                     </CButton>{' '}
                   </Link>{' '}
                 </div>{' '}

@@ -68,7 +68,7 @@ const CreateStaff = () => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi khi tạo tài khoản',
-          description: err.message || JSON.stringify(err),
+          description: '',
           placement: 'topRight',
         })
         setError(true)
@@ -94,7 +94,7 @@ const CreateStaff = () => {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi khi xác nhận tài khoản',
-          description: err.message || JSON.stringify(err),
+          description: '',
           placement: 'topRight',
         })
         setErrorcode(true)
@@ -136,10 +136,10 @@ const CreateStaff = () => {
         })
         navigate('/staff')
       })
-      .catch(function (error) {
+      .catch((error) => {
         openNotificationWithIcon({
           type: 'error',
-          message: error,
+          message: '',
           description: ' ',
           placement: 'topRight',
         })
@@ -184,7 +184,7 @@ const CreateStaff = () => {
                     />
                   </CInputGroup>{' '}
                   <CButton color="info" type="submit" className="mt-3">
-                    Tạo tài Khoản{' '}
+                    Tạo tài khoản{' '}
                   </CButton>{' '}
                 </CForm>{' '}
                 <br />
@@ -219,7 +219,7 @@ const CreateStaff = () => {
                     />
                   </CInputGroup>{' '}
                   <CButton color="success" type="submit" className="mt-3">
-                    Xác Nhận{' '}
+                    Xác nhận{' '}
                   </CButton>{' '}
                 </CForm>{' '}
               </CCardBody>{' '}

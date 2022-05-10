@@ -201,7 +201,7 @@ class Customer extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -209,7 +209,7 @@ class Customer extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -245,7 +245,7 @@ class Customer extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -253,7 +253,7 @@ class Customer extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -336,7 +336,7 @@ class Customer extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="xl">
           <CModalHeader>
-            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+            <CModalTitle>Cập nhật</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -454,7 +454,7 @@ class Customer extends Component {
                     <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="address"
+                      placeholder="Địa Chỉ"
                       autoComplete="address"
                       name="address"
                       value={this.state.address}
@@ -470,7 +470,7 @@ class Customer extends Component {
                     <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="city"
+                      placeholder="Thành Phố"
                       autoComplete="city"
                       name="city"
                       value={this.state.city}
@@ -483,7 +483,7 @@ class Customer extends Component {
                     <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="province"
+                      placeholder="Tỉnh"
                       autoComplete="province"
                       name="province"
                       value={this.state.province}
@@ -498,7 +498,7 @@ class Customer extends Component {
                     <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                     <CFormInput
                       type="text"
-                      placeholder="district"
+                      placeholder="Huyện"
                       autoComplete="district"
                       name="district"
                       value={this.state.district}
@@ -571,7 +571,7 @@ class Customer extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -579,13 +579,11 @@ class Customer extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -614,10 +612,10 @@ class Customer extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-import { Table, Space, Input, Collapse, Spin } from 'antd'
+import { Table, Space, Input, Collapse, Spin, Card } from 'antd'
 import { TOKEN } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -30,11 +30,34 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCircle, cilInfo } from '@coreui/icons'
+import {
+  cilCircle,
+  cilInfo,
+  cilBook,
+  cilMediaStop,
+  cilCalendar,
+  cilContact,
+  cilAirplaneMode,
+  cilStar,
+  cilFunctions,
+  cilMoney,
+  cilArrowCircleRight,
+  cilNotes,
+  cilEducation,
+  cilExpandUp,
+  cilStarHalf,
+  cilDisabled,
+  cilHandPointUp,
+  cilMemory,
+  cilNewspaper,
+} from '@coreui/icons'
 import Modal from 'react-modal'
 const { Column } = Table
 const { Panel } = Collapse
-
+const gridStyle = {
+  width: '25%',
+  textAlign: 'center',
+}
 class Staff extends Component {
   constructor(props) {
     super(props)
@@ -562,7 +585,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -570,7 +593,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -606,7 +629,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -614,7 +637,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -638,23 +661,12 @@ class Staff extends Component {
       <>
         <LoadingOverlay
           active={this.state.loading}
-          spinner={<Spin tip="Loading..." size="large"></Spin>}
+          spinner={<Spin tip="Vui lòng chờ..." size="large"></Spin>}
           styles={{ wrapper: { backgroundColor: 'black' } }}
           // text="Loading your content..."
-        >
-          {/* <p>Some content or children or something.</p> */}
-        </LoadingOverlay>
+        ></LoadingOverlay>
         <h2>Nhân Viên</h2>
         <CRow>
-          {/* <CCol md={4}>
-            <CTooltip content="Thêm Dữ Liệu" placement="top">
-              <Link to="/add-customer">
-                <CButton color="primary">
-                  <CIcon icon={cilPlus} />
-                </CButton>
-              </Link>
-            </CTooltip>
-          </CCol> */}
           <CCol md={8}>
             <Input.Search
               placeholder="Tìm kiếm họ tên, email và số điện thoại"
@@ -664,7 +676,6 @@ class Staff extends Component {
           </CCol>
         </CRow>
         <Table dataSource={this.state.staffs} bordered>
-          {/* <Column title="Mã" dataIndex="company" key="company" /> */}
           <Column
             title="Mã Số"
             dataIndex="staff"
@@ -725,7 +736,7 @@ class Staff extends Component {
                     <DeleteOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Setting" placement="top">
+                <CTooltip content="Chi tiết nhân viên" placement="top">
                   <CButton color="info" onClick={() => this.openSettingModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <CIcon icon={cilInfo} />
@@ -739,170 +750,209 @@ class Staff extends Component {
         <CModal
           visible={this.state.modalSettingIsOpen}
           onClose={this.closeSettingModal}
-          size="lg"
+          size="xl"
           scrollable={true}
         >
           <CModalHeader>
-            <CModalTitle>CHỨC NĂNG</CModalTitle>
+            <CModalTitle>Cập nhật chi tiết thông tin nhân viên</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm>
-              <h3 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
+              <h4 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
                 Mã nhân viên: {this.state.staff}
-              </h3>
-              {/* <h2 style={{ textTransform: 'uppercase' }}>{this.state.name}</h2> */}
-
-              <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
-                <Link to="/staff/contact" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Thông Tin Khẩn Cấp
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Bằng Cấp" placement="top">
-                <Link to="/staff/degree" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Bằng Cấp
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Chứng Chỉ" placement="top">
-                <Link to="/staff/certificate" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */} Chứng Chỉ
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Kỹ Năng" placement="top">
-                <Link to="/staff/skill" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Kỹ Năng
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Công Tác" placement="top">
-                <Link to="/staff/on-business" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */} Công Tác
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Chấm Công" placement="top">
-                <Link to="/staff/timekeeping" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Chấm Công
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Phép Năm" placement="top">
-                <Link to="/staff/day-off-year" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Phép Năm
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Tiền Lương" placement="top">
-                <Link to="/staff/salary" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Tiền Lương
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Điều Chỉnh Lương" placement="top">
-                <Link to="/staff/up-salary" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Điều Chỉnh Lương
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Hợp Đồng Lao Động" placement="top">
-                <Link to="/staff/contract" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Hợp Đồng Lao Động
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Đào Tạo" placement="top">
-                <Link to="/staff/trainning" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Đào Tạo
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Thăng Tiến" placement="top">
-                <Link to="/staff/promotion" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Thăng Tiến
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Khen Thưởng" placement="top">
-                <Link to="/staff/bonus" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Khen Thưởng
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Kỷ Luật" placement="top">
-                <Link to="/staff/discipline" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Kỷ Luật
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CTooltip content="Sức Khoẻ" placement="top">
-                <Link to="/staff/health" target="_blank">
-                  <div className="d-grid mb-3">
-                    <CButton color="info" style={{ marginRight: '10px' }}>
-                      {/* <CIcon icon={cilInfo} /> */}Sức Khoẻ
-                    </CButton>
-                  </div>{' '}
-                </Link>
-              </CTooltip>
-              <CModalFooter>
-                <CButton color="secondary" onClick={this.closeSettingModal}>
-                  ĐÓNG
-                </CButton>
-              </CModalFooter>
+              </h4>
+              <Card>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Thông Tin Liên Hệ Khẩn" placement="top">
+                    <Link to="/staff/contact" target="_blank">
+                      <CIcon icon={cilContact} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Thông Tin Liên Hệ Khẩn
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Bằng Cấp" placement="top">
+                    <Link to="/staff/degree" target="_blank">
+                      <CIcon icon={cilBook} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Bằng Cấp
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Chứng Chỉ" placement="top">
+                    <Link to="/staff/certificate" target="_blank">
+                      <CIcon
+                        icon={cilNewspaper}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Chứng Chỉ
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Kỹ Năng" placement="top">
+                    <Link to="/staff/skill" target="_blank">
+                      <CIcon
+                        icon={cilFunctions}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Kỹ Năng
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  {' '}
+                  <CTooltip content="Công Tác" placement="top">
+                    <Link to="/staff/on-business" target="_blank">
+                      <CIcon
+                        icon={cilAirplaneMode}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Công Tác
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  {' '}
+                  <CTooltip content="Chấm Công" placement="top">
+                    <Link to="/staff/timekeeping" target="_blank">
+                      <CIcon icon={cilCalendar} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Chấm Công
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Phép Năm" placement="top">
+                    <Link to="/staff/day-off-year" target="_blank">
+                      <CIcon
+                        icon={cilMediaStop}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Phép Năm
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  {' '}
+                  <CTooltip content="Tiền Lương" placement="top">
+                    <Link to="/staff/salary" target="_blank">
+                      <CIcon icon={cilMoney} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Tiền Lương
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Điều Chỉnh Lương" placement="top">
+                    <Link to="/staff/up-salary" target="_blank">
+                      <CIcon
+                        icon={cilArrowCircleRight}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Điều Chỉnh Lương
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Hợp Đồng Lao Động" placement="top">
+                    <Link to="/staff/contract" target="_blank">
+                      <CIcon icon={cilNotes} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Hợp Đồng Lao Động
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Đào Tạo" placement="top">
+                    <Link to="/staff/trainning" target="_blank">
+                      <CIcon
+                        icon={cilEducation}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br />
+                      Đào Tạo
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Thăng Tiến" placement="top">
+                    <Link to="/staff/promotion" target="_blank">
+                      <CIcon icon={cilExpandUp} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Thăng Tiến
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Khen Thưởng" placement="top">
+                    <Link to="/staff/bonus" target="_blank">
+                      <CIcon icon={cilStar} customClassName="nav-icon" width="60" height="60" />
+                      <br />
+                      Khen Thưởng
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Kỷ Luật" placement="top">
+                    <Link to="/staff/discipline" target="_blank">
+                      <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" />
+                      <br /> Kỷ Luật
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid style={gridStyle}>
+                  <CTooltip content="Sức Khoẻ" placement="top">
+                    <Link to="/staff/health" target="_blank">
+                      <CIcon
+                        icon={cilHandPointUp}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      />
+                      <br /> Sức Khoẻ
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+                <Card.Grid hoverable={false} style={gridStyle}>
+                  <CTooltip content="Cài Đặt" placement="top">
+                    <Link to="#">
+                      <CIcon icon={cilMemory} customClassName="nav-icon" width="60" height="60" />
+                      <br /> Cài Đặt
+                    </Link>
+                  </CTooltip>
+                </Card.Grid>
+              </Card>
             </CForm>{' '}
           </CModalBody>
         </CModal>
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
+              <h2>
                 Bạn có chắc chắn xoá {this.state.last_name} {this.state.first_name}?
               </h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
@@ -920,10 +970,10 @@ class Staff extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -937,8 +987,8 @@ class Staff extends Component {
           scrollable={true}
         >
           <CModalHeader>
-            <CModalTitle style={{ textTransform: 'uppercase' }}>
-              CẬP NHẬT THÔNG TIN NHÂN VIÊN: {this.state.last_name + ' ' + this.state.first_name}{' '}
+            <CModalTitle>
+              Cập nhật thông tin: {this.state.last_name + ' ' + this.state.first_name}{' '}
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
@@ -1052,9 +1102,6 @@ class Staff extends Component {
                             </option>
                           ))}
                         </CFormSelect>
-                        {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập đúng dịnh dạng SDT
-                </CFormText> */}
                       </CCol>
                       <CCol>
                         <CFormLabel htmlFor="exampleFormControlInput1">Dân Tộc</CFormLabel>
@@ -1495,7 +1542,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address"
                           value={this.state.address}
@@ -1511,7 +1558,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city"
                           value={this.state.city}
@@ -1524,7 +1571,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province"
                           value={this.state.province}
@@ -1539,7 +1586,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district"
                           value={this.state.district}
@@ -1552,7 +1599,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune"
                           value={this.state.commune}
@@ -1567,7 +1614,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country"
                           value={this.state.country}
@@ -1580,7 +1627,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode"
                           value={this.state.postcode}
@@ -1615,7 +1662,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address2"
                           value={this.state.address2}
@@ -1631,7 +1678,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city2"
                           value={this.state.city2}
@@ -1644,7 +1691,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province2"
                           value={this.state.province2}
@@ -1659,7 +1706,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district2"
                           value={this.state.district2}
@@ -1672,7 +1719,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune2"
                           value={this.state.commune2}
@@ -1687,7 +1734,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country2"
                           value={this.state.country2}
@@ -1700,7 +1747,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode2"
                           value={this.state.postcode2}
@@ -1735,7 +1782,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address3"
                           value={this.state.address3}
@@ -1751,7 +1798,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city3"
                           value={this.state.city3}
@@ -1764,7 +1811,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province3"
                           value={this.state.province3}
@@ -1779,7 +1826,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district3"
                           value={this.state.district3}
@@ -1792,7 +1839,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune3"
                           value={this.state.commune3}
@@ -1807,7 +1854,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country3"
                           value={this.state.country3}
@@ -1820,7 +1867,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode3"
                           value={this.state.postcode3}
@@ -1853,7 +1900,7 @@ class Staff extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

@@ -108,7 +108,7 @@ class TimeKeeping extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -203,7 +203,7 @@ class TimeKeeping extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -211,7 +211,7 @@ class TimeKeeping extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -252,7 +252,7 @@ class TimeKeeping extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             }),
           )
@@ -269,7 +269,7 @@ class TimeKeeping extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -277,7 +277,7 @@ class TimeKeeping extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -327,14 +327,14 @@ class TimeKeeping extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -479,7 +479,7 @@ class TimeKeeping extends Component {
             <CRow>
               <CCol>
                 <CButton color="primary" type="submit">
-                  LƯU
+                  Lưu
                 </CButton>
               </CCol>
             </CRow>
@@ -590,7 +590,7 @@ class TimeKeeping extends Component {
         {/* Update */}
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
           <CModalHeader>
-            <CModalTitle>CẬP NHẬT</CModalTitle>
+            <CModalTitle>Cập Nhật</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -737,10 +737,10 @@ class TimeKeeping extends Component {
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  ĐÓNG
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  CẬP NHẬT
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -749,14 +749,12 @@ class TimeKeeping extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>XOÁ</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -773,10 +771,10 @@ class TimeKeeping extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  ĐỒNG Ý
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

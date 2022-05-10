@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import store from './store'
 import { BackTop } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
-
+import './assets/style.css'
 ReactDOM.render(
   <Provider store={store}>
     <BackTop />

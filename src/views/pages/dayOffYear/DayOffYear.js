@@ -76,7 +76,7 @@ class DayOffYear extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -140,7 +140,7 @@ class DayOffYear extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -203,7 +203,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -211,7 +211,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -246,7 +246,7 @@ class DayOffYear extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             }),
           )
@@ -263,7 +263,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Chấp nhận đơn xin nghỉ phép không thành công!!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -271,7 +271,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Chấp nhận đơn xin nghỉ phép không thành công!!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -306,7 +306,7 @@ class DayOffYear extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             }),
           )
@@ -323,7 +323,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Từ chối đơn xin nghỉ phép không thành công!!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeRefuseModal()
@@ -331,7 +331,7 @@ class DayOffYear extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Từ chối đơn xin nghỉ phép không thành công!!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeRefuseModal()
@@ -392,19 +392,17 @@ class DayOffYear extends Component {
         {/* Accept */}
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle>XÁC NHẬN</CModalTitle>
+            <CModalTitle>Xác Nhận</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditAcceptSubmit}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn chấp nhận đơn xin nghỉ?
-              </h2>
+              <h2>Bạn có chắc chắn chấp nhận đơn xin nghỉ?</h2>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  ĐÓNG
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  CHẤP NHẬN
+                  Chấp nhận
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -413,17 +411,17 @@ class DayOffYear extends Component {
         {/* Refuse */}
         <CModal visible={this.state.modalRefuseIsOpen} onClose={this.closeRefuseModal}>
           <CModalHeader>
-            <CModalTitle>TỪ CHỐI</CModalTitle>
+            <CModalTitle>Từ Chối</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditRefuseSubmit}>
-              <h2 style={{ textTransform: 'uppercase' }}>Bạn có chắc chắn từ chối đơn xin nghỉ?</h2>
+              <h2>Bạn có chắc chắn từ chối đơn xin nghỉ?</h2>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeRefuseModal}>
-                  ĐÓNG
+                  Đóng
                 </CButton>
                 <CButton color="warning" type="submit">
-                  ĐỒNG Ý
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -432,14 +430,12 @@ class DayOffYear extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>XOÁ</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2 style={{ textTransform: 'uppercase' }}>
-                Bạn có chắc chắn xoá {this.state.name}?
-              </h2>
+              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -456,10 +452,10 @@ class DayOffYear extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  ĐỒNG Ý
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -468,7 +464,7 @@ class DayOffYear extends Component {
         {/* Detail */}
         <CModal visible={this.state.modalSettingIsOpen} onClose={this.closeSettingModal} size="lg">
           <CModalHeader>
-            <CModalTitle>CHI TIẾT NGÀY PHÉP</CModalTitle>
+            <CModalTitle>Chi Tiết Ngày Phép</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <>
@@ -517,7 +513,7 @@ class DayOffYear extends Component {
 
             <CModalFooter>
               <CButton color="secondary" onClick={this.closeSettingModal}>
-                ĐÓNG
+                Đóng
               </CButton>
             </CModalFooter>
           </CModalBody>

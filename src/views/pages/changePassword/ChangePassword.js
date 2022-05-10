@@ -165,7 +165,7 @@ const ChangePassword = () => {
                   </CInputGroup>{' '}
                   <div className="d-grid">
                     <CButton color="success" type="submit">
-                      Xác Nhận{' '}
+                      Xác nhận{' '}
                     </CButton>{' '}
                   </div>{' '}
                 </CForm>{' '}
@@ -176,7 +176,7 @@ const ChangePassword = () => {
                     }
                   >
                     <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                      Trở Về Trang Chủ{' '}
+                      Trở về trang chủ{' '}
                     </CButton>{' '}
                   </Link>{' '}
                 </div>{' '}

@@ -38,7 +38,7 @@ const CompanyDetail = () => {
 
   const fetchAPI = async () => {
     await axios
-      .get('/hrm/companies/' + id + '/', {
+      .get('/admin/companies/' + id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -350,7 +350,7 @@ const CompanyDetail = () => {
           <CTooltip content=" Quay Về Trang Trước" placement="top">
             <Link to={'/company/'}>
               <CButton color="info" style={{ marginRight: '10px' }}>
-                <CIcon icon={cilMediaStepBackward} /> Quay Về
+                <CIcon icon={cilMediaStepBackward} /> Quay về
               </CButton>
             </Link>
           </CTooltip>
