@@ -110,14 +110,14 @@ class KindOffworks extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -185,7 +185,7 @@ class KindOffworks extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -193,7 +193,7 @@ class KindOffworks extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -229,7 +229,7 @@ class KindOffworks extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -237,7 +237,7 @@ class KindOffworks extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -260,7 +260,7 @@ class KindOffworks extends Component {
     return (
       <>
         <Loading loading={this.state.loading} />
-        <h2>Loại Chấm Công</h2>
+        <h2>Loại Công</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -342,7 +342,7 @@ class KindOffworks extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+            <CModalTitle>Cập nhật</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -379,7 +379,7 @@ class KindOffworks extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -387,7 +387,7 @@ class KindOffworks extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -422,10 +422,10 @@ class KindOffworks extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

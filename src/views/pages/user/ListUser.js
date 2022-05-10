@@ -157,6 +157,9 @@ class ListUser extends Component {
   }
 
   handleEditSubmit = (event) => {
+    this.setState({
+      loading: true,
+    })
     event.preventDefault()
 
     const newUpdate = {
@@ -180,7 +183,6 @@ class ListUser extends Component {
       })
       .then((res) => {
         this.fetchAPI()
-
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật vai trò thành công!!!',
@@ -194,7 +196,7 @@ class ListUser extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật vai trò không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -202,7 +204,7 @@ class ListUser extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật vai trò không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -239,7 +241,7 @@ class ListUser extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeStatusModal()
@@ -247,7 +249,7 @@ class ListUser extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeStatusModal()

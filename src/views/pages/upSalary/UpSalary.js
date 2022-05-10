@@ -68,7 +68,7 @@ class UpSalary extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -102,7 +102,7 @@ class UpSalary extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -167,7 +167,7 @@ class UpSalary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -175,7 +175,7 @@ class UpSalary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -213,7 +213,7 @@ class UpSalary extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             })
           })
@@ -230,7 +230,7 @@ class UpSalary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -238,7 +238,7 @@ class UpSalary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -276,7 +276,7 @@ class UpSalary extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             })
           })
@@ -292,14 +292,14 @@ class UpSalary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -411,7 +411,7 @@ class UpSalary extends Component {
         {/* Update */}
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
           <CModalHeader>
-            <CModalTitle>CẬP NHẬT</CModalTitle>
+            <CModalTitle>Cập Nhật</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -471,10 +471,10 @@ class UpSalary extends Component {
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeModal}>
-                  ĐÓNG
+                  Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  CẬP NHẬT
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -483,7 +483,7 @@ class UpSalary extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle>XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {' '}
@@ -505,10 +505,10 @@ class UpSalary extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  ĐỒNG Ý
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -517,22 +517,22 @@ class UpSalary extends Component {
         {/* Check */}
         <CModal visible={this.state.modalCheckIsOpen} onClose={this.closeCheckModal}>
           <CModalHeader>
-            <CModalTitle>KIỂM TRA HỆ SỐ HIỆN TẠI</CModalTitle>
+            <CModalTitle>Kiểm tra hệ số lương hiện tại</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <Card>
               {this.state.upSalaryBefore.map((item) => (
                 <>
                   {' '}
-                  <h4>Ngày Xét Tăng Lương: {item.date}</h4>
-                  <h4>Hệ Số Hiện Tại: {item.coefficient}</h4>
+                  <h4>Ngày xét tăng lương: {item.date}</h4>
+                  <h4>Hệ số hiện tại: {item.coefficient}</h4>
                 </>
               ))}
             </Card>
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={this.closeCheckModal}>
-              ĐÓNG
+              Đóng
             </CButton>
           </CModalFooter>
         </CModal>

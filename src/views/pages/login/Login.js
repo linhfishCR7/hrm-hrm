@@ -193,7 +193,7 @@ const Login = () => {
                     <p className="text-medium-emphasis"> Đăng Nhập Vào Hệ Thống </p>{' '}
                     <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
                       <CModalHeader>
-                        <CModalTitle>LỖI</CModalTitle>
+                        <CModalTitle>Lỗi</CModalTitle>
                       </CModalHeader>
                       <CModalBody>
                         <h2>{error}</h2>
@@ -297,10 +297,10 @@ const Login = () => {
               >
                 <CCardBody className="text-center">
                   <div>
-                    <h2> Đăng Ký </h2> <p>Chào Mừng Bạn Đã Đến Với Hệ Thống Quản Lý Nhân Sự HRM</p>{' '}
+                    <h2> Đăng ký </h2> <p>Chào Mừng Bạn Đã Đến Với Hệ Thống Quản Lý Nhân Sự HRM</p>{' '}
                     <Link to="/register">
                       <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Đăng Ký Ngay!
+                        Đăng ký ngay!
                       </CButton>{' '}
                     </Link>{' '}
                   </div>{' '}

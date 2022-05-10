@@ -94,7 +94,6 @@ class Literacy extends Component {
       })
       .then((res) => {
         this.fetchAPI()
-
         openNotificationWithIcon({
           type: 'success',
           message: 'Thêm dữ liệu thành công!!!',
@@ -102,26 +101,20 @@ class Literacy extends Component {
           placement: 'topRight',
         })
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response.status === 400) {
-          message.error({
-            content: error.response.data.message,
-            duration: 5,
-            maxCount: 10,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: '',
+            placement: 'topRight',
           })
         } else {
-          message.error({
-            content: error,
-            duration: 5,
-            maxCount: 10,
-            className: 'custom-class',
-            style: {
-              marginTop: '20vh',
-            },
+          openNotificationWithIcon({
+            type: 'error',
+            message: 'Thêm dữ liệu không thành công!!!',
+            description: '',
+            placement: 'topRight',
           })
         }
       })
@@ -191,7 +184,7 @@ class Literacy extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -199,7 +192,7 @@ class Literacy extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -235,7 +228,7 @@ class Literacy extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -243,7 +236,7 @@ class Literacy extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -316,7 +309,7 @@ class Literacy extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.literacies} bordered>
+        <Table dataSource={this.state.literacies} bordered scroll={{ y: 340 }}>
           <Column title="Mã" dataIndex="literacy" key="literacy" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
@@ -346,7 +339,7 @@ class Literacy extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+            <CModalTitle>Cập nhật</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -383,7 +376,7 @@ class Literacy extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -391,7 +384,7 @@ class Literacy extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -426,10 +419,10 @@ class Literacy extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

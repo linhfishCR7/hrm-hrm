@@ -82,7 +82,7 @@ const ListCV = () => {
       <CContainer className="content">
         <div className="row">
           <div className="col-sm-12">
-            <h5 className="mt-3 mb-4 fw-bold">CV Nhân Viên PDF</h5>
+            <h2 className="mt-3 mb-4 fw-bold">CV Nhân Viên PDF</h2>
             <embed src={data.key} type="application/pdf" height="1000px" width="100%" />
           </div>
         </div>

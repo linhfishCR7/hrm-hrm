@@ -257,7 +257,7 @@ const Layout = () => {
             <DocsExample href="forms/layout#column-sizing">
               <CRow className="g-3">
                 <CCol sm={7}>
-                  <CFormInput placeholder="City" aria-label="City" />
+                  <CFormInput placeholder="Thành Phố" aria-label="City" />
                 </CCol>
                 <CCol sm>
                   <CFormInput placeholder="State" aria-label="State" />

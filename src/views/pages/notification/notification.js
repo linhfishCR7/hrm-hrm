@@ -24,6 +24,7 @@ import { Badge, Popover } from 'antd'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import Pool from '../../../utils/UserPool'
+import Loading from '../../../utils/loading'
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)(({ theme }) => ({
@@ -89,6 +90,7 @@ const user = Pool.getCurrentUser()
 const NotificationDropdown = () => {
   const [data, setData] = useState([{}])
   const [total_unread, setTotalUnread] = useState(0)
+  const [loading, setLoading] = useState(true)
   // ** States
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -123,6 +125,7 @@ const NotificationDropdown = () => {
         .then((results) => {
           setData(results.data.results)
           setTotalUnread(results.data.total_unread)
+          setLoading(false)
         })
         .catch(function (error) {
           console.log(error.response.data.message)
@@ -132,6 +135,7 @@ const NotificationDropdown = () => {
         .then((results) => {
           setData(results.data.results)
           setTotalUnread(results.data.total_unread)
+          setLoading(false)
         })
         .catch(function (error) {
           console.log(error.response.data.message)
@@ -140,6 +144,7 @@ const NotificationDropdown = () => {
   }, [])
 
   const handleReadOne = (noti_id) => {
+    setLoading(true)
     if (localStorage.getItem('role') === 'admin') {
       API({
         REGISTER_URL: '/admin/notification/' + noti_id + '/read-one/' + user.username + '/',
@@ -149,12 +154,14 @@ const NotificationDropdown = () => {
           .then((results) => {
             setData(results.data.results)
             setTotalUnread(results.data.total_unread)
+            setLoading(false)
           })
           .catch(function (error) {
             console.log(error.response.data.message)
           })
       })
     } else {
+      setLoading(true)
       API({
         REGISTER_URL: '/hrm/notification/' + noti_id + '/read-one/' + user.username + '/',
         ACTION: 'PUT',
@@ -163,6 +170,7 @@ const NotificationDropdown = () => {
           .then((results) => {
             setData(results.data.results)
             setTotalUnread(results.data.total_unread)
+            setLoading(false)
           })
           .catch(function (error) {
             console.log(error.response.data.message)
@@ -172,6 +180,8 @@ const NotificationDropdown = () => {
   }
 
   const handleReadAll = () => {
+    setLoading(true)
+
     if (localStorage.getItem('role') === 'admin') {
       API({
         REGISTER_URL: '/admin/notification/read-all/' + user.username + '/',
@@ -181,12 +191,15 @@ const NotificationDropdown = () => {
           .then((results) => {
             setData(results.data.results)
             setTotalUnread(results.data.total_unread)
+            setLoading(false)
           })
           .catch(function (error) {
             console.log(error.response.data.message)
           })
       })
     } else {
+      setLoading(true)
+
       API({
         REGISTER_URL: '/hrm/notification/read-all/' + user.username + '/',
         ACTION: 'PUT',
@@ -195,6 +208,7 @@ const NotificationDropdown = () => {
           .then((results) => {
             setData(results.data.results)
             setTotalUnread(results.data.total_unread)
+            setLoading(false)
           })
           .catch(function (error) {
             console.log(error.response.data.message)
@@ -204,100 +218,103 @@ const NotificationDropdown = () => {
   }
 
   return (
-    <Fragment>
-      <IconButton
-        color="inherit"
-        aria-haspopup="true"
-        onClick={handleDropdownOpen}
-        aria-controls="customized-menu"
-      >
-        <Badge count={total_unread}>
-          <CIcon icon={cilBell} size="lg" />
-        </Badge>
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleDropdownClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <MenuItem disableRipple>
-          <Box
+    <>
+      {' '}
+      <Fragment>
+        <IconButton
+          color="inherit"
+          aria-haspopup="true"
+          onClick={handleDropdownOpen}
+          aria-controls="customized-menu"
+        >
+          <Badge count={total_unread}>
+            <CIcon icon={cilBell} size="lg" />
+          </Badge>
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleDropdownClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <MenuItem disableRipple>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <Typography sx={{ fontWeight: 600 }}>Thông Báo</Typography>
+              <Chip
+                size="small"
+                label={total_unread}
+                color="primary"
+                sx={{ height: 20, fontSize: '0.75rem', fontWeight: 500, borderRadius: '10px' }}
+              />
+            </Box>
+          </MenuItem>
+          <ScrollWrapper>
+            {data.map((item) => (
+              <Popover
+                key={item.index}
+                placement="left"
+                content={
+                  <>
+                    <div>
+                      <p>{item.body}</p>
+                      <p>{item.created_at_data}</p>
+                    </div>
+                  </>
+                }
+                title={item.title}
+              >
+                <MenuItem onClick={() => handleReadOne(item.id)} key={item.id}>
+                  <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                    <Avatar
+                      alt={item.first_name_data ? item.first_name_data : 'Image'}
+                      src={item.user_image}
+                    />
+                    <Box
+                      sx={{
+                        mx: 4,
+                        flex: '1 1',
+                        display: 'flex',
+                        overflow: 'hidden',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <MenuItemTitle>{item.title}</MenuItemTitle>
+                      <MenuItemSubtitle variant="body2">{item.body}</MenuItemSubtitle>
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: 'text.disabled', fontSize: '0.65rem' }}
+                    >
+                      {item.created_at_data}
+                    </Typography>
+                  </Box>
+                </MenuItem>
+              </Popover>
+            ))}
+          </ScrollWrapper>
+          <MenuItem
+            disableRipple
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
+              py: 3.5,
+              borderBottom: 0,
+              borderTop: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           >
-            <Typography sx={{ fontWeight: 600 }}>Thông Báo</Typography>
-            <Chip
-              size="small"
-              label={total_unread}
-              color="primary"
-              sx={{ height: 20, fontSize: '0.75rem', fontWeight: 500, borderRadius: '10px' }}
-            />
-          </Box>
-        </MenuItem>
-        <ScrollWrapper>
-          {data.map((item) => (
-            <Popover
-              key={item.index}
-              placement="left"
-              content={
-                <>
-                  <div>
-                    <p>{item.body}</p>
-                    <p>{item.created_at_data}</p>
-                  </div>
-                </>
-              }
-              title={item.title}
-            >
-              <MenuItem onClick={() => handleReadOne(item.id)} key={item.id}>
-                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-                  <Avatar
-                    alt={item.first_name_data ? item.first_name_data : 'Image'}
-                    src={item.user_image}
-                  />
-                  <Box
-                    sx={{
-                      mx: 4,
-                      flex: '1 1',
-                      display: 'flex',
-                      overflow: 'hidden',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <MenuItemTitle>{item.title}</MenuItemTitle>
-                    <MenuItemSubtitle variant="body2">{item.body}</MenuItemSubtitle>
-                  </Box>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: 'text.disabled', fontSize: '0.65rem' }}
-                  >
-                    {item.created_at_data}
-                  </Typography>
-                </Box>
-              </MenuItem>
-            </Popover>
-          ))}
-        </ScrollWrapper>
-        <MenuItem
-          disableRipple
-          sx={{
-            py: 3.5,
-            borderBottom: 0,
-            borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <Button fullWidth variant="contained" onClick={handleReadAll}>
-            Đọc Tất Cả Thông Báo
-          </Button>
-        </MenuItem>
-      </Menu>
-    </Fragment>
+            <Button fullWidth variant="contained" onClick={handleReadAll}>
+              Đọc Tất Cả Thông Báo
+            </Button>
+          </MenuItem>
+        </Menu>
+      </Fragment>
+    </>
   )
 }
 

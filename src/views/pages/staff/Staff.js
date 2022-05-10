@@ -562,7 +562,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -570,7 +570,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -606,7 +606,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -614,7 +614,7 @@ class Staff extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -638,23 +638,12 @@ class Staff extends Component {
       <>
         <LoadingOverlay
           active={this.state.loading}
-          spinner={<Spin tip="Loading..." size="large"></Spin>}
+          spinner={<Spin tip="Vui lòng chờ..." size="large"></Spin>}
           styles={{ wrapper: { backgroundColor: 'black' } }}
           // text="Loading your content..."
-        >
-          {/* <p>Some content or children or something.</p> */}
-        </LoadingOverlay>
+        ></LoadingOverlay>
         <h2>Nhân Viên</h2>
         <CRow>
-          {/* <CCol md={4}>
-            <CTooltip content="Thêm Dữ Liệu" placement="top">
-              <Link to="/add-customer">
-                <CButton color="primary">
-                  <CIcon icon={cilPlus} />
-                </CButton>
-              </Link>
-            </CTooltip>
-          </CCol> */}
           <CCol md={8}>
             <Input.Search
               placeholder="Tìm kiếm họ tên, email và số điện thoại"
@@ -664,7 +653,6 @@ class Staff extends Component {
           </CCol>
         </CRow>
         <Table dataSource={this.state.staffs} bordered>
-          {/* <Column title="Mã" dataIndex="company" key="company" /> */}
           <Column
             title="Mã Số"
             dataIndex="staff"
@@ -725,7 +713,7 @@ class Staff extends Component {
                     <DeleteOutlined />
                   </CButton>
                 </CTooltip>
-                <CTooltip content="Setting" placement="top">
+                <CTooltip content="Chi tiết nhân viên" placement="top">
                   <CButton color="info" onClick={() => this.openSettingModal(text)}>
                     {/* <CIcon icon={cilDelete} /> */}
                     <CIcon icon={cilInfo} />
@@ -743,15 +731,13 @@ class Staff extends Component {
           scrollable={true}
         >
           <CModalHeader>
-            <CModalTitle>CHỨC NĂNG</CModalTitle>
+            <CModalTitle>Chi tiết nhân viên</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm>
               <h3 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
                 Mã nhân viên: {this.state.staff}
               </h3>
-              {/* <h2>{this.state.name}</h2> */}
-
               <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
                 <Link to="/staff/contact" target="_blank">
                   <div className="d-grid mb-3">
@@ -889,7 +875,7 @@ class Staff extends Component {
               </CTooltip>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeSettingModal}>
-                  ĐÓNG
+                  Đóng
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -898,7 +884,7 @@ class Staff extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -920,10 +906,10 @@ class Staff extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -937,8 +923,8 @@ class Staff extends Component {
           scrollable={true}
         >
           <CModalHeader>
-            <CModalTitle style={{ textTransform: 'uppercase' }}>
-              CẬP NHẬT THÔNG TIN NHÂN VIÊN: {this.state.last_name + ' ' + this.state.first_name}{' '}
+            <CModalTitle>
+              Cập nhật thông tin: {this.state.last_name + ' ' + this.state.first_name}{' '}
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
@@ -1052,9 +1038,6 @@ class Staff extends Component {
                             </option>
                           ))}
                         </CFormSelect>
-                        {/* <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Nhập đúng dịnh dạng SDT
-                </CFormText> */}
                       </CCol>
                       <CCol>
                         <CFormLabel htmlFor="exampleFormControlInput1">Dân Tộc</CFormLabel>
@@ -1495,7 +1478,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address"
                           value={this.state.address}
@@ -1511,7 +1494,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city"
                           value={this.state.city}
@@ -1524,7 +1507,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province"
                           value={this.state.province}
@@ -1539,7 +1522,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district"
                           value={this.state.district}
@@ -1552,7 +1535,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune"
                           value={this.state.commune}
@@ -1567,7 +1550,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country"
                           value={this.state.country}
@@ -1580,7 +1563,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode"
                           value={this.state.postcode}
@@ -1615,7 +1598,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address2"
                           value={this.state.address2}
@@ -1631,7 +1614,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city2"
                           value={this.state.city2}
@@ -1644,7 +1627,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province2"
                           value={this.state.province2}
@@ -1659,7 +1642,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district2"
                           value={this.state.district2}
@@ -1672,7 +1655,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune2"
                           value={this.state.commune2}
@@ -1687,7 +1670,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country2"
                           value={this.state.country2}
@@ -1700,7 +1683,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode2"
                           value={this.state.postcode2}
@@ -1735,7 +1718,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address3"
                           value={this.state.address3}
@@ -1751,7 +1734,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city3"
                           value={this.state.city3}
@@ -1764,7 +1747,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province3"
                           value={this.state.province3}
@@ -1779,7 +1762,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district3"
                           value={this.state.district3}
@@ -1792,7 +1775,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune3"
                           value={this.state.commune3}
@@ -1807,7 +1790,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country3"
                           value={this.state.country3}
@@ -1820,7 +1803,7 @@ class Staff extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode3"
                           value={this.state.postcode3}
@@ -1853,7 +1836,7 @@ class Staff extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

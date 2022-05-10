@@ -60,9 +60,6 @@ const Profile = () => {
       })
       .catch(function (error) {
         if (error.response) {
-          // console.log(error.response.data.code)
-          // console.log(error.response.status)
-          // console.log(error.response.headers)
           if (error.response.data.code === 'AUTH_0') {
             user.signOut()
             localStorage.removeItem('token')
@@ -107,14 +104,14 @@ const Profile = () => {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -177,43 +174,33 @@ const Profile = () => {
                           const key_data = { image: key }
                           updateProfile(key_data)
                           onSuccess(result, file)
-                          message.success({
-                            content: 'Upload ảnh thành công!!!',
-                            duration: 5,
-                            maxCount: 1,
-                            className: 'custom-class',
-                            style: {
-                              marginTop: '20vh',
-                            },
+                          openNotificationWithIcon({
+                            type: 'success',
+                            message: 'Upload ảnh thành công!!!',
+                            description: '',
+                            placement: 'topRight',
                           })
                         })
                         .catch((error) => {
                           setLoading(false)
 
                           onError(error)
-                          message.error({
-                            content: JSON.stringify(error),
-                            duration: 5,
-                            maxCount: 1,
-                            className: 'custom-class',
-                            style: {
-                              marginTop: '20vh',
-                            },
+                          openNotificationWithIcon({
+                            type: 'error',
+                            message: 'Upload ảnh không thành công!!!',
+                            description: '',
+                            placement: 'topRight',
                           })
                         })
                     })
                     .catch((error) => {
                       setLoading(false)
-
-                      message.error({
-                        content:
+                      openNotificationWithIcon({
+                        type: 'error',
+                        message:
                           'Không chấp nhận file với định dạng này. Thử lại với định dạng khác',
-                        duration: 5,
-                        maxCount: 1,
-                        className: 'custom-class',
-                        style: {
-                          marginTop: '20vh',
-                        },
+                        description: '',
+                        placement: 'topRight',
                       })
                     })
                 }}

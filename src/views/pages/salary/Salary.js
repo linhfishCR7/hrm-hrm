@@ -29,7 +29,7 @@ import {
   CFormText,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCircle, cilCloudUpload, cilCheck } from '@coreui/icons'
+import { cilCircle, cilSend, cilCheck, cilPlus } from '@coreui/icons'
 import Modal from 'react-modal'
 import Loading from '../../../utils/loading'
 
@@ -256,7 +256,7 @@ class Salary extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Có lỗi xảy ra',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -340,7 +340,7 @@ class Salary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -348,7 +348,7 @@ class Salary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -385,7 +385,7 @@ class Salary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -393,7 +393,7 @@ class Salary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -433,7 +433,7 @@ class Salary extends Component {
         openNotificationWithIcon({
           type: 'error',
           message: 'Active phiếu lương không thành công!!!',
-          description: error,
+          description: '',
           placement: 'topRight',
         })
       })
@@ -519,7 +519,7 @@ class Salary extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Có lỗi xảy ra',
-              description: error,
+              description: '',
               placement: 'topRight',
             })
           })
@@ -529,14 +529,14 @@ class Salary extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -570,7 +570,7 @@ class Salary extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Thêm phiếu lương không thành công!!!',
-              description: error.response.data.message,
+              description: '',
               placement: 'topRight',
             })
             this.closeAddAllSalaryModal()
@@ -579,7 +579,7 @@ class Salary extends Component {
             openNotificationWithIcon({
               type: 'error',
               message: 'Thêm phiếu lương không thành công!!!',
-              description: error,
+              description: '',
               placement: 'topRight',
             })
             this.closeAddAllSalaryModal()
@@ -637,14 +637,14 @@ class Salary extends Component {
             </CCol>
             <CCol md={4}>
               <Space size="middle">
-                <CTooltip content="Active Phiếu Lương" placement="top">
+                <CTooltip content="Gửi Phiếu Lương" placement="top">
                   <CButton
                     color="info"
                     // size="lg"
                     className="mb-3"
                     onClick={() => this.openActiveModal()}
                   >
-                    <CIcon icon={cilCloudUpload} /> Active Phiếu Lương
+                    <CIcon icon={cilSend} /> Gửi Phiếu Lương
                   </CButton>
                 </CTooltip>
                 <CTooltip content="Kiểm Tra Phiếu Lương" placement="top">
@@ -657,11 +657,11 @@ class Salary extends Component {
                     {this.state.loadStatusCheck ? (
                       <>
                         <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
-                        Đang Tiến Hành Kiểm Tra...
+                        Đang tiến hành kiểm tra...
                       </>
                     ) : (
                       <>
-                        <CIcon icon={cilCheck} /> Kiểm Tra Phiếu Lương
+                        <CIcon icon={cilCheck} /> Kiểm tra phiếu lương
                       </>
                     )}
                   </CButton>
@@ -728,7 +728,7 @@ class Salary extends Component {
           </CCol> */}
             <CCol md={8}>
               <Input.Search
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm họ tên nhân viên"
                 onChange={(event) => this.handleSearchPast(event)}
                 className="mb-3"
               />
@@ -805,16 +805,6 @@ class Salary extends Component {
               key={this.state.salaries}
               render={(text, record) => (
                 <Space size="middle">
-                  {/* <CTooltip content="Cập Nhật Dự Liệu" placement="top">
-                    <CButton
-                      color="warning"
-                      style={{ marginRight: '10px' }}
-                      // key={record.id}
-                      onClick={() => this.openModal(record)}
-                    >
-                      <EditOutlined />
-                    </CButton>
-                  </CTooltip> */}
                   <CTooltip content="Xoá Dữ Liệu" placement="top">
                     <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
                       {/* <CIcon icon={cilDelete} /> */}
@@ -849,7 +839,7 @@ class Salary extends Component {
         {/* Delete */}
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -869,10 +859,10 @@ class Salary extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -881,24 +871,24 @@ class Salary extends Component {
         {/* Active */}
         <CModal visible={this.state.modalActiveIsOpen} onClose={this.closeActiveModal}>
           <CModalHeader>
-            <CModalTitle>ACTIVE PHIẾU LƯƠNG</CModalTitle>
+            <CModalTitle>Gửi phiếu lương</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleActive}>
               <h2>
-                Bạn có muốn active phiếu lương tháng {this.state.currentMonth + 1} năm{' '}
+                Bạn có muốn gửi phiếu lương tháng {this.state.currentMonth + 1} năm{' '}
                 {this.state.currentYear}
               </h2>
 
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeActiveModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="info" type="submit">
                   {this.state.loadStatusActive ? (
                     <>
                       <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
-                      Đang Tiến Hành Active...
+                      Đang tiến hành gửi...
                     </>
                   ) : (
                     'OK'
@@ -912,15 +902,15 @@ class Salary extends Component {
         <CModal visible={this.state.modalCheckIsOpen} onClose={this.closeCheckModal} size="xl">
           <Loading loading={this.state.loadingModal} />
           <CModalHeader>
-            <CModalTitle>CHECK PHIẾU LƯƠNG</CModalTitle>
+            <CModalTitle>Kiểm tra phiếu lương</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CRow className="mb-3">
               <CCol md={8}>
                 <Space>
-                  <CTooltip content="Thêm Phiếu Lương Tất Cả Nhân Viên Còn Lại" placement="top">
+                  <CTooltip content="Thêm phiếu lương cho tất cả nhân viên còn lại" placement="top">
                     <CButton color="info" onClick={() => this.openAddAllSalaryModal()}>
-                      Thêm Phiếu Lương Tất Cả Nhân Viên Còn Lại
+                      <CIcon icon={cilPlus} /> Thêm phiếu lương cho tất cả nhân viên còn lại
                     </CButton>
                   </CTooltip>
                 </Space>
@@ -942,14 +932,13 @@ class Salary extends Component {
               <Column title="Bộ phận" dataIndex="department_data" key="department_data" />
               <Column title="Chức Vụ" dataIndex="position_data" key="position_data" />
               <Column
-                title="Hành động"
+                title="Thêm phiếu lương"
                 key={this.state.listStaff}
                 render={(text, record) => (
                   <Space size="middle">
-                    <CTooltip content="Thêm Phiếu Lương" placement="top">
+                    <CTooltip content="Thêm phiếu lương" placement="top">
                       <CButton color="info" onClick={() => this.openAddSalaryModal(record)}>
-                        {/* <CIcon icon={cilDelete} /> */}
-                        Thêm Phiếu Lương
+                        <CIcon icon={cilPlus} />
                       </CButton>
                     </CTooltip>
                   </Space>
@@ -966,10 +955,7 @@ class Salary extends Component {
         >
           <CModalHeader>
             <CModalTitle>
-              THÊM PHIẾU LƯƠNG - NHÂN VIÊN{' '}
-              <span style={{ textTransform: 'uppercase' }}>
-                {this.state.first_name} {this.state.last_name}
-              </span>
+              Thêm phiếu lương - nhân viên: {this.state.first_name} {this.state.last_name}
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
@@ -1039,10 +1025,10 @@ class Salary extends Component {
               </CContainer>
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeAddSalaryModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="info" type="submit">
-                  LƯU
+                  Lưu
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -1057,8 +1043,7 @@ class Salary extends Component {
         >
           <CModalHeader>
             <CModalTitle style={{ textTransform: 'uppercase' }}>
-              CẬP NHẬT PHIẾU LƯƠNG - NHÂN VIÊN{' '}
-              <span style={{ textTransform: 'uppercase' }}>{this.state.full_name}</span>
+              Cập nhật phiếu lương - nhân viên: {this.state.full_name}
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
@@ -1135,7 +1120,7 @@ class Salary extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -1144,27 +1129,27 @@ class Salary extends Component {
         {/* Add All Salary */}
         <CModal visible={this.state.modalAddAllSalaryIsOpen} onClose={this.closeAddAllSalaryModal}>
           <CModalHeader>
-            <CModalTitle>THÊM PHIẾU LƯƠNG CHO TẤT CẢ NHÂN VIÊN</CModalTitle>
+            <CModalTitle>Thêm phiếu lương cho tất cả nhân viên</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleAddAllSalary}>
-              <h2>
-                Bạn có muốn thêm phiếu lương cho tất cả nhân viên trong tháng{' '}
+              <h6>
+                Bạn có muốn thêm phiếu lương cho tất cả nhân viên trong: tháng{' '}
                 {this.state.currentMonth + 1} năm {this.state.currentYear}
-              </h2>
+              </h6>
 
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeAddAllSalaryModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="info" type="submit">
                   {this.state.statusLoadProcess ? (
                     <>
                       <CSpinner component="span" size="sm" variant="grow" aria-hidden="true" />
-                      Đang Tiến Hành Thêm...
+                      Đang tiến hành thêm...
                     </>
                   ) : (
-                    'OK'
+                    'Đồng ý'
                   )}
                 </CButton>
               </CModalFooter>

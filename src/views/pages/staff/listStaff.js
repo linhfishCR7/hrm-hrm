@@ -6,7 +6,7 @@ import openNotificationWithIcon from '../../../utils/notification'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import { Table, Space, Button, Input, Collapse, Card, Spin, BackTop, Select, Divider } from 'antd'
 import { TOKEN } from '../../../constants/Config'
-import { EditOutlined, DeleteOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
+import { EyeOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 import {
@@ -30,7 +30,7 @@ import {
 } from '@coreui/react'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
-import { cilCloudUpload, cilEyedropper, cilLink } from '@coreui/icons'
+import { cilCloudUpload, cilInfo, cilLink } from '@coreui/icons'
 import Modal from 'react-modal'
 const { Column, ColumnGroup } = Table
 const { Panel } = Collapse
@@ -1048,15 +1048,10 @@ class ListStaff extends Component {
 
     return (
       <>
-        {/* <BackTop /> */}
-        {/* <BackTop>
-          <div style={style}>UP</div>
-        </BackTop> */}
         <LoadingOverlay
           active={this.state.loading}
-          spinner={<Spin tip="Loading..." size="large"></Spin>}
+          spinner={<Spin tip="Vui lòng chờ..." size="large"></Spin>}
           styles={{ wrapper: { backgroundColor: 'black' } }}
-          // text="Loading your content..."
         >
           {/* <p>Some content or children or something.</p> */}
         </LoadingOverlay>
@@ -1070,34 +1065,15 @@ class ListStaff extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.staffs} bordered>
+        <Table dataSource={this.state.staffs} bordered scroll={{ y: 500 }}>
           {' '}
           {/*scroll={{ y: 240 }}*/}
           <Column
-            title="Hành động"
-            key={this.state.staff}
-            render={(text, record) => (
-              <Space size="middle">
-                <CTooltip content="Chọn" placement="top">
-                  <CButton color="info" onClick={() => this.openStaffDetailModal(record)}>
-                    {/* <CIcon icon={cilDelete} /> */}
-                    <CIcon icon={cilCloudUpload} />
-                  </CButton>
-                </CTooltip>
-              </Space>
-            )}
-          />
-          <Column
-            title="Mã Số"
+            title="Mã Nhân Viên"
             dataIndex="staff"
             key="staff"
             sorter={(a, b) => a.staff.length - b.staff.length}
             sortDirections={['descend', 'ascend']}
-
-            // filters={this.state.departments}
-            // onFilter={(value, record) => record.staff.startsWith(value)}
-            // filterSearch={true}
-            // width="40%"
           />
           <Column title="Họ" dataIndex="last_name" key="last_name" />
           <Column title="Tên" dataIndex="first_name" key="first_name" />
@@ -1120,6 +1096,19 @@ class ListStaff extends Component {
             filterSearch={true}
             // width="40%"
           />
+          <Column
+            title="Thông Tin Chi Tiết"
+            key={this.state.staff}
+            render={(text, record) => (
+              <Space size="middle">
+                <CTooltip content="Chọn" placement="top">
+                  <CButton color="info" onClick={() => this.openStaffDetailModal(record)}>
+                    <EyeOutlined />
+                  </CButton>
+                </CTooltip>
+              </Space>
+            )}
+          />
         </Table>
         <Divider />
 
@@ -1132,7 +1121,7 @@ class ListStaff extends Component {
         >
           <CModalHeader>
             <CModalTitle>
-              Thông Tin Chi Tiết Nhân Viên:{' '}
+              Thông tin chi tiết nhân viên:{' '}
               <i>
                 {this.state.staffName} ({this.state.staffId})
               </i>
@@ -1151,11 +1140,6 @@ class ListStaff extends Component {
               {contentListNoTitle[this.state.activeTabKey2]}
             </Card>
           </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={this.closeSettingModal}>
-              ĐÓNG
-            </CButton>
-          </CModalFooter>
         </CModal>
       </>
     )

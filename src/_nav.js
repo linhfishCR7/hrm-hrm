@@ -10,10 +10,9 @@ import {
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
-  cilStar,
   cilHome,
   cilImage,
-  cilImagePlus,
+  cilBook,
   cilAirplaneModeOff,
   cilContrast,
   cilCheck,
@@ -23,6 +22,12 @@ import {
   cilCalendar,
   cilSatelite,
   cilRunning,
+  cilVolumeOff,
+  cilEducation,
+  cilWindowRestore,
+  cilMediaStop,
+  cilStar,
+  cilShareAll,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -61,7 +66,7 @@ const _nav = [
     component: CNavGroup,
     name: 'Thông tin chung',
     to: '/dashboard',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilShareAll} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -151,56 +156,28 @@ const _nav = [
     ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Chứng nhận',
     to: '/certificate-type',
-    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Loại chứng nhận',
-        to: '/certificate-type',
-      },
-    ],
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Bằng cấp',
     to: '/degree-type',
-    icon: <CIcon icon={cilImagePlus} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Loại bằng cấp',
-        to: '/degree-type',
-      },
-    ],
+    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Ngày nghỉ',
+    component: CNavItem,
+    name: 'Loại Ngày Nghỉ',
     to: '/day-off-type',
-    icon: <CIcon icon={cilAirplaneModeOff} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Loại ngày nghỉ',
-        to: '/day-off-type',
-      },
-    ],
+    icon: <CIcon icon={cilMediaStop} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Hợp đồng lao động',
+    component: CNavItem,
+    name: 'Hợp Đồng Lao Động',
     to: '/employment-contract-type',
-    icon: <CIcon icon={cilContrast} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Loại hợp đồng lao động',
-        to: '/employment-contract-type',
-      },
-    ],
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavGroup,
@@ -234,30 +211,16 @@ const _nav = [
   //   ],
   // },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Bộ Phận',
     to: '/department',
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách bộ phận',
-        to: '/department',
-      },
-    ],
+    icon: <CIcon icon={cilWindowRestore} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Khách hàng',
+    component: CNavItem,
+    name: 'Khách Hàng',
     to: '/customer',
     icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách khách hàng',
-        to: '/customer',
-      },
-    ],
   },
   {
     component: CNavGroup,
@@ -278,56 +241,34 @@ const _nav = [
     ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Dự Án',
     to: '/project',
-    icon: <CIcon icon={cilSatelite} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách dự án',
-        to: '/project',
-      },
-    ],
+    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Nhân Viên Làm Dự Án',
     to: '/staff-project',
     icon: <CIcon icon={cilRunning} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách',
-        to: '/staff-project',
-      },
-    ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Tiền Lương',
     to: '/salary',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh sách lương theo tháng',
-        to: '/salary',
-      },
-    ],
   },
   {
-    component: CNavGroup,
-    name: 'Đào Tạo',
+    component: CNavItem,
+    name: 'Chương Trình Đào Tạo',
     to: '/trainning',
+    icon: <CIcon icon={cilEducation} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Chấm Công',
+    to: '/timekeeping-all',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Chương trình đào tạo',
-        to: '/trainning',
-      },
-    ],
   },
   {
     component: CNavTitle,

@@ -107,14 +107,14 @@ class Position extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -185,7 +185,7 @@ class Position extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -193,7 +193,7 @@ class Position extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Cập nhật dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeModal()
@@ -229,7 +229,7 @@ class Position extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -237,7 +237,7 @@ class Position extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Xoá dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
           this.closeDeleteModal()
@@ -310,7 +310,7 @@ class Position extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.positions} bordered>
+        <Table dataSource={this.state.positions} bordered scroll={{ y: 340 }}>
           <Column title="Mã" dataIndex="position" key="position" />
           <Column title="Tên" dataIndex="name" key="name" />
           <Column
@@ -340,7 +340,7 @@ class Position extends Component {
         </Table>
         <CModal visible={this.state.modalIsOpen} onClose={this.closeModal}>
           <CModalHeader>
-            <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+            <CModalTitle>Cập nhật</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleEditSubmit}>
@@ -377,7 +377,7 @@ class Position extends Component {
                   Đóng
                 </CButton>
                 <CButton color="primary" type="submit">
-                  Cập Nhật
+                  Cập nhật
                 </CButton>
               </CModalFooter>
             </CForm>{' '}
@@ -385,7 +385,7 @@ class Position extends Component {
         </CModal>
         <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
           <CModalHeader>
-            <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+            <CModalTitle>Xoá</CModalTitle>{' '}
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
@@ -420,10 +420,10 @@ class Position extends Component {
               </CInputGroup>{' '}
               <CModalFooter>
                 <CButton color="secondary" onClick={this.closeDeleteModal}>
-                  HUỶ
+                  Huỷ
                 </CButton>
                 <CButton color="danger" type="submit">
-                  OK
+                  Đồng ý
                 </CButton>
               </CModalFooter>
             </CForm>{' '}

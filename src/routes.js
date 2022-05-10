@@ -100,6 +100,10 @@ const StaffProject = React.lazy(() => import('./views/pages/staffProject/StaffPr
 const ListUser = React.lazy(() => import('./views/pages/user/ListUser'))
 const ReportSalary = React.lazy(() => import('./views/pages/salary/ReportSalary'))
 const ListCV = React.lazy(() => import('./views/pages/staff/listCV'))
+const ListStaffReport = React.lazy(() => import('./views/pages/staff/listStaffReport'))
+const TimeKeepingAllStaff = React.lazy(() =>
+  import('./views/pages/timeKeeping/TimeKeepingAllStaff'),
+)
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -149,10 +153,12 @@ const routes = [
   { path: '/staff/salary', name: 'Tiền Lương', element: SalaryStaff },
   { path: '/staff/trainning', name: 'Chương Trình Đào Tạo', element: TrainningDetail },
   { path: '/staff/timekeeping', name: 'Chấm Công', element: TimeKeeping },
+  { path: '/timekeeping-all', name: 'Chấm Công Nhân Viên', element: TimeKeepingAllStaff },
   { path: '/project', name: 'Dự Án', element: Project },
   { path: '/staff-project', name: 'Nhân Viên Làm Dự Án', element: StaffProject },
   { path: '/list-user', name: 'Danh Sách Người Dùng', element: ListUser },
   { path: '/list-cv', name: 'CV Nhân Viên', element: ListCV },
+  { path: '/list-staff-pdf', name: 'Danh Sách Nhân Viên PDF', element: ListStaffReport },
   {
     path: '/report-salary',
     name: 'Danh Sách Bảng Lương Nhân Viên Theo Tháng',

@@ -146,14 +146,14 @@ class AddCompany extends Component {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error.response.data.message,
+            description: '',
             placement: 'topRight',
           })
         } else {
           openNotificationWithIcon({
             type: 'error',
             message: 'Thêm dữ liệu không thành công!!!',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         }
@@ -661,7 +661,7 @@ class AddCompany extends Component {
                   </CRow>
                 </CContainer>
                 <CButton color="primary" type="submit">
-                  LƯU
+                  Lưu
                 </CButton>
               </Form>
             </Card>

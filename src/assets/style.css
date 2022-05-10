@@ -48,3 +48,12 @@
     border-radius: 4px;
     z-index: 999;
   }
+
+th.ant-table-cell{
+    background-color: rgb(138, 142, 145) !important;
+}
+tr th.ant-table-cell{
+    text-align: center;
+    font-weight: bolder;
+    font-size: medium;
+}

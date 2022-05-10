@@ -400,7 +400,7 @@ class Company extends Component {
             </Table>
             <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="xl">
               <CModalHeader>
-                <CModalTitle> CẬP NHẬT DỮ LIỆU</CModalTitle>
+                <CModalTitle>Cập nhật</CModalTitle>{' '}
               </CModalHeader>
               <CModalBody>
                 <CForm onSubmit={this.handleEditSubmit}>
@@ -639,7 +639,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address"
                           value={this.state.address}
@@ -655,7 +655,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city"
                           value={this.state.city}
@@ -668,7 +668,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province"
                           value={this.state.province}
@@ -683,7 +683,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district"
                           value={this.state.district}
@@ -696,7 +696,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune"
                           value={this.state.commune}
@@ -711,7 +711,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country"
                           value={this.state.country}
@@ -724,7 +724,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode"
                           value={this.state.postcode}
@@ -758,7 +758,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Địa Chỉ</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="address"
+                          placeholder="Địa Chỉ"
                           autoComplete="address"
                           name="address2"
                           value={this.state.address2}
@@ -774,7 +774,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Thành Phố</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="city"
+                          placeholder="Thành Phố"
                           autoComplete="city"
                           name="city2"
                           value={this.state.city2}
@@ -787,7 +787,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Tỉnh</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="province"
+                          placeholder="Tỉnh"
                           autoComplete="province"
                           name="province2"
                           value={this.state.province2}
@@ -802,7 +802,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Huyện</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="district"
+                          placeholder="Huyện"
                           autoComplete="district"
                           name="district2"
                           value={this.state.district2}
@@ -815,7 +815,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Xã</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="commune"
+                          placeholder="Xã"
                           autoComplete="commune"
                           name="commune2"
                           value={this.state.commune2}
@@ -830,7 +830,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Quốc Gia</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="country"
+                          placeholder="Quốc Gia"
                           autoComplete="country"
                           name="country2"
                           value={this.state.country2}
@@ -843,7 +843,7 @@ class Company extends Component {
                         <CFormLabel htmlFor="exampleFormControlInput1">Zip</CFormLabel>
                         <CFormInput
                           type="text"
-                          placeholder="postcode"
+                          placeholder="Mã Code"
                           autoComplete="postcode"
                           name="postcode2"
                           value={this.state.postcode2}
@@ -874,7 +874,7 @@ class Company extends Component {
                       Đóng
                     </CButton>
                     <CButton color="primary" type="submit">
-                      Cập Nhật
+                      Cập nhật
                     </CButton>
                   </CModalFooter>
                 </CForm>{' '}
@@ -882,7 +882,7 @@ class Company extends Component {
             </CModal>
             <CModal visible={this.state.modalDeleteIsOpen} onClose={this.closeDeleteModal}>
               <CModalHeader>
-                <CModalTitle> XOÁ DỮ LIỆU</CModalTitle>
+                <CModalTitle>Xoá</CModalTitle>{' '}
               </CModalHeader>
               <CModalBody>
                 <CForm onSubmit={this.handleDelete}>
@@ -915,10 +915,10 @@ class Company extends Component {
                   </CInputGroup>{' '}
                   <CModalFooter>
                     <CButton color="secondary" onClick={this.closeDeleteModal}>
-                      HUỶ
+                      Huỷ
                     </CButton>
                     <CButton color="danger" type="submit">
-                      OK
+                      Đồng ý
                     </CButton>
                   </CModalFooter>
                 </CForm>{' '}
