@@ -30,14 +30,40 @@ import {
 import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import {
+  cilArrowBottom,
+  cilArrowTop,
+  cilOptions,
+  cilCircle,
+  cilInfo,
+  cilBook,
+  cilMediaStop,
+  cilCalendar,
+  cilContact,
+  cilAirplaneMode,
+  cilStar,
+  cilFunctions,
+  cilMoney,
+  cilArrowCircleRight,
+  cilNotes,
+  cilEducation,
+  cilExpandUp,
+  cilStarHalf,
+  cilDisabled,
+  cilHandPointUp,
+  cilMemory,
+  cilNewspaper,
+} from '@coreui/icons'
 import Loading from '../../utils/loading'
 import { Table, Space, Card, Avatar, Divider, Collapse, Input, Popover, Button } from 'antd'
 import { EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
 const { Column } = Table
 const { Panel } = Collapse
 const { Meta } = Card
-
+const gridStyle = {
+  width: '25%',
+  textAlign: 'center',
+}
 const WidgetsDropdown = () => {
   const [data, setData] = useState({})
   const [dataProject, setDataProject] = useState([{}])
@@ -502,16 +528,8 @@ const WidgetsDropdown = () => {
               key={item.id}
               className="mb-3"
               hoverable={true}
-              // style={{ width: 300 }}
-              //   cover={
-              //     <img
-              //       alt="example"
-              //       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              //     />
-              //   }onClick={() => this.openStaffDetailModal(record)}
               actions={[
                 <SettingOutlined key="setting" onClick={() => openSettingModal(item)} />,
-                // <EditOutlined key="edit" aria-disabled={true} />,
                 <Popover
                   content={
                     <Card
@@ -575,159 +593,178 @@ const WidgetsDropdown = () => {
       <CModal
         visible={ListStaffModal.modalSettingIsOpen}
         onClose={closeSettingModal}
-        size="lg"
+        size="xl"
         scrollable={true}
       >
         <CModalHeader>
-          <CModalTitle>CHỨC NĂNG</CModalTitle>
+          <CModalTitle>Cập nhật chi tiết thông tin nhân viên</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm>
-            <h3 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
+            <h4 style={{ textTransform: 'uppercase', textAlign: 'center' }}>
               Mã nhân viên: {ListStaffModal.staff}
-            </h3>
-            {/* <h2>{this.state.name}</h2> */}
-
-            <CTooltip content="Thông Tin Khẩn Cấp" placement="top">
-              <Link to="/staff/contact" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Thông Tin Khẩn Cấp
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Bằng Cấp" placement="top">
-              <Link to="/staff/degree" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Bằng Cấp
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Chứng Chỉ" placement="top">
-              <Link to="/staff/certificate" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */} Chứng Chỉ
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Kỹ Năng" placement="top">
-              <Link to="/staff/skill" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Kỹ Năng
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Công Tác" placement="top">
-              <Link to="/staff/on-business" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */} Công Tác
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Chấm Công" placement="top">
-              <Link to="/staff/timekeeping" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Chấm Công
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Phép Năm" placement="top">
-              <Link to="/staff/day-off-year" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Phép Năm
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Tiền Lương" placement="top">
-              <Link to="/staff/salary" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Tiền Lương
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Điều Chỉnh Lương" placement="top">
-              <Link to="/staff/up-salary" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Điều Chỉnh Lương
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Hợp Đồng Lao Động" placement="top">
-              <Link to="/staff/contract" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Hợp Đồng Lao Động
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Đào Tạo" placement="top">
-              <Link to="/staff/trainning" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Đào Tạo
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Thăng Tiến" placement="top">
-              <Link to="/staff/promotion" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Thăng Tiến
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Khen Thưởng" placement="top">
-              <Link to="/staff/bonus" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Khen Thưởng
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Kỷ Luật" placement="top">
-              <Link to="/staff/discipline" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Kỷ Luật
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CTooltip content="Sức Khoẻ" placement="top">
-              <Link to="/staff/health" target="_blank">
-                <div className="d-grid mb-3">
-                  <CButton color="info" style={{ marginRight: '10px' }}>
-                    {/* <CIcon icon={cilInfo} /> */}Sức Khoẻ
-                  </CButton>
-                </div>{' '}
-              </Link>
-            </CTooltip>
-            <CModalFooter>
-              <CButton color="secondary" onClick={closeSettingModal}>
-                ĐÓNG
-              </CButton>
-            </CModalFooter>
+            </h4>
+            <Card>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Thông Tin Liên Hệ Khẩn" placement="top">
+                  <Link to="/staff/contact" target="_blank">
+                    <CIcon icon={cilContact} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Thông Tin Liên Hệ Khẩn
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Bằng Cấp" placement="top">
+                  <Link to="/staff/degree" target="_blank">
+                    <CIcon icon={cilBook} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Bằng Cấp
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Chứng Chỉ" placement="top">
+                  <Link to="/staff/certificate" target="_blank">
+                    <CIcon icon={cilNewspaper} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Chứng Chỉ
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Kỹ Năng" placement="top">
+                  <Link to="/staff/skill" target="_blank">
+                    <CIcon icon={cilFunctions} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Kỹ Năng
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                {' '}
+                <CTooltip content="Công Tác" placement="top">
+                  <Link to="/staff/on-business" target="_blank">
+                    <CIcon
+                      icon={cilAirplaneMode}
+                      customClassName="nav-icon"
+                      width="60"
+                      height="60"
+                    />
+                    <br />
+                    Công Tác
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                {' '}
+                <CTooltip content="Chấm Công" placement="top">
+                  <Link to="/staff/timekeeping" target="_blank">
+                    <CIcon icon={cilCalendar} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Chấm Công
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Phép Năm" placement="top">
+                  <Link to="/staff/day-off-year" target="_blank">
+                    <CIcon icon={cilMediaStop} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Phép Năm
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                {' '}
+                <CTooltip content="Tiền Lương" placement="top">
+                  <Link to="/staff/salary" target="_blank">
+                    <CIcon icon={cilMoney} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Tiền Lương
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Điều Chỉnh Lương" placement="top">
+                  <Link to="/staff/up-salary" target="_blank">
+                    <CIcon
+                      icon={cilArrowCircleRight}
+                      customClassName="nav-icon"
+                      width="60"
+                      height="60"
+                    />
+                    <br />
+                    Điều Chỉnh Lương
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Hợp Đồng Lao Động" placement="top">
+                  <Link to="/staff/contract" target="_blank">
+                    <CIcon icon={cilNotes} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Hợp Đồng Lao Động
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Đào Tạo" placement="top">
+                  <Link to="/staff/trainning" target="_blank">
+                    <CIcon icon={cilEducation} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Đào Tạo
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Thăng Tiến" placement="top">
+                  <Link to="/staff/promotion" target="_blank">
+                    <CIcon icon={cilExpandUp} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Thăng Tiến
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Khen Thưởng" placement="top">
+                  <Link to="/staff/bonus" target="_blank">
+                    <CIcon icon={cilStar} customClassName="nav-icon" width="60" height="60" />
+                    <br />
+                    Khen Thưởng
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Kỷ Luật" placement="top">
+                  <Link to="/staff/discipline" target="_blank">
+                    <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" />
+                    <br /> Kỷ Luật
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                <CTooltip content="Sức Khoẻ" placement="top">
+                  <Link to="/staff/health" target="_blank">
+                    <CIcon
+                      icon={cilHandPointUp}
+                      customClassName="nav-icon"
+                      width="60"
+                      height="60"
+                    />
+                    <br /> Sức Khoẻ
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+              <Card.Grid hoverable={false} style={gridStyle}>
+                <CTooltip content="Cài Đặt" placement="top">
+                  <Link to="#">
+                    <CIcon icon={cilMemory} customClassName="nav-icon" width="60" height="60" />
+                    <br /> Cài Đặt
+                  </Link>
+                </CTooltip>
+              </Card.Grid>
+            </Card>
           </CForm>{' '}
         </CModalBody>
       </CModal>
