@@ -81,12 +81,16 @@ const AddStaff = () => {
             description: '',
             placement: 'topRight',
           })
+          setTimeout(function () {
+            window.location.reload()
+          }, 3000)
         })
         .catch((error) => {
+          setLoadStatusCreate(false)
           openNotificationWithIcon({
             type: 'error',
             message: 'Có lỗi xảy ra',
-            description: error,
+            description: '',
             placement: 'topRight',
           })
         })

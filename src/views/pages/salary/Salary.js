@@ -36,6 +36,7 @@ import Loading from '../../../utils/loading'
 const { Column } = Table
 // const { Panel } = Collapse
 // const { Meta } = Card
+const today = new Date().toISOString().slice(0, 10)
 
 const tabListNoTitle = [
   {
@@ -669,9 +670,10 @@ class Salary extends Component {
               </Space>
             </CCol>
           </CRow>
+          <h5 className="mb-3"> Hôm nay: {today}</h5>
           <Table dataSource={this.state.salaryCurrent} bordered>
-            <Column title="Tháng" dataIndex="month" key="month" />
-            <Column title="Năm" dataIndex="year" key="year" />
+            {/* <Column title="Tháng" dataIndex="month" key="month" />
+            <Column title="Năm" dataIndex="year" key="year" /> */}
             {/* <Column title="Ngày Tạo" dataIndex="date" key="date" /> */}
             <Column title="Mã Nhân Viên" dataIndex="staff_data" key="staff_data" />
             <Column
@@ -891,7 +893,7 @@ class Salary extends Component {
                       Đang tiến hành gửi...
                     </>
                   ) : (
-                    'OK'
+                    'Đồng ý'
                   )}
                 </CButton>
               </CModalFooter>
