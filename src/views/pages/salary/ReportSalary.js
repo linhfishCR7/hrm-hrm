@@ -44,7 +44,7 @@ const ReportSalary = () => {
 
   const fetchSalaryAPI = (dataSalary) => {
     API({
-      REGISTER_URL: '/hrm/salary/' + dataSalary + '/',
+      REGISTER_URL: '/hrm/salary/salary-report/' + dataSalary + '/',
       ACTION: 'GET',
     })
       .then((res) => {

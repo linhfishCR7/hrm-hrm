@@ -33,7 +33,7 @@ import Loading from '../../../utils/loading'
 import openNotificationWithIcon from '../../../utils/notification'
 
 const { Column } = Table
-
+const today = new Date().toISOString().slice(0, 10)
 const staff_id = localStorage.getItem('staff')
 const staff_name = localStorage.getItem('staff_name')
 const tabListNoTitle = [
@@ -355,7 +355,9 @@ class SalaryStaff extends Component {
               /> */}
             </CCol>
           </CRow>
-          <Table dataSource={this.state.salaryCurrent} bordered>
+          <h5 className="mb-3"> Hôm nay: {today}</h5>
+
+          <Table dataSource={this.state.salaryCurrent} bordered scroll={{ y: 500 }}>
             <Column
               title="Tháng"
               dataIndex="month"
@@ -452,7 +454,7 @@ class SalaryStaff extends Component {
               />
             </CCol>
           </CRow>
-          <Table dataSource={this.state.salaryPast} bordered>
+          <Table dataSource={this.state.salaryPast} bordered scroll={{ y: 500 }}>
             <Column
               title="Tháng"
               dataIndex="month"

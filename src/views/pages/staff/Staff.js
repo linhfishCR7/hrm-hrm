@@ -3,7 +3,13 @@ import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Input, Collapse, Spin, Card } from 'antd'
 import { TOKEN } from '../../../constants/Config'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import {
+  EditOutlined,
+  ThunderboltOutlined,
+  CalculatorOutlined,
+  DeleteOutlined,
+  RiseOutlined,
+} from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import LoadingOverlay from 'react-loading-overlay'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
@@ -496,6 +502,9 @@ class Staff extends Component {
   }
 
   handleEditSubmit = async (event) => {
+    this.setState({
+      loading: true,
+    })
     event.preventDefault()
     const newUpdate = {
       gender: this.state.gender,
@@ -675,7 +684,7 @@ class Staff extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.staffs} bordered>
+        <Table dataSource={this.state.staffs} bordered scroll={{ y: 500 }}>
           <Column
             title="Mã Số"
             dataIndex="staff"
@@ -860,12 +869,13 @@ class Staff extends Component {
                 <Card.Grid style={gridStyle}>
                   <CTooltip content="Điều Chỉnh Lương" placement="top">
                     <Link to="/staff/up-salary" target="_blank">
-                      <CIcon
+                      {/* <CIcon
                         icon={cilArrowCircleRight}
                         customClassName="nav-icon"
                         width="60"
                         height="60"
-                      />
+                      /> */}
+                      <CalculatorOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                       <br />
                       Điều Chỉnh Lương
                     </Link>
@@ -897,7 +907,7 @@ class Staff extends Component {
                 <Card.Grid style={gridStyle}>
                   <CTooltip content="Thăng Tiến" placement="top">
                     <Link to="/staff/promotion" target="_blank">
-                      <CIcon icon={cilExpandUp} customClassName="nav-icon" width="60" height="60" />
+                      <RiseOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                       <br />
                       Thăng Tiến
                     </Link>
@@ -915,7 +925,8 @@ class Staff extends Component {
                 <Card.Grid style={gridStyle}>
                   <CTooltip content="Kỷ Luật" placement="top">
                     <Link to="/staff/discipline" target="_blank">
-                      <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" />
+                      {/* <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" /> */}
+                      <ThunderboltOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                       <br /> Kỷ Luật
                     </Link>
                   </CTooltip>

@@ -15,7 +15,7 @@ const ListCV = () => {
 
   const fetchListStaffAPI = () => {
     API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
+      REGISTER_URL: '/hrm/staffs/list-staff-report/?no_pagination=true',
       ACTION: 'GET',
     })
       .then((res) => {
@@ -29,7 +29,7 @@ const ListCV = () => {
 
   const fetchStaffAPI = (dataStaff) => {
     API({
-      REGISTER_URL: '/hrm/staffs/' + dataStaff + '/',
+      REGISTER_URL: '/hrm/staffs/staff-report/' + dataStaff + '/',
       ACTION: 'GET',
     })
       .then((res) => {

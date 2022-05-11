@@ -390,7 +390,7 @@ class ListUser extends Component {
             </Table>
             <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
               <CModalHeader>
-                <CModalTitle>CẬP NHẬT VAI TRÒ NGƯỜI DÙNG</CModalTitle>
+                <CModalTitle>Cập nhật vai trò người dùng</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <CForm onSubmit={this.handleEditSubmit}>
@@ -518,8 +518,8 @@ class ListUser extends Component {
               <CModalHeader>
                 <CModalTitle>
                   {this.state.is_active_data === 'Bị Khoá'
-                    ? 'KÍCH HOẠT NGƯỜI DÙNG'
-                    : 'KHOÁ NGƯỜI DÙNG'}
+                    ? 'Kích hoạt người dùng'
+                    : 'Khoá người dùng'}
                 </CModalTitle>
               </CModalHeader>
               {this.state.is_active_data === 'Bị Khoá' ? (
@@ -545,10 +545,10 @@ class ListUser extends Component {
                     </CInputGroup>{' '}
                     <CModalFooter>
                       <CButton color="secondary" onClick={this.closeStatusModal}>
-                        HUỶ
+                        Huỷ
                       </CButton>
                       <CButton color="info" type="submit">
-                        OK
+                        Đồng ý
                       </CButton>
                     </CModalFooter>
                   </CForm>{' '}
@@ -576,10 +576,10 @@ class ListUser extends Component {
                     </CInputGroup>{' '}
                     <CModalFooter>
                       <CButton color="secondary" onClick={this.closeStatusModal}>
-                        HUỶ
+                        Huỷ
                       </CButton>
                       <CButton color="warning" type="submit">
-                        OK
+                        Đồng ý
                       </CButton>
                     </CModalFooter>
                   </CForm>{' '}
