@@ -450,7 +450,7 @@ class Project extends Component {
                   </Button>
                 </Upload>
                 <CFormText component="span" id="exampleFormControlInputHelpInline">
-                  Vui lòng nhập số hợp đồng
+                  Vui lòng tải hình ảnh dự án
                 </CFormText>
               </CCol>
             </CRow>
@@ -796,7 +796,7 @@ class Project extends Component {
                       </Button>
                     </Upload>
                     <CFormText component="span" id="exampleFormControlInputHelpInline">
-                      Vui lòng nhập số hợp đồng
+                      Vui lòng tải hình ảnh dự án
                     </CFormText>
                   </CCol>
                 </CRow>

@@ -24,7 +24,9 @@ const ListCV = () => {
         setDataStaff(res.data[1].id)
         setLoading(false)
       })
-      .catch((error) => {})
+      .catch((error) => {
+        setLoading(false)
+      })
   }
 
   const fetchStaffAPI = (dataStaff) => {
@@ -37,7 +39,9 @@ const ListCV = () => {
         setData(data)
         setLoading(false)
       })
-      .catch((error) => {})
+      .catch((error) => {
+        setLoading(false)
+      })
   }
 
   useEffect(() => {
@@ -53,6 +57,8 @@ const ListCV = () => {
   return (
     <>
       <Loading loading={loading} />
+      <h2>CV Nhân Viên - PDF</h2>
+
       <CContainer>
         <CRow className="mb-3">
           <CCol md={8}>
@@ -82,7 +88,6 @@ const ListCV = () => {
       <CContainer className="content">
         <div className="row">
           <div className="col-sm-12">
-            <h2 className="mt-3 mb-4 fw-bold">CV Nhân Viên PDF</h2>
             <embed src={data.key} type="application/pdf" height="1000px" width="100%" />
           </div>
         </div>

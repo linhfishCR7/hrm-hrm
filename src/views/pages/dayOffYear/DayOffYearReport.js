@@ -7,12 +7,12 @@ import Loading from '../../../utils/loading'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 const { Option } = Select
 
-const ReportSalary = () => {
-  const [data, setData] = useState({})
+const DayOffYearReport = () => {
+  const [data, setData] = useState([{}])
   const [dataStaff, setDataStaff] = useState('')
   const [dataListStaff, setDataListStaff] = useState([{}])
-  const [dataListSalary, setDataListSalary] = useState([{}])
-  const [dataSalary, setDataSalary] = useState('')
+  const [dataListDay, setDataListDay] = useState([{}])
+  const [dataday, setDataDay] = useState('')
   const [loading, setLoading] = useState(true)
 
   const fetchListStaffAPI = () => {
@@ -31,14 +31,15 @@ const ReportSalary = () => {
       })
   }
 
-  const fetchListSalaryAPI = (dataStaff) => {
+  const fetchListDayOffYearAPI = (dataStaff) => {
     API({
-      REGISTER_URL: '/hrm/salary/?no_pagination=true&staff__id=' + dataStaff,
+      REGISTER_URL:
+        '/hrm/day-off-years/list-day-off-year-report/?no_pagination=true&staff__id=' + dataStaff,
       ACTION: 'GET',
     })
       .then((res) => {
         const data = res.data
-        setDataListSalary(data)
+        setDataListDay(data)
         setLoading(false)
       })
       .catch((error) => {
@@ -46,15 +47,16 @@ const ReportSalary = () => {
       })
   }
 
-  const fetchSalaryAPI = (dataSalary) => {
+  const fetchDayOffYearAPI = (dataday) => {
     API({
-      REGISTER_URL: '/hrm/salary/salary-report/' + dataSalary + '/',
+      REGISTER_URL: '/hrm/day-off-years/list-day-off-year-report/?no_pagination=true&id=' + dataday,
       ACTION: 'GET',
     })
       .then((res) => {
         const data = res.data
         setData(data)
         setLoading(false)
+        console.log(data.key)
       })
       .catch((error) => {
         setLoading(false)
@@ -63,26 +65,24 @@ const ReportSalary = () => {
 
   useEffect(() => {
     setLoading(true)
-
     fetchListStaffAPI()
   }, [])
 
   useEffect(() => {
     setLoading(true)
-
-    fetchListSalaryAPI(dataStaff)
+    fetchListDayOffYearAPI(dataStaff)
   }, [dataStaff])
 
   useEffect(() => {
     setLoading(true)
-
-    fetchSalaryAPI(dataSalary)
-  }, [dataSalary])
+    fetchDayOffYearAPI(dataday)
+  }, [dataday])
 
   return (
     <>
       <Loading loading={loading} />
-      <h2>Bảng Lương Nhân Viên - PDF</h2>
+      <h2>Phiếu Nghỉ Phép Nhân Viên - PDF</h2>
+
       <CContainer>
         <CRow className="mb-3">
           <CCol md={8}>
@@ -118,7 +118,7 @@ const ReportSalary = () => {
               allowClear
               showSearch
               style={{ width: 700 }}
-              placeholder="Tìm kiếm theo tháng và năm"
+              placeholder="Tìm kiếm theo ngày xin phép"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -127,14 +127,14 @@ const ReportSalary = () => {
               //     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
               //   }
               //   value={dataStaff}
-              onChange={(event) => setDataSalary(event)}
+              onChange={(event) => setDataDay(event)}
             >
               <Option key="0" value="">
-                Chọn Bảng Lương Tháng
+                Chọn Phiếu Nghỉ Phép
               </Option>
-              {dataListSalary.map((item) => (
+              {dataListDay.map((item) => (
                 <Option key={item.id} value={item.id}>
-                  {item.month + '-' + item.year}
+                  {item.date}
                 </Option>
               ))}
             </Select>
@@ -145,11 +145,11 @@ const ReportSalary = () => {
       <CContainer className="content">
         <div className="row">
           <div className="col-sm-12">
-            <embed src={data.key} type="application/pdf" height="1000px" width="100%" />
+            <embed src={data[0].key} type="application/pdf" height="1000px" width="100%" />
           </div>
         </div>
       </CContainer>
     </>
   )
 }
-export default ReportSalary
+export default DayOffYearReport

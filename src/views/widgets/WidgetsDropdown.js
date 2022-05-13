@@ -56,7 +56,15 @@ import {
 } from '@coreui/icons'
 import Loading from '../../utils/loading'
 import { Table, Space, Card, Avatar, Divider, Collapse, Input, Popover, Button } from 'antd'
-import { EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
+import {
+  EditOutlined,
+  ThunderboltOutlined,
+  CalculatorOutlined,
+  DeleteOutlined,
+  RiseOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from '@ant-design/icons'
 const { Column } = Table
 const { Panel } = Collapse
 const { Meta } = Card
@@ -688,12 +696,13 @@ const WidgetsDropdown = () => {
               <Card.Grid style={gridStyle}>
                 <CTooltip content="Điều Chỉnh Lương" placement="top">
                   <Link to="/staff/up-salary" target="_blank">
-                    <CIcon
-                      icon={cilArrowCircleRight}
-                      customClassName="nav-icon"
-                      width="60"
-                      height="60"
-                    />
+                    {/* <CIcon
+                        icon={cilArrowCircleRight}
+                        customClassName="nav-icon"
+                        width="60"
+                        height="60"
+                      /> */}
+                    <CalculatorOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                     <br />
                     Điều Chỉnh Lương
                   </Link>
@@ -720,7 +729,7 @@ const WidgetsDropdown = () => {
               <Card.Grid style={gridStyle}>
                 <CTooltip content="Thăng Tiến" placement="top">
                   <Link to="/staff/promotion" target="_blank">
-                    <CIcon icon={cilExpandUp} customClassName="nav-icon" width="60" height="60" />
+                    <RiseOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                     <br />
                     Thăng Tiến
                   </Link>
@@ -738,7 +747,8 @@ const WidgetsDropdown = () => {
               <Card.Grid style={gridStyle}>
                 <CTooltip content="Kỷ Luật" placement="top">
                   <Link to="/staff/discipline" target="_blank">
-                    <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" />
+                    {/* <CIcon icon={cilDisabled} customClassName="nav-icon" width="60" height="60" /> */}
+                    <ThunderboltOutlined style={{ fontSize: '428.571428571%', height: '60' }} />
                     <br /> Kỷ Luật
                   </Link>
                 </CTooltip>

@@ -182,7 +182,7 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Quản Lý',
+    name: 'Quản Lý & Báo Cáo',
   },
   {
     component: CNavGroup,
@@ -203,17 +203,23 @@ const _nav = [
     ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Tiền Lương',
     to: '/report-salary',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Bảng lương',
-        to: '/report-salary',
-      },
-    ],
+  },
+  {
+    component: CNavItem,
+    name: 'Hợp Đồng Lao Động',
+    to: '/list-contract-pdf',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  },
+  ,
+  {
+    component: CNavItem,
+    name: 'Phép Năm Nhân Viên',
+    to: '/list-day-off-year-pdf',
+    icon: <CIcon icon={cilMediaStop} customClassName="nav-icon" />,
   },
 ]
 
