@@ -101,6 +101,8 @@ const ListUser = React.lazy(() => import('./views/pages/user/ListUser'))
 const ReportSalary = React.lazy(() => import('./views/pages/salary/ReportSalary'))
 const ListCV = React.lazy(() => import('./views/pages/staff/listCV'))
 const ListStaffReport = React.lazy(() => import('./views/pages/staff/listStaffReport'))
+const DayOffYearReport = React.lazy(() => import('./views/pages/dayOffYear/DayOffYearReport'))
+const ContractReport = React.lazy(() => import('./views/pages/contract/ContractReport'))
 const TimeKeepingAllStaff = React.lazy(() =>
   import('./views/pages/timeKeeping/TimeKeepingAllStaff'),
 )
@@ -159,6 +161,12 @@ const routes = [
   { path: '/list-user', name: 'Danh Sách Người Dùng', element: ListUser },
   { path: '/list-cv', name: 'CV Nhân Viên', element: ListCV },
   { path: '/list-staff-pdf', name: 'Danh Sách Nhân Viên PDF', element: ListStaffReport },
+  { path: '/list-contract-pdf', name: 'Danh Sách Hợp Đồng Nhân Viên PDF', element: ContractReport },
+  {
+    path: '/list-day-off-year-pdf',
+    name: 'Phiếu Nghỉ Phép Nhân Viên PDF',
+    element: DayOffYearReport,
+  },
   {
     path: '/report-salary',
     name: 'Danh Sách Bảng Lương Nhân Viên Theo Tháng',

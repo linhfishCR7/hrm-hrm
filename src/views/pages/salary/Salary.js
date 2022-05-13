@@ -671,7 +671,7 @@ class Salary extends Component {
             </CCol>
           </CRow>
           <h5 className="mb-3"> Hôm nay: {today}</h5>
-          <Table dataSource={this.state.salaryCurrent} bordered>
+          <Table dataSource={this.state.salaryCurrent} bordered scroll={{ y: 500 }}>
             {/* <Column title="Tháng" dataIndex="month" key="month" />
             <Column title="Năm" dataIndex="year" key="year" /> */}
             {/* <Column title="Ngày Tạo" dataIndex="date" key="date" /> */}
@@ -736,7 +736,7 @@ class Salary extends Component {
               />
             </CCol>
           </CRow>
-          <Table dataSource={this.state.salaryPast} bordered>
+          <Table dataSource={this.state.salaryPast} bordered scroll={{ y: 500 }}>
             <Column
               title="Tháng"
               dataIndex="month"

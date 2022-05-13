@@ -469,6 +469,7 @@ class DayOffYear extends Component {
           <CModalBody>
             <>
               <Table dataSource={this.state.dayOffYearDetail} bordered>
+                <Column title="Họ Tên" dataIndex="full_name" key="full_name" />
                 <Column title="Từ Ngày" dataIndex="from_date" key="from_date" />
                 <Column title="Đến Ngày" dataIndex="to_date" key="to_date" />
                 <Column title="Số Lượng" dataIndex="amount" key="amount" />
@@ -478,7 +479,6 @@ class DayOffYear extends Component {
                   dataIndex="day_off_years_name"
                   key="day_off_years_name"
                 />
-                <Column title="Họ Tên" dataIndex="full_name" key="full_name" />
                 <Column
                   title="Hành động"
                   // key={this.state.dayOffYear}

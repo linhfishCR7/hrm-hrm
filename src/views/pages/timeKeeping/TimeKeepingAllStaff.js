@@ -304,6 +304,7 @@ const TimeKeepingAllStaff = () => {
                             </CFormLabel>
                             <CFormInput
                               type="number"
+                              // step="0.1"
                               placeholder="1.0"
                               autoComplete="amount_in_project"
                               name="amount_in_project"

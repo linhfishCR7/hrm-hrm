@@ -7,12 +7,12 @@ import Loading from '../../../utils/loading'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 const { Option } = Select
 
-const ReportSalary = () => {
-  const [data, setData] = useState({})
+const ContractReport = () => {
+  const [data, setData] = useState([{}])
   const [dataStaff, setDataStaff] = useState('')
   const [dataListStaff, setDataListStaff] = useState([{}])
-  const [dataListSalary, setDataListSalary] = useState([{}])
-  const [dataSalary, setDataSalary] = useState('')
+  const [dataListContract, setDataListContract] = useState([{}])
+  const [datacontract, setDataContract] = useState('')
   const [loading, setLoading] = useState(true)
 
   const fetchListStaffAPI = () => {
@@ -31,14 +31,16 @@ const ReportSalary = () => {
       })
   }
 
-  const fetchListSalaryAPI = (dataStaff) => {
+  const fetchListContractAPI = (dataStaff) => {
     API({
-      REGISTER_URL: '/hrm/salary/?no_pagination=true&staff__id=' + dataStaff,
+      REGISTER_URL:
+        '/hrm/employment-contract/list-employment-contract/?no_pagination=true&staff__id=' +
+        dataStaff,
       ACTION: 'GET',
     })
       .then((res) => {
         const data = res.data
-        setDataListSalary(data)
+        setDataListContract(data)
         setLoading(false)
       })
       .catch((error) => {
@@ -46,9 +48,10 @@ const ReportSalary = () => {
       })
   }
 
-  const fetchSalaryAPI = (dataSalary) => {
+  const fetchContractAPI = (datacontract) => {
     API({
-      REGISTER_URL: '/hrm/salary/salary-report/' + dataSalary + '/',
+      REGISTER_URL:
+        '/hrm/employment-contract/list-employment-contract/?no_pagination=true&id=' + datacontract,
       ACTION: 'GET',
     })
       .then((res) => {
@@ -69,20 +72,19 @@ const ReportSalary = () => {
 
   useEffect(() => {
     setLoading(true)
-
-    fetchListSalaryAPI(dataStaff)
+    fetchListContractAPI(dataStaff)
   }, [dataStaff])
 
   useEffect(() => {
     setLoading(true)
-
-    fetchSalaryAPI(dataSalary)
-  }, [dataSalary])
+    fetchContractAPI(datacontract)
+  }, [datacontract])
 
   return (
     <>
       <Loading loading={loading} />
-      <h2>Bảng Lương Nhân Viên - PDF</h2>
+      <h2>Hợp Đồng Nhân Viên - PDF</h2>
+
       <CContainer>
         <CRow className="mb-3">
           <CCol md={8}>
@@ -118,7 +120,7 @@ const ReportSalary = () => {
               allowClear
               showSearch
               style={{ width: 700 }}
-              placeholder="Tìm kiếm theo tháng và năm"
+              placeholder="Tìm kiếm theo ngày xin phép"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -127,14 +129,14 @@ const ReportSalary = () => {
               //     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
               //   }
               //   value={dataStaff}
-              onChange={(event) => setDataSalary(event)}
+              onChange={(event) => setDataContract(event)}
             >
               <Option key="0" value="">
-                Chọn Bảng Lương Tháng
+                Chọn Hợp Đồng
               </Option>
-              {dataListSalary.map((item) => (
+              {dataListContract.map((item) => (
                 <Option key={item.id} value={item.id}>
-                  {item.month + '-' + item.year}
+                  {item.name}
                 </Option>
               ))}
             </Select>
@@ -145,11 +147,11 @@ const ReportSalary = () => {
       <CContainer className="content">
         <div className="row">
           <div className="col-sm-12">
-            <embed src={data.key} type="application/pdf" height="1000px" width="100%" />
+            <embed src={data[0].key} type="application/pdf" height="1000px" width="100%" />
           </div>
         </div>
       </CContainer>
     </>
   )
 }
-export default ReportSalary
+export default ContractReport
