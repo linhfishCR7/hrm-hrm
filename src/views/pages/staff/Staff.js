@@ -684,7 +684,7 @@ class Staff extends Component {
             />
           </CCol>
         </CRow>
-        <Table dataSource={this.state.staffs} bordered scroll={{ y: 500 }}>
+        <Table dataSource={this.state.staffs} bordered>
           <Column
             title="Mã Số"
             dataIndex="staff"
@@ -719,7 +719,7 @@ class Staff extends Component {
             key="is_active_data"
             filters={[
               { text: 'Nghỉ Làm', value: 'Nghỉ Làm' },
-              { text: 'Còn Làm', value: 'Còn Làm' },
+              { text: 'Đang Làm', value: 'Đang Làm' },
             ]}
             onFilter={(value, record) => record.is_active_data.startsWith(value)}
             filterSearch={true}
@@ -733,7 +733,6 @@ class Staff extends Component {
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
-                    // key={record.id}
                     onClick={() => this.openModal(record)}
                   >
                     <EditOutlined />
@@ -741,13 +740,11 @@ class Staff extends Component {
                 </CTooltip>
                 <CTooltip content="Xoá Dữ Liệu" placement="top">
                   <CButton color="danger" onClick={() => this.openDeleteModal(text)}>
-                    {/* <CIcon icon={cilDelete} /> */}
                     <DeleteOutlined />
                   </CButton>
                 </CTooltip>
                 <CTooltip content="Chi tiết nhân viên" placement="top">
                   <CButton color="info" onClick={() => this.openSettingModal(text)}>
-                    {/* <CIcon icon={cilDelete} /> */}
                     <CIcon icon={cilInfo} />
                   </CButton>
                 </CTooltip>
@@ -963,9 +960,9 @@ class Staff extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2>
+              <p>
                 Bạn có chắc chắn xoá {this.state.last_name} {this.state.first_name}?
-              </h2>
+              </p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -1302,7 +1299,6 @@ class Staff extends Component {
                           value={this.state.identity_card}
                           onChange={this.handleInputChange}
                           aria-describedby="exampleFormControlInputHelpInline"
-                          required
                         />
                         <CFormText component="span" id="exampleFormControlInputHelpInline">
                           Nhập đúng số CCCD

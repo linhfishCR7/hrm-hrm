@@ -405,7 +405,7 @@ class Contact extends Component {
             key={this.state.contact}
             render={(text, record) => (
               <Space size="middle">
-                <CTooltip content="Cập Nhật Dự Liệu" placement="top">
+                <CTooltip content="Cập Nhật Dữ Liệu" placement="top">
                   <CButton
                     color="warning"
                     style={{ marginRight: '10px' }}
@@ -549,7 +549,7 @@ class Contact extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.full_name}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.full_name}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

@@ -583,7 +583,7 @@ class Customer extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.name}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

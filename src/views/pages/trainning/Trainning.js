@@ -386,7 +386,7 @@ class Trainning extends Component {
                 <TextArea
                   rows={8}
                   type="text"
-                  placeholder="Loại Kỹ Năng"
+                  placeholder="Nội Dung Chương Trình"
                   autoComplete="content"
                   name="content"
                   onChange={this.handleInputChange}
@@ -578,7 +578,7 @@ class Trainning extends Component {
           />
           <Column title="Phê Duyệt" dataIndex="approved_by" key="approved_by" />
           <Column title="Chi Nhánh" dataIndex="branch_name" key="branch_name" />
-          <Column title="Trưởng Đơn Vị" dataIndex="unit" key="unit" />
+          <Column title="Trưởng Đơn Vị" dataIndex="unit_head" key="unit_head" />
           <Column
             title="Hành động"
             key={this.state.trainning}
@@ -843,7 +843,7 @@ class Trainning extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.date_requirement}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.date_requirement}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

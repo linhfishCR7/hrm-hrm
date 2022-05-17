@@ -488,7 +488,7 @@ class UpSalary extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.date}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.date}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
@@ -524,8 +524,8 @@ class UpSalary extends Component {
               {this.state.upSalaryBefore.map((item) => (
                 <>
                   {' '}
-                  <h4>Ngày xét tăng lương: {item.date}</h4>
-                  <h4>Hệ số hiện tại: {item.coefficient}</h4>
+                  <h6>Ngày xét tăng lương: {item.date}</h6>
+                  <h6>Hệ số hiện tại: {item.coefficient}</h6>
                 </>
               ))}
             </Card>

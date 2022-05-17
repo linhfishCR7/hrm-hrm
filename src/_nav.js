@@ -98,13 +98,13 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Chứng Chỉ',
+    name: 'Loại Chứng Chỉ',
     to: '/certificate-type',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Bằng cấp',
+    name: 'Loại Bằng cấp',
     to: '/degree-type',
     icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
   },
@@ -116,7 +116,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Hợp Đồng Lao Động',
+    name: 'Loại Hợp Đồng Lao Động',
     to: '/employment-contract-type',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },

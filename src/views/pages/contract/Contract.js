@@ -382,7 +382,7 @@ class Contract extends Component {
       <>
         {' '}
         <Loading loading={this.state.loading} />
-        <h2>{staff_name} - Chứng Chỉ</h2>
+        <h2>{staff_name} - Hợp Đồng Lao Động</h2>
         <CForm onSubmit={this.handleAddSubmit}>
           {/* defaultActiveKey={['1']} */}
           <Collapse bordered={false} className="mb-3">
@@ -1298,7 +1298,7 @@ class Contract extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.employer}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.employer}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

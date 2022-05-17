@@ -260,7 +260,7 @@ class Position extends Component {
     return (
       <>
         <Loading loading={this.state.loading} />
-        <h2> Vị Trí Làm Việc</h2>
+        <h2> Chức Vụ</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -270,7 +270,7 @@ class Position extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Vị trí làm việc"
+                  placeholder="Chức vụ"
                   autoComplete="position"
                   name="position"
                   onChange={this.handleInputChange}
@@ -285,7 +285,7 @@ class Position extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên vị trí làm việc"
+                  placeholder="Tên chức vụ"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -350,7 +350,7 @@ class Position extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Vị trí làm việc"
+                  placeholder="Chức Vụ"
                   autoComplete="position"
                   name="position"
                   value={this.state.position}
@@ -364,7 +364,7 @@ class Position extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên vị trí làm việc"
+                  placeholder="Tên chức vụ"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -389,7 +389,7 @@ class Position extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.name}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

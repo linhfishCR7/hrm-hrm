@@ -525,10 +525,10 @@ class ListUser extends Component {
               {this.state.is_active_data === 'Bị Khoá' ? (
                 <CModalBody>
                   <CForm onSubmit={this.handleStatus}>
-                    <h2>
+                    <h6>
                       Bạn có chắc chắn kích hoạt người dùng {this.state.last_name}{' '}
                       {this.state.first_name}?
-                    </h2>
+                    </h6>
                     <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                       <CInputGroupText>
                         <CIcon icon={cilCircle} />{' '}
@@ -556,10 +556,10 @@ class ListUser extends Component {
               ) : (
                 <CModalBody>
                   <CForm onSubmit={this.handleStatus}>
-                    <h2>
+                    <h6>
                       Bạn có chắc chắn khoá người dùng {this.state.last_name}{' '}
                       {this.state.first_name}?
-                    </h2>
+                    </h6>
                     <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                       <CInputGroupText>
                         <CIcon icon={cilCircle} />{' '}

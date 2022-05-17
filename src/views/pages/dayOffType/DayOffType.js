@@ -264,7 +264,7 @@ class DayOffType extends Component {
     return (
       <>
         <Loading loading={this.state.loading} />
-        <h2> Loại Phép Năm</h2>
+        <h2> Loại Ngày Nghỉ</h2>
         <CForm onSubmit={this.handleInsertSubmit}>
           <CRow>
             <CCol md={5}>
@@ -274,7 +274,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
+                  placeholder="Loại ngày nghỉ"
                   autoComplete="day_off_types"
                   name="day_off_types"
                   onChange={this.handleInputChange}
@@ -289,7 +289,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên loại ngày nghỉ"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -354,7 +354,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Loại phép năm"
+                  placeholder="Loại ngày nghỉ"
                   autoComplete="day_off_types"
                   name="day_off_types"
                   value={this.state.day_off_types}
@@ -368,7 +368,7 @@ class DayOffType extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên loại phép năm"
+                  placeholder="Tên loại ngày nghỉ"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -393,7 +393,7 @@ class DayOffType extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.name}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

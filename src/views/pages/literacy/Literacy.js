@@ -269,7 +269,7 @@ class Literacy extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Vị trí làm việc"
+                  placeholder="Mã trình độ học vấn"
                   autoComplete="literacy"
                   name="literacy"
                   onChange={this.handleInputChange}
@@ -284,7 +284,7 @@ class Literacy extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên vị trí làm việc"
+                  placeholder="Tên trình độ học vấn"
                   autoComplete="name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -349,7 +349,7 @@ class Literacy extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Vị trí làm việc"
+                  placeholder="Mã trình độ học vấn"
                   autoComplete="literacy"
                   name="literacy"
                   value={this.state.literacy}
@@ -363,7 +363,7 @@ class Literacy extends Component {
                 </CInputGroupText>{' '}
                 <CFormInput
                   type="text"
-                  placeholder="Tên vị trí làm việc"
+                  placeholder="Tên trình độ học vấn"
                   autoComplete="name"
                   name="name"
                   value={this.state.name}
@@ -388,7 +388,7 @@ class Literacy extends Component {
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá {this.state.name}?</h2>
+              <p>Bạn có chắc chắn xoá {this.state.name}?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

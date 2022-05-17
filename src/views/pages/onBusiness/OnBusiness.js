@@ -412,7 +412,7 @@ class OnBusiness extends Component {
           />
         </Table>
         {/* Update */}
-        <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="lg">
+        <CModal visible={this.state.modalIsOpen} onClose={this.closeModal} size="xl">
           <CModalHeader>
             <CModalTitle>Cập Nhật</CModalTitle>
           </CModalHeader>
@@ -524,9 +524,9 @@ class OnBusiness extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>
+              <p>
                 Bạn có chắc chắn xoá {this.state.start_date} đến {this.state.date}?
-              </h2>
+              </p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}

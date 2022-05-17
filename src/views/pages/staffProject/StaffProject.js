@@ -54,7 +54,7 @@ class StaffProject extends Component {
 
   componentDidMount() {
     API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
+      REGISTER_URL: '/hrm/staffs/?no_pagination=true&is_active=true',
       ACTION: 'GET',
     })
       .then((res) => {
@@ -334,7 +334,7 @@ class StaffProject extends Component {
                   </option>
                   {this.state.staffs.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.staff} - {item.name}
+                      {item.staff} - {item.first_name} {item.last_name}
                     </option>
                   ))}
                 </CFormSelect>
@@ -434,7 +434,7 @@ class StaffProject extends Component {
                       </option>
                       {this.state.staffs.map((item) => (
                         <option key={item.id} value={item.id}>
-                          {item.staff} - {item.name}
+                          {item.staff} - {item.first_name} {item.last_name}
                         </option>
                       ))}
                     </CFormSelect>
@@ -485,7 +485,7 @@ class StaffProject extends Component {
           <CModalBody>
             {' '}
             <CForm onSubmit={this.handleDelete}>
-              <h2>Bạn có chắc chắn xoá?</h2>
+              <p>Bạn có chắc chắn xoá?</p>
               <CInputGroup className="mb-3 mt-3" style={{ display: 'none' }}>
                 <CInputGroupText>
                   <CIcon icon={cilCircle} />{' '}
