@@ -40,7 +40,7 @@ const _navAdmin = [
   {
     component: CNavItem,
     name: 'Bộ Phận',
-    to: '/department',
+    to: '/department-admin',
     icon: <CIcon icon={cilWindowRestore} customClassName="nav-icon" />,
   },
   {

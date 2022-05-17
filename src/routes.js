@@ -92,6 +92,7 @@ const DayOffYear = React.lazy(() => import('./views/pages/dayOffYear/DayOffYear'
 const UpSalary = React.lazy(() => import('./views/pages/upSalary/UpSalary'))
 const Trainning = React.lazy(() => import('./views/pages/trainning/Trainning'))
 const Department = React.lazy(() => import('./views/pages/department/Department'))
+const DepartmentAdmin = React.lazy(() => import('./views/pages/department/DepartmentAdmin'))
 const SalaryStaff = React.lazy(() => import('./views/pages/salary/SalaryStaff'))
 const TrainningDetail = React.lazy(() => import('./views/pages/trainningDetail/TrainningDetail'))
 const TimeKeeping = React.lazy(() => import('./views/pages/timeKeeping/TimeKeeping'))
@@ -152,6 +153,7 @@ const routes = [
   { path: '/staff/up-salary', name: 'Xét Tăng Lương', element: UpSalary },
   { path: '/trainning', name: 'Chương Trình Đào Tạo', element: Trainning },
   { path: '/department', name: 'Bộ Phận', element: Department },
+  { path: '/department-admin', name: 'Bộ Phận', element: DepartmentAdmin },
   { path: '/staff/salary', name: 'Tiền Lương', element: SalaryStaff },
   { path: '/staff/trainning', name: 'Chương Trình Đào Tạo', element: TrainningDetail },
   { path: '/staff/timekeeping', name: 'Chấm Công', element: TimeKeeping },
