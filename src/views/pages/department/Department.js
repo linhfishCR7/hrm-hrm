@@ -51,7 +51,6 @@ class Department extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const departments = res.data
@@ -91,7 +90,6 @@ class Department extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -167,7 +165,6 @@ class Department extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -209,7 +206,6 @@ class Department extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState((prevState) => ({
@@ -252,7 +248,6 @@ class Department extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ departments: res.data })
   }

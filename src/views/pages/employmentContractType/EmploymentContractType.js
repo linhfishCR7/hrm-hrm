@@ -51,7 +51,6 @@ class EmploymentContractTypes extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const employmentContractTypes = res.data
@@ -90,7 +89,6 @@ class EmploymentContractTypes extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -164,7 +162,6 @@ class EmploymentContractTypes extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -206,7 +203,6 @@ class EmploymentContractTypes extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState((prevState) => ({
@@ -250,7 +246,6 @@ class EmploymentContractTypes extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ employmentContractTypes: res.data })
   }

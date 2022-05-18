@@ -37,7 +37,6 @@ const CompanyDetail = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const customers = res.data

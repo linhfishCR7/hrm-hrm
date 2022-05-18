@@ -575,7 +575,6 @@ class ListStaff extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ staffs: res.data })
   }

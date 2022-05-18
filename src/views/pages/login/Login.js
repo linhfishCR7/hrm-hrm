@@ -47,7 +47,6 @@ const Login = () => {
     const REGISTER_URL = '/hrm/companies/list/'
     return await axios.get(REGISTER_URL, {
       headers: { 'Content-Type': 'application/json' },
-      withCredentials: true,
     })
   }
 
@@ -71,7 +70,6 @@ const Login = () => {
     const REGISTER_URL = '/hrm/branchs/list/?company__id=' + company
     return await axios.get(REGISTER_URL, {
       headers: { 'Content-Type': 'application/json' },
-      withCredentials: true,
     })
   }
 
@@ -118,7 +116,6 @@ const Login = () => {
                   'Content-Type': 'application/json',
                   Authorization: `Bearer ${token}`,
                 },
-                withCredentials: true,
               })
             }
             getAuthorization().then((results) => {

@@ -36,7 +36,6 @@ const getTokenFCM = (setTokenFound, user) => {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${TOKEN}`,
             },
-            withCredentials: true,
           })
           .then((res) => {
             // console.log(res)

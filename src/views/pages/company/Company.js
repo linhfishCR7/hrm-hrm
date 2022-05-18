@@ -328,7 +328,6 @@ class Company extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ companies: res.data })
   }

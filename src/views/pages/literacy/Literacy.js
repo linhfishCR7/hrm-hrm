@@ -51,7 +51,6 @@ class Literacy extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const literacies = res.data
@@ -90,7 +89,6 @@ class Literacy extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -156,7 +154,7 @@ class Literacy extends Component {
     event.preventDefault()
 
     const newUpdate = {
-      //   id: this.state.id,
+      // id: this.state.id,
       literacy: this.state.literacy,
       name: this.state.name,
     }
@@ -166,7 +164,7 @@ class Literacy extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
+        // ,
       })
       .then((res) => {
         this.fetchAPI()
@@ -209,7 +207,6 @@ class Literacy extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState((prevState) => ({
@@ -251,7 +248,6 @@ class Literacy extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ literacies: res.data })
   }

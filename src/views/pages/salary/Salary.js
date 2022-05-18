@@ -92,7 +92,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const staffss = res.data
@@ -117,7 +116,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const salaryCurrent = res.data
@@ -136,7 +134,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const salaryPast = res.data
@@ -218,7 +215,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         if (res.data.message) {
@@ -238,7 +234,6 @@ class Salary extends Component {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN}`,
               },
-              withCredentials: true,
             })
             .then((res) => {
               const staffs = res.data
@@ -324,7 +319,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchSalaryCurrentAPI()
@@ -366,7 +360,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState((prevState) => ({
@@ -413,7 +406,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState({
@@ -457,7 +449,6 @@ class Salary extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         let salaries = this.state.salaries
@@ -479,7 +470,6 @@ class Salary extends Component {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${TOKEN}`,
             },
-            withCredentials: true,
           })
           .then((res) => {
             if (res.data.message) {
@@ -500,7 +490,6 @@ class Salary extends Component {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${TOKEN}`,
                   },
-                  withCredentials: true,
                 })
                 .then((res) => {
                   const staffs = res.data
@@ -560,7 +549,6 @@ class Salary extends Component {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${TOKEN}`,
           },
-          withCredentials: true,
         })
         .then((res) => {
           this.closeAddAllSalaryModal()
@@ -605,7 +593,6 @@ class Salary extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ staffs: res.data })
   }
@@ -618,7 +605,6 @@ class Salary extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ staffs: res.data })
   }

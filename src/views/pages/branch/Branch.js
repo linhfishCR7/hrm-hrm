@@ -57,7 +57,6 @@ class Branch extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data
@@ -76,7 +75,6 @@ class Branch extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const companies = res.data
@@ -130,7 +128,6 @@ class Branch extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -209,7 +206,6 @@ class Branch extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -251,7 +247,6 @@ class Branch extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.setState((prevState) => ({
@@ -294,7 +289,6 @@ class Branch extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ branchs: res.data })
   }

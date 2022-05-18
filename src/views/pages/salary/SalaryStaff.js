@@ -78,7 +78,6 @@ class SalaryStaff extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const salaryCurrent = res.data
@@ -97,7 +96,6 @@ class SalaryStaff extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const salaryPast = res.data
@@ -197,7 +195,6 @@ class SalaryStaff extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchSalaryCurrentAPI()
@@ -243,7 +240,6 @@ class SalaryStaff extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchSalaryCurrentAPI()
@@ -285,7 +281,6 @@ class SalaryStaff extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchSalaryCurrentAPI()
@@ -326,7 +321,6 @@ class SalaryStaff extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ staffs: res.data })
   }

@@ -9,9 +9,8 @@ const GetProfile = async () => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
     },
-    withCredentials: true,
   })
 }
 export default GetProfile

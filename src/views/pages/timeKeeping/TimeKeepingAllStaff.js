@@ -50,7 +50,6 @@ const TimeKeepingAllStaff = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setDataStaff(res.data)
@@ -66,7 +65,6 @@ const TimeKeepingAllStaff = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data
@@ -83,7 +81,6 @@ const TimeKeepingAllStaff = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data
@@ -112,7 +109,6 @@ const TimeKeepingAllStaff = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data
@@ -192,7 +188,6 @@ const TimeKeepingAllStaff = () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     setListStaffTimeKeeping(res.data)
   }
@@ -209,7 +204,6 @@ const TimeKeepingAllStaff = () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     setTimeKeeping(res.data)
   }

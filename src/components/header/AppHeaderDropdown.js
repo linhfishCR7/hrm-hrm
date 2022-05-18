@@ -162,7 +162,7 @@ const AppHeaderDropdown = () => {
           {status ? 'Đăng Xuất' : 'Đăng Nhập'}
         </CDropdownItem>
       </CDropdownMenu>
-      <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+      {/* <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
         <CModalHeader>
           <CModalTitle>ERROR</CModalTitle>
         </CModalHeader>
@@ -174,7 +174,7 @@ const AppHeaderDropdown = () => {
             Close
           </CButton>
         </CModalFooter>
-      </CModal>
+      </CModal> */}
     </CDropdown>
   )
 }

@@ -15,7 +15,6 @@ const API = async ({ REGISTER_URL, ACTION, DATA = {} }) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     })
   } else if (ACTION === 'DELETE') {
     return await axios.delete(REGISTER_URL, {
@@ -23,7 +22,6 @@ const API = async ({ REGISTER_URL, ACTION, DATA = {} }) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     })
   } else if (ACTION === 'POST') {
     return await axios.post(REGISTER_URL, DATA, {
@@ -31,7 +29,6 @@ const API = async ({ REGISTER_URL, ACTION, DATA = {} }) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     })
   } else if (ACTION === 'PUT') {
     return await axios.put(REGISTER_URL, DATA, {
@@ -39,7 +36,6 @@ const API = async ({ REGISTER_URL, ACTION, DATA = {} }) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     })
   }
 }

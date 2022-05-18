@@ -16,7 +16,6 @@ const WidgetsDropdownAdmin = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setData(res.data)

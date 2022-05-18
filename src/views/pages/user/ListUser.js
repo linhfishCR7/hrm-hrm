@@ -64,7 +64,6 @@ class ListUser extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const users = res.data
@@ -83,7 +82,6 @@ class ListUser extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const users = res.data
@@ -179,7 +177,6 @@ class ListUser extends Component {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         this.fetchAPI()
@@ -223,7 +220,6 @@ class ListUser extends Component {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${TOKEN}`,
           },
-          withCredentials: true,
         },
       )
       .then((res) => {
@@ -264,7 +260,6 @@ class ListUser extends Component {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     this.setState({ users: res.data })
   }

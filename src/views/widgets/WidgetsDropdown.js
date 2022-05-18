@@ -96,7 +96,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setData(res.data)
@@ -111,7 +110,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setDataProject(res.data)
@@ -127,7 +125,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setDataStaff(res.data)
@@ -143,7 +140,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         setDataCustomer(res.data)
@@ -159,7 +155,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data
@@ -174,7 +169,6 @@ const WidgetsDropdown = () => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN}`,
               },
-              withCredentials: true,
             },
           )
           .then((res) => {
@@ -197,7 +191,6 @@ const WidgetsDropdown = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
         },
-        withCredentials: true,
       })
       .then((res) => {
         const data = res.data

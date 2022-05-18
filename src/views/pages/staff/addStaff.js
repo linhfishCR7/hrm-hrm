@@ -46,7 +46,6 @@ const CreateStaff = () => {
     const REGISTER_URL = '/hrm/departments/list/'
     return await axios.get(REGISTER_URL, {
       headers: { 'Content-Type': 'application/json' },
-      withCredentials: true,
     })
   }
 

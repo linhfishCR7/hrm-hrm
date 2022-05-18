@@ -78,8 +78,10 @@ const Profile = () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
+        'Access-Control-Allow-Origin': '*',
+        // 'Access-Control-Allow-Headers': 'Content-Type',
+        // Accept: 'application/json',
       },
-      withCredentials: true,
     })
   }
   const onSubmit = () => {
@@ -95,26 +97,17 @@ const Profile = () => {
         openNotificationWithIcon({
           type: 'success',
           message: 'Cập nhật dữ liệu thành công!!!',
-          description: 'Cập nhật dữ liệu thành công!!!',
+          description: '',
           placement: 'topRight',
         })
       })
-      .catch(function (error) {
-        if (error.response.status === 400) {
-          openNotificationWithIcon({
-            type: 'error',
-            message: 'Cập nhật dữ liệu không thành công!!!',
-            description: '',
-            placement: 'topRight',
-          })
-        } else {
-          openNotificationWithIcon({
-            type: 'error',
-            message: 'Cập nhật dữ liệu không thành công!!!',
-            description: '',
-            placement: 'topRight',
-          })
-        }
+      .catch((error) => {
+        openNotificationWithIcon({
+          type: 'error',
+          message: 'Cập nhật dữ liệu không thành công!!!',
+          description: '',
+          placement: 'topRight',
+        })
       })
   }
   return (

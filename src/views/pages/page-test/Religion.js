@@ -40,9 +40,8 @@ const Religion = () => {
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     setReligion(res.data)
     console.log(res.data)
@@ -65,9 +64,8 @@ const Religion = () => {
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${TOKEN}`,
       },
-      withCredentials: true,
     })
     setReligion(res.data)
     console.log(res.data)
