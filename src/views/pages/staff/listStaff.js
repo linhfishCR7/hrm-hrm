@@ -705,11 +705,14 @@ class ListStaff extends Component {
                       }
                       target="_blank"
                     > */}
-                    <a href={
-                      this.state.staffData.elect_notifications
-                        ? this.state.staffData.elect_notifications
-                        : '#'
-                    } target="_blank">
+                    <a
+                      href={
+                        this.state.staffData.elect_notifications
+                          ? this.state.staffData.elect_notifications
+                          : '#'
+                      }
+                      target="_blank"
+                    >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
                       </CButton>
@@ -768,11 +771,10 @@ class ListStaff extends Component {
                         <CIcon icon={cilLink} />
                       </CButton>
                     </Link> */}
-                    <a href={
-                      this.state.staffData.facebook
-                        ? this.state.staffData.facebook
-                        : '#'
-                    } target="_blank">
+                    <a
+                      href={this.state.staffData.facebook ? this.state.staffData.facebook : '#'}
+                      target="_blank"
+                    >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
                       </CButton>
@@ -1109,7 +1111,7 @@ class ListStaff extends Component {
             filters={this.state.positions}
             onFilter={(value, record) => record.position_data.startsWith(value)}
             filterSearch={true}
-          // width="40%"
+            // width="40%"
           />
           <Column
             title="Thông Tin Chi Tiết"
