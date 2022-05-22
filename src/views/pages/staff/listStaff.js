@@ -742,6 +742,7 @@ class ListStaff extends Component {
                           : '#'
                       }
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
@@ -774,6 +775,7 @@ class ListStaff extends Component {
                     <a
                       href={this.state.staffData.facebook ? this.state.staffData.facebook : '#'}
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
