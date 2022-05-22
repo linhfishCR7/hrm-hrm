@@ -712,6 +712,7 @@ class ListStaff extends Component {
                           : '#'
                       }
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
@@ -742,7 +743,6 @@ class ListStaff extends Component {
                           : '#'
                       }
                       target="_blank"
-                      rel="noreferrer"
                     >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
