@@ -736,7 +736,7 @@ class ListStaff extends Component {
                     }
                     placement="top"
                   >
-                    <Link
+                    {/* <Link
                       to={
                         this.state.staffData.elect_decision
                           ? this.state.staffData.elect_decision
@@ -747,7 +747,20 @@ class ListStaff extends Component {
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
                       </CButton>
-                    </Link>
+                    </Link> */}
+                    <a
+                      href={
+                        this.state.staffData.elect_decision
+                          ? this.state.staffData.elect_decision
+                          : '#'
+                      }
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <CButton color="info" style={{ marginRight: '10px' }}>
+                        <CIcon icon={cilLink} />
+                      </CButton>
+                    </a>
                   </CTooltip>
                 </Space>
               </CTableDataCell>
@@ -797,14 +810,23 @@ class ListStaff extends Component {
                     content={this.state.staffData.url ? this.state.staffData.url : 'Link'}
                     placement="top"
                   >
-                    <Link
+                    {/* <Link
                       to={this.state.staffData.url ? this.state.staffData.url : '#'}
                       target="_blank"
                     >
                       <CButton color="info" style={{ marginRight: '10px' }}>
                         <CIcon icon={cilLink} />
                       </CButton>
-                    </Link>
+                    </Link> */}
+                    <a
+                      href={this.state.staffData.url ? this.state.staffData.url : '#'}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <CButton color="info" style={{ marginRight: '10px' }}>
+                        <CIcon icon={cilLink} />
+                      </CButton>
+                    </a>
                   </CTooltip>
                 </Space>
               </CTableDataCell>
