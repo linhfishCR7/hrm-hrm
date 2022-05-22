@@ -81,7 +81,8 @@ const WidgetsDropdown = () => {
   const [dataID, setDataID] = useState('')
   const [dataName, setDataName] = useState('')
   const [liststaffs, setListStaffs] = useState([])
-  // const [listprojects, setListProjects] = useState([])
+  const token = localStorage.getItem('token')
+  const branch = localStorage.getItem('branch')
   const [loading, setLoading] = useState(true)
   const [ListStaffModal, setListStaffModal] = useState({
     modalSettingIsOpen: false,
@@ -94,7 +95,7 @@ const WidgetsDropdown = () => {
       .get('/hrm/dashboard/', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -108,7 +109,7 @@ const WidgetsDropdown = () => {
       .get('/hrm/dashboard/project-by-time/', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -123,7 +124,7 @@ const WidgetsDropdown = () => {
       .get('/hrm/dashboard/staff-by-time/', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -138,7 +139,7 @@ const WidgetsDropdown = () => {
       .get('/hrm/dashboard/staff-by-time/', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -150,10 +151,10 @@ const WidgetsDropdown = () => {
 
   const fetchDepartmentAPI = async () => {
     await axios
-      .get('/hrm/departments/?no_pagination=true&branch__id=' + BRANCH, {
+      .get('/hrm/departments/?no_pagination=true&branch__id=' + branch, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -167,7 +168,7 @@ const WidgetsDropdown = () => {
             {
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${token}`,
               },
             },
           )
@@ -189,7 +190,7 @@ const WidgetsDropdown = () => {
       .get('/hrm/staffs/?no_pagination=true&is_active=true&department__name__in=' + item.name, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {

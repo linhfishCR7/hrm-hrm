@@ -8,13 +8,14 @@ import Loading from '../../utils/loading'
 const WidgetsDropdownAdmin = () => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
+  const token = localStorage.getItem('token')
 
   const fetchDashboardAPI = async () => {
     await axios
       .get('/admin/dashboard/', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
