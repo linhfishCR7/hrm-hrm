@@ -40,7 +40,7 @@ const Profile = () => {
   const [phone, setPhone] = useState('')
   const [dayofbirth, setDayOfBirth] = useState('')
   const [image, setImage] = useState('')
-  const [loading_spin, setLoadingSpin] = useState(true)
+  const [loading_spin, setLoadingSpin] = useState(false)
 
   const user = Pool.getCurrentUser()
   useEffect(() => {
@@ -78,9 +78,6 @@ const Profile = () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
-        'Access-Control-Allow-Origin': '*',
-        // 'Access-Control-Allow-Headers': 'Content-Type',
-        // Accept: 'application/json',
       },
     })
   }

@@ -312,7 +312,7 @@ const Register = () => {
                         </option>
                         {departments.map((item) => (
                           <option key={item.id} value={item.id}>
-                            {item.name}
+                            {item.data}
                           </option>
                         ))}
                       </CFormSelect>
