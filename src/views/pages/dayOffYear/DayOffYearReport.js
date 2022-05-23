@@ -35,8 +35,7 @@ const DayOffYearReport = () => {
 
   const fetchListDayOffYearAPI = (dataStaff) => {
     API({
-      REGISTER_URL:
-        '/hrm/day-off-years/list-day-off-year-report/?no_pagination=true&staff__id=' + dataStaff,
+      REGISTER_URL: '/hrm/day-off-years/?no_pagination=true&staff__id=' + dataStaff,
       ACTION: 'GET',
     })
       .then((res) => {
