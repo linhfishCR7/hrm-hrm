@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { Select } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import Loading from '../../../utils/loading'
+import { BRANCH } from '../../../constants/Config'
 
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 const { Option } = Select
@@ -17,7 +18,8 @@ const ContractReport = () => {
 
   const fetchListStaffAPI = () => {
     API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
+      REGISTER_URL:
+        '/hrm/staffs/?no_pagination=true&is_active=true&department__branch__id=' + BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
@@ -66,7 +68,6 @@ const ContractReport = () => {
 
   useEffect(() => {
     setLoading(true)
-
     fetchListStaffAPI()
   }, [])
 
