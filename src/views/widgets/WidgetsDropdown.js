@@ -92,7 +92,7 @@ const WidgetsDropdown = () => {
   })
   const fetchDashboardAPI = async () => {
     await axios
-      .get('/hrm/dashboard/', {
+      .get('/hrm/dashboard/?branch=' + branch, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ const WidgetsDropdown = () => {
 
   const fetchProjectAPI = async () => {
     await axios
-      .get('/hrm/dashboard/project-by-time/', {
+      .get('/hrm/dashboard/staff-by-time/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const WidgetsDropdown = () => {
 
   const fetchStaffAPI = async () => {
     await axios
-      .get('/hrm/dashboard/staff-by-time/', {
+      .get('/hrm/dashboard/staff-by-time/?branch=' + branch, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
