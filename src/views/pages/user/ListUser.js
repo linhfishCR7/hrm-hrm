@@ -77,7 +77,7 @@ class ListUser extends Component {
 
   fetchUserDetailAPI = async (id) => {
     return await axios
-      .get('/admin/user/' + id, {
+      .get('/admin/user/' + id + '/', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
