@@ -153,7 +153,7 @@ class Staff extends Component {
 
   fetchDeparmentFilterAPI = (event) => {
     API({
-      REGISTER_URL: '/hrm/departments/?no_pagination=true',
+      REGISTER_URL: '/hrm/departments/?no_pagination=true&branch__id=' + BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
@@ -197,7 +197,7 @@ class Staff extends Component {
 
   fetchDeparmentAPI = async (event) => {
     await axios
-      .get('/hrm/departments/?no_pagination=true', {
+      .get('/hrm/departments/?no_pagination=true&branch__id=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,

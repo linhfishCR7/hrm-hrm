@@ -210,7 +210,7 @@ class ListStaff extends Component {
 
   fetchDeparmentAPI = (event) => {
     API({
-      REGISTER_URL: '/hrm/departments/?no_pagination=true',
+      REGISTER_URL: '/hrm/departments/?no_pagination=true&branch__id=' + BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
