@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Input, Card } from 'antd'
-import { TOKEN } from '../../../constants/Config'
+import { TOKEN, BRANCH } from '../../../constants/Config'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 // import { Link } from 'react-router-dom'
 import '../../../assets/style.css'
@@ -87,7 +87,7 @@ class Salary extends Component {
 
   fetchStaffAPI = async (event) => {
     await axios
-      .get(`/hrm/staffs/?no_pagination=true`, {
+      .get(`/hrm/staffs/?no_pagination=true&department__branch__id` + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -111,7 +111,7 @@ class Salary extends Component {
 
   fetchSalaryCurrentAPI = async (event) => {
     await axios
-      .get(`/hrm/salary/current/?no_pagination=true`, {
+      .get('/hrm/salary/current/?no_pagination=true&staff__department__branch__id=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -129,7 +129,7 @@ class Salary extends Component {
 
   fetchSalaryPastAPI = async (event) => {
     await axios
-      .get(`/hrm/salary/past/?no_pagination=true`, {
+      .get(`/hrm/salary/past/?no_pagination=true&staff__department__branch__id=` + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -210,7 +210,7 @@ class Salary extends Component {
       loadStatusCheck: true,
     })
     axios
-      .get('/hrm/salary/check-salary/', {
+      .get('/hrm/salary/check-salary/?branch=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -401,7 +401,7 @@ class Salary extends Component {
     })
     event.preventDefault()
     axios
-      .get('/hrm/salary/active-salary/', {
+      .get('/hrm/salary/active-salary/?branch=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -587,26 +587,40 @@ class Salary extends Component {
 
   handleSearchCurrent = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/salary/current/?no_pagination=true&search=' + value
+    const REGISTER_URL =
+      '/hrm/salary/current/?no_pagination=true&staff__department__branch__id=' +
+      BRANCH +
+      '&search=' +
+      value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
     })
-    this.setState({ staffs: res.data })
+    this.setState({
+      salaryCurrent: res.data,
+      loading: false,
+    })
   }
 
   handleSearchPast = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/salary/past/?no_pagination=true&search=' + value
+    const REGISTER_URL =
+      '/hrm/salary/past/?no_pagination=true&staff__department__branch__id=' +
+      BRANCH +
+      '&search=' +
+      value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`,
       },
     })
-    this.setState({ staffs: res.data })
+    this.setState({
+      salaryPast: res.data,
+      loading: false,
+    })
   }
 
   // //
