@@ -187,7 +187,7 @@ const WidgetsDropdown = () => {
     setDataName(item.name)
     setLoading(true)
     await axios
-      .get('/hrm/staffs/?no_pagination=true&is_active=true&department__name__in=' + item.name, {
+      .get('/hrm/staffs/?no_pagination=true&is_active=true&department__id__in=' + item.id, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
