@@ -5,7 +5,7 @@ import LoadingOverlay from 'react-loading-overlay'
 import openNotificationWithIcon from '../../../utils/notification'
 import API from '../../../utils/apiCaller' //REGISTER_URL, ACTION, DATA = {}
 import { Table, Space, Button, Input, Collapse, Card, Spin, BackTop, Select, Divider } from 'antd'
-import { TOKEN } from '../../../constants/Config'
+import { TOKEN, BRANCH } from '../../../constants/Config'
 import { EyeOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
@@ -522,7 +522,7 @@ class ListStaff extends Component {
 
   fetchStaffAPI = (event) => {
     API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true',
+      REGISTER_URL: '/hrm/staffs/?no_pagination=true&department__branch__id=' + BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
@@ -569,7 +569,8 @@ class ListStaff extends Component {
 
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
+    const REGISTER_URL =
+      '/hrm/staffs/?no_pagination=true&department__branch__id=' + BRANCH + '&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',

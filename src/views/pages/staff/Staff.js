@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from '../../../utils/axios'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { Table, Space, Input, Collapse, Spin, Card } from 'antd'
-import { TOKEN } from '../../../constants/Config'
+import { TOKEN, BRANCH } from '../../../constants/Config'
 import {
   EditOutlined,
   ThunderboltOutlined,
@@ -297,7 +297,7 @@ class Staff extends Component {
 
   fetchStaffAPI = async (event) => {
     await axios
-      .get('/hrm/staffs/?no_pagination=true', {
+      .get('/hrm/staffs/?no_pagination=true&department__branch__id=' + BRANCH, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN}`,
@@ -645,7 +645,8 @@ class Staff extends Component {
   }
   handleSearch = async (event) => {
     let value = event.target.value
-    const REGISTER_URL = '/hrm/staffs/?no_pagination=true&search=' + value
+    const REGISTER_URL =
+      '/hrm/staffs/?no_pagination=true&department__branch__id=' + BRANCH + '&search=' + value
     const res = await axios.get(REGISTER_URL, {
       headers: {
         'Content-Type': 'application/json',

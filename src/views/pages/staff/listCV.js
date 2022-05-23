@@ -16,7 +16,8 @@ const ListCV = () => {
 
   const fetchListStaffAPI = () => {
     API({
-      REGISTER_URL: '/hrm/staffs/?no_pagination=true&is_active=true',
+      REGISTER_URL:
+        '/hrm/staffs/?no_pagination=true&is_active=true&department__branch__id=' + BRANCH,
       ACTION: 'GET',
     })
       .then((res) => {
