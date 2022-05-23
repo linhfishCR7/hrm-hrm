@@ -177,7 +177,7 @@ class ListStaff extends Component {
   openStaffDetailModal = (item) => {
     localStorage.setItem('staffDetail', item.id)
     this.setState({
-      staffName: item.first_name + ' ' + item.last_name,
+      staffName: item.last_name + ' ' + item.first_name,
       staffId: item.staff,
     })
     const staffDetail = localStorage.getItem('staffDetail')
@@ -531,7 +531,7 @@ class ListStaff extends Component {
         this.setState({
           staffs: staffs,
           loading: false,
-          staffName: staffs[3].user.first_name + ' ' + staffs[3].user.last_name,
+          staffName: staffs[3].user.last_name + ' ' + staffs[3].user.first_name,
           staffId: staffs[3].staff,
         })
         localStorage.setItem('staffDetail', staffs[3].id)
@@ -601,7 +601,7 @@ class ListStaff extends Component {
             <CTableRow>
               <CTableHeaderCell scope="row">Họ Tên</CTableHeaderCell>
               <CTableDataCell>
-                {this.state.staffData.first_name + ' ' + this.state.staffData.last_name}
+                {this.state.staffData.last_name + ' ' + this.state.staffData.first_name}
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
