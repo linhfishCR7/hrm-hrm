@@ -3,8 +3,8 @@
   "name": "HRM PWA APP",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
-      "sizes": "100x100",
+      "src": "/images/apple-touch-icon.png",
+      "sizes": "152x152",
       "type": "image/png"
     }
   ],
